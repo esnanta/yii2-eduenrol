@@ -11,8 +11,6 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_staff".
  *
  * @property integer $id
- * @property integer $user_id
- * @property integer $office_id
  * @property integer $employment_id
  * @property string $title
  * @property string $initial
@@ -23,25 +21,22 @@ use mootensai\behaviors\UUIDBehavior;
  * @property string $address
  * @property string $file_name
  * @property string $email
+ * @property string $google_plus
+ * @property string $instagram
+ * @property string $facebook
+ * @property string $twitter
  * @property string $description
  * @property string $created_at
  * @property string $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  * @property integer $is_deleted
- * @property string $deleted_at
+ * @property integer $deleted_at
  * @property integer $deleted_by
  * @property integer $verlock
  * @property string $uuid
  *
- * @property \common\models\AccountPayable[] $accountPayables
- * @property \common\models\Purchase[] $purchases
- * @property \common\models\PurchaseReceive[] $purchaseReceives
  * @property \common\models\Employment $employment
- * @property \common\models\Office $office
- * @property \common\models\StockAdjustment[] $stockAdjustments
- * @property \common\models\StockDistribution[] $stockDistributions
- * @property \common\models\StockOpname[] $stockOpnames
  */
 class Staff extends \yii\db\ActiveRecord
 {
@@ -69,14 +64,7 @@ class Staff extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'accountPayables',
-            'purchases',
-            'purchaseReceives',
-            'employment',
-            'office',
-            'stockAdjustments',
-            'stockDistributions',
-            'stockOpnames'
+            'employment'
         ];
     }
 
@@ -86,10 +74,11 @@ class Staff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'office_id', 'employment_id', 'gender_status', 'active_status', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['employment_id', 'gender_status', 'active_status', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['initial'], 'required'],
             [['address', 'description'], 'string'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['title', 'identity_number', 'email'], 'string', 'max' => 100],
+            [['created_at', 'updated_at'], 'safe'],
+            [['title', 'identity_number', 'email', 'google_plus', 'instagram', 'facebook', 'twitter'], 'string', 'max' => 100],
             [['initial'], 'string', 'max' => 10],
             [['phone_number'], 'string', 'max' => 50],
             [['file_name'], 'string', 'max' => 200],
@@ -125,9 +114,7 @@ class Staff extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User'),
-            'office_id' => Yii::t('app', 'Office'),
-            'employment_id' => Yii::t('app', 'Employment'),
+            'employment_id' => Yii::t('app', 'Employment ID'),
             'title' => Yii::t('app', 'Title'),
             'initial' => Yii::t('app', 'Initial'),
             'identity_number' => Yii::t('app', 'Identity Number'),
@@ -137,6 +124,10 @@ class Staff extends \yii\db\ActiveRecord
             'address' => Yii::t('app', 'Address'),
             'file_name' => Yii::t('app', 'File Name'),
             'email' => Yii::t('app', 'Email'),
+            'google_plus' => Yii::t('app', 'Google Plus'),
+            'instagram' => Yii::t('app', 'Instagram'),
+            'facebook' => Yii::t('app', 'Facebook'),
+            'twitter' => Yii::t('app', 'Twitter'),
             'description' => Yii::t('app', 'Description'),
             'is_deleted' => Yii::t('app', 'Is Deleted'),
             'verlock' => Yii::t('app', 'Verlock'),
@@ -147,65 +138,9 @@ class Staff extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountPayables()
-    {
-        return $this->hasMany(\common\models\AccountPayable::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPurchases()
-    {
-        return $this->hasMany(\common\models\Purchase::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPurchaseReceives()
-    {
-        return $this->hasMany(\common\models\PurchaseReceive::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEmployment()
     {
         return $this->hasOne(\common\models\Employment::className(), ['id' => 'employment_id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOffice()
-    {
-        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockAdjustments()
-    {
-        return $this->hasMany(\common\models\StockAdjustment::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockDistributions()
-    {
-        return $this->hasMany(\common\models\StockDistribution::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockOpnames()
-    {
-        return $this->hasMany(\common\models\StockOpname::className(), ['staff_id' => 'id']);
     }
     
     /**

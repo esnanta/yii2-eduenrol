@@ -17,12 +17,13 @@ class Employment extends BaseEmployment
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['office_id', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['description'], 'string'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
             [['title'], 'string', 'max' => 100],
             [['sequence'], 'string', 'max' => 4],
             [['uuid'], 'string', 'max' => 36],
+            [['title'], 'unique'],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ]);

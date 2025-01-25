@@ -61,16 +61,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'locale'=>['format' => Yii::$app->params['dateDisplayFormat']],
                     ]                
                 ])
-            ], 
+            ],
 
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
-                'template'=>'{update} {view}',                
+                'template'=>'{update} {view}',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fas fa-pencil-alt"></i>',
-                            Yii::$app->urlManager->createUrl(['archive-category/view', 'id' => $model->id, 'edit' => 't']),
+                        return Html::a(
+                            '<i class="fas fa-pencil-alt"></i>',
+                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id, 'edit' => 't']),
                             [
                                 'title' => Yii::t('yii', 'Edit'),
                                 'class'=>'btn btn-sm btn-info',
@@ -78,14 +79,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         );
                     },
                     'view' => function ($url, $model) {
-                        return Html::a('<i class="fas fa-eye"></i>',
-                            Yii::$app->urlManager->createUrl(['archive-category/view', 'id' => $model->id]),
+                        return Html::a(
+                            '<i class="fas fa-eye"></i>',
+                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id]),
                             [
                                 'title' => Yii::t('yii', 'View'),
                                 'class'=>'btn btn-sm btn-info',
                             ]
                         );
-                    },        
+                    },
                 ],
             ],
         ],

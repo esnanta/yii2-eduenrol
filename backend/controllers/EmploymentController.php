@@ -2,19 +2,16 @@
 
 namespace backend\controllers;
 
-use common\helper\MessageHelper;
+use Yii;
 use common\models\Employment;
 use common\models\EmploymentSearch;
-use common\models\Office;
-use common\service\CacheService;
-use Yii;
-use yii\db\StaleObjectException;
-use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\filters\VerbFilter;
 
+use common\helper\MessageHelper;
 /**
  * EmploymentController implements the CRUD actions for Employment model.
  */
@@ -24,7 +21,7 @@ class EmploymentController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -38,23 +35,16 @@ class EmploymentController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can('index-employment')) {
-            $searchModel = new EmploymentSearch;
-            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-            
-            $cacheCloud = new CacheService();
-            $officeId   = $cacheCloud->getOfficeId();
+        if(Yii::$app->user->can('index-employment')){
+                            $searchModel = new EmploymentSearch;
+                    $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-            $officeList = ArrayHelper::map(Office::find()
-                    ->where(['id' => $officeId])
-                    ->asArray()->all(), 'id', 'title');
-            
-            return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'officeList'=>$officeList
-            ]);
-        } else {
+                    return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+                    ]);
+                    }
+        else{
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -67,25 +57,17 @@ class EmploymentController extends Controller
      */
     public function actionView($id)
     {
-        if (Yii::$app->user->can('view-employment')) {
+        if(Yii::$app->user->can('view-employment')){
             $model = $this->findModel($id);
-            
-            $cacheCloud = new CacheService();
-            $officeId   = $cacheCloud->getOfficeId();
-            $officeList = ArrayHelper::map(Office::find()
-                    ->where(['id' => $officeId])
-                    ->asArray()->all(), 'id', 'title');
-            
+
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 MessageHelper::getFlashUpdateSuccess();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                return $this->render('view', [
-                    'model' => $model,
-                    'officeList'=>$officeList
-                ]);
+                return $this->render('view', ['model' => $model]);
             }
-        } else {
+        }
+        else{
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -98,30 +80,25 @@ class EmploymentController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can('create-employment')) {
-            $cacheCloud = new CacheService();
-            $officeId   = $cacheCloud->getOfficeId();
-            $officeList = ArrayHelper::map(Office::find()
-                    ->where(['id' => $officeId])
-                    ->asArray()->all(), 'id', 'title');
-            
+        if(Yii::$app->user->can('create-employment')){
             $model = new Employment;
-            $model->office_id = $officeId;
-            
+
             try {
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
                     MessageHelper::getFlashSaveSuccess();
                     return $this->redirect(['view', 'id' => $model->id]);
-                } else {
+                } 
+                else {
                     return $this->render('create', [
                         'model' => $model,
-                        'officeList'=>$officeList
                     ]);
                 }
-            } catch (StaleObjectException $e) {
+            }
+            catch (StaleObjectException $e) {
                 throw new StaleObjectException('The object being updated is outdated.');
             }
-        } else {
+        }
+        else{
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -135,14 +112,8 @@ class EmploymentController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can('update-employment')) {
+        if(Yii::$app->user->can('update-employment')){
             try {
-                $cacheCloud = new CacheService();
-                $officeId   = $cacheCloud->getOfficeId();
-                $officeList = ArrayHelper::map(Office::find()
-                        ->where(['id' => $officeId])
-                        ->asArray()->all(), 'id', 'title');
-                
                 $model = $this->findModel($id);
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -151,13 +122,14 @@ class EmploymentController extends Controller
                 } else {
                     return $this->render('update', [
                         'model' => $model,
-                        'officeList' => $officeList
                     ]);
                 }
-            } catch (StaleObjectException $e) {
+            }
+            catch (StaleObjectException $e) {
                 throw new StaleObjectException('The object being updated is outdated.');
             }
-        } else {
+        }
+        else{
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -168,14 +140,16 @@ class EmploymentController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws ForbiddenHttpException
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('delete-employment')) {
+        if(Yii::$app->user->can('delete-employment')){
             $this->findModel($id)->delete();
             MessageHelper::getFlashDeleteSuccess();
             return $this->redirect(['index']);
-        } else {
+        }
+        else{
             MessageHelper::getFlashLoginInfo();
             throw new ForbiddenHttpException;
         }

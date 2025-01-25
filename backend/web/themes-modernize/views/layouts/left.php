@@ -40,41 +40,41 @@ function getMenu($_menuName, $_classIcon) {
 
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Home</span>
+                        <span class="hide-menu">Backend</span>
                     </li>
                     <li class="sidebar-item">
                         <?= Html::a(getMenu('Dashboard', 'fa fa-dashboard'), ['/site/index'], ['class' => 'sidebar-link']) ?>
                     </li>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Master</span>
+                        <span class="hide-menu"><?=Yii::t('app', 'Applicant')?></span>
                     </li>
                     <li class="sidebar-item">
-                        <?= Html::a(getMenu('Archive Category', 'fa fa-angle-right'), ['/archive-category/index'], ['class' => 'sidebar-link']) ?>
+                        <?= Html::a(getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'), ['/applicant/index'], ['class' => 'sidebar-link']) ?>
                     </li>
                     <li class="sidebar-item">
-                        <?= Html::a(getMenu('Archive', 'fa fa-angle-right'), ['/archive/index'], ['class' => 'sidebar-link']) ?>
+                        <?= Html::a(getMenu(Yii::t('app', 'Almamater'), 'fa fa-angle-right'), ['/applicant-almamater/index'], ['class' => 'sidebar-link']) ?>
                     </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu(Yii::t('app', 'Family'), 'fa fa-angle-right'), ['/applicant-family/index'], ['class' => 'sidebar-link']) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu(Yii::t('app', 'Grade'), 'fa fa-angle-right'), ['/applicant-grade/index'], ['class' => 'sidebar-link']) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu(Yii::t('app', 'Document'), 'fa fa-angle-right'), ['/applicant-document/index'], ['class' => 'sidebar-link']) ?>
+                    </li>
+
 
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">EXTRA</span>
+                        <span class="hide-menu">Master</span>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-mood-happy"></i>
-                            </span>
-                            <span class="hide-menu">Icons</span>
-                        </a>
+                        <?= Html::a(getMenu(Yii::t('app', 'Archive Category'), 'fa fa-angle-right'), ['/archive-category/index'], ['class' => 'sidebar-link']) ?>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Sample Page</span>
-                        </a>
+                        <?= Html::a(getMenu(Yii::t('app', 'Archive'), 'fa fa-angle-right'), ['/archive/index'], ['class' => 'sidebar-link']) ?>
                     </li>
 
                     <?php if (Yii::$app->user->identity->isAdmin): ?>

@@ -15,12 +15,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="employment-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
     'modelClass' => 'Employment',
-]), ['create'], ['class' => 'btn btn-success'])*/  ?>
+]),
+        ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
     <?php Pjax::begin(); echo GridView::widget([
@@ -41,49 +42,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-//            [
-//                'attribute'=>'office_id',
-//                'vAlign'=>'middle',
-//                'width'=>'180px',
-//                'value'=>function ($model, $key, $index, $widget) {
-//                    return ($model->office_id!=null) ? $model->office->title:'';
-//                },
-//                'filterType'=>GridView::FILTER_SELECT2,
-//                'filter'=>$officeList,
-//                'filterWidgetOptions'=>[
-//                    'pluginOptions'=>['allowClear'=>true],
-//                ],
-//                'filterInputOptions'=>['placeholder'=>''],
-//                'format'=>'raw'
-//            ],
+
+                'id',
             'title',
-            'sequence',
             'description:ntext',
+            'sequence',
+            ['attribute' => 'created_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']],
+//            ['attribute' => 'updated_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
+//            'created_by', 
+//            'updated_by', 
+//            'is_deleted', 
+//            'deleted_at', 
+//            'deleted_by', 
+//            'verlock', 
+//            'uuid', 
+
             [
-                'class' => 'common\widgets\ActionColumn',
-                'contentOptions' => ['style' => 'white-space:nowrap;'],
-                'template'=>'{update} {view}',
+                'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-pencil-alt"></i>',
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                             Yii::$app->urlManager->createUrl(['employment/view', 'id' => $model->id, 'edit' => 't']),
-                            [
-                                'title' => Yii::t('yii', 'Edit'),
-                                'class'=>'btn btn-sm btn-info',
-                            ]
+                            ['title' => Yii::t('yii', 'Edit'),]
                         );
-                    },
-                    'view' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-eye"></i>',
-                            Yii::$app->urlManager->createUrl(['employment/view', 'id' => $model->id]),
-                            [
-                                'title' => Yii::t('yii', 'View'),
-                                'class'=>'btn btn-sm btn-info',
-                            ]
-                        );
-                    },
+                    }
                 ],
             ],
         ],
@@ -103,8 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'after' => Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter' => false
         ],
-    ]);
-Pjax::end(); ?>
+    ]); Pjax::end(); ?>
     
 
 </div>

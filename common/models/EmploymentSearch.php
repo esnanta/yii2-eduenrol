@@ -2,9 +2,11 @@
 
 namespace common\models;
 
-use common\service\CacheService;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use kartik\daterange\DateRangeBehavior;
+use common\models\Employment;
 
 /**
  * EmploymentSearch represents the model behind the search form about `common\models\Employment`.
@@ -14,8 +16,8 @@ class EmploymentSearch extends Employment
     public function rules()
     {
         return [
-            [['id', 'office_id', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
-            [['title', 'description', 'sequence', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['title', 'description', 'sequence', 'created_at', 'updated_at', 'uuid'], 'safe'],
         ];
     }
 
@@ -27,10 +29,8 @@ class EmploymentSearch extends Employment
 
     public function search($params)
     {
-        $cacheCloud = new CacheService();
-        $officeId = $cacheCloud->getOfficeId();
-        $query = Employment::find()->where(['office_id'=>$officeId]);
-        
+        $query = Employment::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -41,7 +41,6 @@ class EmploymentSearch extends Employment
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'office_id' => $this->office_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
@@ -54,7 +53,8 @@ class EmploymentSearch extends Employment
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'sequence', $this->sequence]);
+            ->andFilterWhere(['like', 'sequence', $this->sequence])
+            ->andFilterWhere(['like', 'uuid', $this->uuid]);
 
         return $dataProvider;
     }
