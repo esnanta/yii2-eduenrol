@@ -42,31 +42,39 @@ values
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
-    ('index-applicant-almamater',2,'Index Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('create-applicant-almamater',2,'Create Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('update-applicant-almamater',2,'Update Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('view-applicant-almamater',2,'View Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('delete-applicant-almamater',2,'Delete Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('report-applicant-almamater',2,'Report Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
+    ('index-applicantalmamater',2,'Index Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-applicantalmamater',2,'Create Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-applicantalmamater',2,'Update Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-applicantalmamater',2,'View Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-applicantalmamater',2,'Delete Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-applicantalmamater',2,'Report Applicant Almamater',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
-    ('index-applicant-document',2,'Index Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('create-applicant-document',2,'Create Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('update-applicant-document',2,'Update Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('view-applicant-document',2,'View Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('delete-applicant-document',2,'Delete Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('report-applicant-document',2,'Report Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
+    ('index-applicantdocument',2,'Index Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-applicantdocument',2,'Create Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-applicantdocument',2,'Update Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-applicantdocument',2,'View Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-applicantdocument',2,'Delete Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-applicantdocument',2,'Report Applicant Document',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
-    ('index-applicant-family',2,'Index Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('create-applicant-family',2,'Create Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('update-applicant-family',2,'Update Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('view-applicant-family',2,'View Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('delete-applicant-family',2,'Delete Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('report-applicant-family',2,'Report Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
+    ('index-applicantfamily',2,'Index Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-applicantfamily',2,'Create Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-applicantfamily',2,'Update Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-applicantfamily',2,'View Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-applicantfamily',2,'Delete Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-applicantfamily',2,'Report Applicant Family',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
+insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
+values
+    ('index-applicantgrade',2,'Index Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-applicantgrade',2,'Create Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-applicantgrade',2,'Update Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-applicantgrade',2,'View Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-applicantgrade',2,'Delete Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-applicantgrade',2,'Report Applicant Grade',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
@@ -79,12 +87,12 @@ values
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
-    ('index-archive-category',2,'Index Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('create-archive-category',2,'Create Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('update-archive-category',2,'Update Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('view-archive-category',2,'View Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('delete-archive-category',2,'Delete Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('report-archive-category',2,'Report Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
+    ('index-archivecategory',2,'Index Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-archivecategory',2,'Create Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-archivecategory',2,'Update Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-archivecategory',2,'View Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-archivecategory',2,'Delete Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-archivecategory',2,'Report Archive Category',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
@@ -106,12 +114,12 @@ values
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
-    ('index-educational-stage',2,'Index Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('create-educational-stage',2,'Create Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('update-educational-stage',2,'Update Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('view-educational-stage',2,'View Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('delete-educational-stage',2,'Delete Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
-    ('report-educational-stage',2,'Report Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
+    ('index-educationalstage',2,'Index Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-educationalstage',2,'Create Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-educationalstage',2,'Update Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-educationalstage',2,'View Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-educationalstage',2,'Delete Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('report-educationalstage',2,'Report Educational Stage',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
@@ -225,11 +233,11 @@ values
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
-    ('index-master','index-archive-category'),
-    ('create-master','create-archive-category'),
-    ('update-master','update-archive-category'),
-    ('view-master','view-archive-category'),
-    ('delete-master','delete-archive-category');
+    ('index-master','index-archivecategory'),
+    ('create-master','create-archivecategory'),
+    ('update-master','update-archivecategory'),
+    ('view-master','view-archivecategory'),
+    ('delete-master','delete-archivecategory');
 
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
@@ -250,11 +258,11 @@ values
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
-    ('index-master','index-educational-stage'),
-    ('create-master','create-educational-stage'),
-    ('update-master','update-educational-stage'),
-    ('view-master','view-educational-stage'),
-    ('delete-master','delete-educational-stage');
+    ('index-master','index-educationalstage'),
+    ('create-master','create-educationalstage'),
+    ('update-master','update-educationalstage'),
+    ('view-master','view-educationalstage'),
+    ('delete-master','delete-educationalstage');
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
@@ -364,31 +372,39 @@ values
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
-    ('index-transaction','index-applicant-almamater'),
-    ('create-transaction','create-applicant-almamater'),
-    ('update-transaction','update-applicant-almamater'),
-    ('view-transaction','view-applicant-almamater'),
-    ('delete-transaction','delete-applicant-almamater'),
-    ('report-transaction','report-applicant-almamater');
+    ('index-transaction','index-applicantalmamater'),
+    ('create-transaction','create-applicantalmamater'),
+    ('update-transaction','update-applicantalmamater'),
+    ('view-transaction','view-applicantalmamater'),
+    ('delete-transaction','delete-applicantalmamater'),
+    ('report-transaction','report-applicantalmamater');
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
-    ('index-transaction','index-applicant-document'),
-    ('create-transaction','create-applicant-document'),
-    ('update-transaction','update-applicant-document'),
-    ('view-transaction','view-applicant-document'),
-    ('delete-transaction','delete-applicant-document'),
-    ('report-transaction','report-applicant-document');
+    ('index-transaction','index-applicantdocument'),
+    ('create-transaction','create-applicantdocument'),
+    ('update-transaction','update-applicantdocument'),
+    ('view-transaction','view-applicantdocument'),
+    ('delete-transaction','delete-applicantdocument'),
+    ('report-transaction','report-applicantdocument');
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
-    ('index-transaction','index-applicant-family'),
-    ('create-transaction','create-applicant-family'),
-    ('update-transaction','update-applicant-family'),
-    ('view-transaction','view-applicant-family'),
-    ('delete-transaction','delete-applicant-family'),
-    ('report-transaction','report-applicant-family');
+    ('index-transaction','index-applicantfamily'),
+    ('create-transaction','create-applicantfamily'),
+    ('update-transaction','update-applicantfamily'),
+    ('view-transaction','view-applicantfamily'),
+    ('delete-transaction','delete-applicantfamily'),
+    ('report-transaction','report-applicantfamily');
 
+insert  into `tx_auth_item_child`(`parent`,`child`)
+values
+    ('index-transaction','index-applicantgrade'),
+    ('create-transaction','create-applicantgrade'),
+    ('update-transaction','update-applicantgrade'),
+    ('view-transaction','view-applicantgrade'),
+    ('delete-transaction','delete-applicantgrade'),
+    ('report-transaction','report-applicantgrade');
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values
