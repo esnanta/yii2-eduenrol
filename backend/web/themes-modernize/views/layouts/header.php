@@ -1,5 +1,14 @@
 <?php
+
+use common\models\Staff;
+use common\service\CacheService;
 use yii\helpers\Html;
+use yii\helpers\Url;
+if (!Yii::$app->user->isGuest) {
+    $cacheCloud = new CacheService;
+    $staffId = $cacheCloud->getStaffId();
+    $model = Staff::find()->where(['id' => $staffId])->one();
+}
 ?>
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
@@ -22,28 +31,35 @@ use yii\helpers\Html;
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                        <?php if (Yii::$app->user->isGuest) { ?>
+                            <?php $defaultImage = "/backend/web/themes-b5-modernize/assets/images/profile/user-1.jpg"?>
+                            <img src="<?= Url::base() ?>"
+                                 alt="" width="35" height="35" class="rounded-circle">
+                        <?php } else { ?>
+                            <img src="<?= $model->getAssetUrl(); ?>"
+                                 width="35" height="35" class="rounded-circle"
+                                 alt="<?= $model->title; ?>">
+                        <?php } ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                         <div class="message-body">
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-user fs-6"></i>
-                                <p class="mb-0 fs-3">My Profile</p>
-                            </a>
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-mail fs-6"></i>
-                                <p class="mb-0 fs-3">My Account</p>
-                            </a>
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-list-check fs-6"></i>
-                                <p class="mb-0 fs-3">My Task</p>
-                            </a>
-                            
-                            <?php if (!Yii::$app->user->isGuest): ?>
-                                <?= Html::a('Logout', 
-                                        ['/user/logout'], 
-                                        ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'btn btn-outline-primary mx-3 mt-2 d-block']) ?>
-                            <?php endif ?>  
+                            <?php if (!Yii::$app->user->isGuest) : ?>
+                                <a href="<?= Url::to(['admin/staff/view', 'id' => $model->id]) ?>"
+                                   class="d-flex align-items-center gap-2 dropdown-item">
+                                    <i class="ti ti-user fs-6"></i>
+                                    <p class="mb-0 fs-3">My Profile</p>
+                                </a>
+
+                                <?= Html::a(
+                                    'Logout',
+                                    ['/user/logout'],
+                                    [
+                                        'data-method' => 'POST',
+                                        'data-confirm' => "Logout?",
+                                        'class' => 'btn btn-outline-primary mx-3 mt-2 d-block'
+                                    ]
+                                ) ?>
+                            <?php endif ?>
                         </div>
                     </div>
                 </li>

@@ -215,6 +215,14 @@ ALTER TABLE `tx_staff` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
 UPDATE `tx_staff` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
 ALTER TABLE `tx_staff` CHANGE `deleted_at` `deleted_at` DATETIME;
 
+ALTER TABLE `tx_staff` CHANGE `file_name` `asset_name` VARCHAR(200)
+    NULL DEFAULT NULL;
+
+ALTER TABLE `tx_staff`
+    DROP `google_plus`,
+    DROP `instagram`,
+    DROP `facebook`,
+    DROP `twitter`;
 
 ALTER TABLE `tx_transportation` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
 ALTER TABLE `tx_transportation` CHANGE `created_at` `created_at` VARCHAR(20);
@@ -293,6 +301,31 @@ ALTER TABLE `tx_staff` ADD CONSTRAINT
     `Fk_staff_user` FOREIGN KEY (`user_id`)
         REFERENCES `tx_user`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+UPDATE tx_staff SET office_id = 1 WHERE office_id IS NULL;
+
+DELETE FROM tx_staff WHERE id <> 1;
+ALTER TABLE tx_staff AUTO_INCREMENT = 1;
+
+ALTER TABLE `tx_employment`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_employment` ADD CONSTRAINT
+    `FK_tx_employment_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+UPDATE `tx_employment` SET `office_id` = 1 where `office_id` IS NULL;
+
+ALTER TABLE tx_staff
+    DROP FOREIGN KEY FK_tx_staff_employment;
+
+DELETE FROM tx_employment WHERE id <> 2;
+UPDATE tx_employment set id = 1 where id = 2;
+ALTER TABLE tx_employment AUTO_INCREMENT = 1;
+
+UPDATE tx_staff SET employment_id = 1 WHERE employment_id <> 1;
+ALTER TABLE `tx_staff` ADD CONSTRAINT
+    `FK_tx_staff_employment` FOREIGN KEY (`employment_id`)
+        REFERENCES `tx_employment`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- ASSET CATEGORY

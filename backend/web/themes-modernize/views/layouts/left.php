@@ -63,6 +63,9 @@ function getMenu($_menuName, $_classIcon)
                                 <?= Html::a(getMenu(Yii::t('app', 'Office'), 'fa fa-angle-right'), ['/office/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item">
+                                <?= Html::a(getMenu(Yii::t('app', 'Employment'), 'fa fa-angle-right'), ['/employment/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item">
                                 <?= Html::a(getMenu(Yii::t('app', 'Staff'), 'fa fa-angle-right'), ['/staff/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>

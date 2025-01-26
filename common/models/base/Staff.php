@@ -11,8 +11,8 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_staff".
  *
  * @property integer $id
- * @property integer $user_id
  * @property integer $office_id
+ * @property integer $user_id
  * @property integer $employment_id
  * @property string $title
  * @property string $initial
@@ -36,6 +36,7 @@ use mootensai\behaviors\UUIDBehavior;
  *
  * @property \common\models\Employment $employment
  * @property \common\models\Office $office
+ * @property \common\models\User $user
  */
 class Staff extends \yii\db\ActiveRecord
 {
@@ -64,7 +65,8 @@ class Staff extends \yii\db\ActiveRecord
     {
         return [
             'employment',
-            'office'
+            'office',
+            'user'
         ];
     }
 
@@ -74,7 +76,8 @@ class Staff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'office_id', 'employment_id', 'gender_status', 'active_status', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'user_id', 'employment_id', 'gender_status', 'active_status', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['initial'], 'required'],
             [['address', 'description'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title', 'identity_number', 'email'], 'string', 'max' => 100],
@@ -113,8 +116,8 @@ class Staff extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User ID'),
             'office_id' => Yii::t('app', 'Office ID'),
+            'user_id' => Yii::t('app', 'User ID'),
             'employment_id' => Yii::t('app', 'Employment ID'),
             'title' => Yii::t('app', 'Title'),
             'initial' => Yii::t('app', 'Initial'),
@@ -137,7 +140,7 @@ class Staff extends \yii\db\ActiveRecord
      */
     public function getEmployment()
     {
-        return $this->hasOne(\common\models\Employment::class, ['id' => 'employment_id']);
+        return $this->hasOne(\common\models\Employment::className(), ['id' => 'employment_id']);
     }
         
     /**
@@ -145,7 +148,15 @@ class Staff extends \yii\db\ActiveRecord
      */
     public function getOffice()
     {
-        return $this->hasOne(\common\models\Office::class, ['id' => 'office_id']);
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
     }
     
     /**
@@ -156,18 +167,18 @@ class Staff extends \yii\db\ActiveRecord
     {
         return [
             'timestamp' => [
-                'class' => TimestampBehavior::class,
+                'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => date('Y-m-d H:i:s'),
             ],
             'blameable' => [
-                'class' => BlameableBehavior::class,
+                'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'updated_by',
             ],
             'uuid' => [
-                'class' => UUIDBehavior::class,
+                'class' => UUIDBehavior::className(),
                 'column' => 'uuid',
             ],
         ];

@@ -11,6 +11,7 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_employment".
  *
  * @property integer $id
+ * @property integer $office_id
  * @property string $title
  * @property string $description
  * @property integer $sequence
@@ -19,11 +20,12 @@ use mootensai\behaviors\UUIDBehavior;
  * @property integer $created_by
  * @property integer $updated_by
  * @property integer $is_deleted
- * @property integer $deleted_at
+ * @property string $deleted_at
  * @property integer $deleted_by
  * @property integer $verlock
  * @property string $uuid
  *
+ * @property \common\models\Office $office
  * @property \common\models\Staff[] $staff
  */
 class Employment extends \yii\db\ActiveRecord
@@ -52,6 +54,7 @@ class Employment extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
+            'office',
             'staff'
         ];
     }
@@ -62,9 +65,9 @@ class Employment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['office_id', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 100],
             [['sequence'], 'string', 'max' => 4],
             [['uuid'], 'string', 'max' => 36],
@@ -100,6 +103,7 @@ class Employment extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'office_id' => Yii::t('app', 'Office ID'),
             'title' => Yii::t('app', 'Title'),
             'description' => Yii::t('app', 'Description'),
             'sequence' => Yii::t('app', 'Sequence'),
@@ -109,6 +113,14 @@ class Employment extends \yii\db\ActiveRecord
         ];
     }
     
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffice()
+    {
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
+    }
+        
     /**
      * @return \yii\db\ActiveQuery
      */
