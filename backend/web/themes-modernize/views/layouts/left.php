@@ -59,10 +59,10 @@ function getMenu($_menuName, $_classIcon)
                         </a>
                         <ul class="collapse list-unstyled" id="masterMenu" data-bs-parent="#sidebarnav">
                             <li class="sidebar-item">
-                                <?= Html::a(getMenu('Archive Category', 'fa fa-angle-right'), ['/archive-category/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Asset Category'), 'fa fa-angle-right'), ['/asset-category/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item">
-                                <?= Html::a(getMenu('Archive', 'fa fa-angle-right'), ['/archive/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Asset'), 'fa fa-angle-right'), ['/asset/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
                     </li>
@@ -79,6 +79,14 @@ function getMenu($_menuName, $_classIcon)
                 <?php else : ?>
                     <li class="sidebar-item">
                         <?= Html::a(getMenu('Logout', 'fa fa-sign-out'), ['/user/logout'], ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'sidebar-link']) ?>
+                    </li>
+                <?php endif; ?>
+                <?php if (Yii::$app->user->identity->isAdmin) : ?>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu('User', 'fa fa-angle-right'), ['/user/admin/index'], ['class' => 'sidebar-link']) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu('Gii', 'fa fa-angle-right'), ['/gii'], ['class' => 'sidebar-link']) ?>
                     </li>
                 <?php endif; ?>
             </ul>

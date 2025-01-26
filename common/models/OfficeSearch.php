@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\service\CacheService;
 use kartik\daterange\DateRangeBehavior;
 use Yii;
 use yii\base\Model;
@@ -21,7 +22,7 @@ class OfficeSearch extends Office
     {
         return [
             [
-                'class' => DateRangeBehavior::className(),
+                'class' => DateRangeBehavior::class,
                 'attribute' => 'created_at',
                 'dateStartAttribute' => 'date_first',
                 'dateEndAttribute' => 'date_last',
@@ -47,8 +48,7 @@ class OfficeSearch extends Office
 
     public function search($params)
     {
-        $cacheCloud = new \common\service\CacheService();
-        $officeId = $cacheCloud->getOfficeId();
+        $officeId = CacheService::getInstance()->getOfficeId();
         $query = Office::find()->where(['id'=>$officeId]);
         
         if(Yii::$app->user->identity->isAdmin):

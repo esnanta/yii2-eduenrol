@@ -38,6 +38,6 @@ insert  into `tx_auth_item_child`(`parent`,`child`) values
 ('regular','view-profile');
 
 insert  into `tx_auth_item_child`(`parent`,`child`) values
-('guest','index-archive'),
-('guest','view-archive');
+('guest','index-asset'),
+('guest','view-asset');
 

@@ -1,5 +1,7 @@
 <?php
 
+use common\helper\IconHelper;
+use supplyhog\ClipboardJs\ClipboardJsWidget;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
@@ -7,25 +9,29 @@ use yii\widgets\Pjax;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var common\models\ArchiveSearch $searchModel
+ * @var common\models\AssetSearch $searchModel
+ * @var common\models\AssetCategory $assetCategoryList
+ * @var common\models\Asset $isVisibleList
+ * @var common\models\Asset $assetTypeList
  */
 
-$this->title = Yii::t('app', 'Archives');
+$this->title = Yii::t('app', 'Assets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="archive-index">
+<div class="asset-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Archive',
+    'modelClass' => 'Asset',
 ]), ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        
+        'pageSummaryPosition' => GridView::POS_BOTTOM,
+        'showPageSummary' => true,
         'toolbar' => [
             [
                 'content'=>
@@ -44,14 +50,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'title',
             [
-                'attribute'=>'archive_category_id',
+                'attribute'=>'asset_category_id', 
+                'vAlign'=>'middle',
+                'width'=>'180px',
+                'value'=>function ($model, $key, $index, $widget) { 
+                    return ($model->asset_category_id!=null) ? $model->assetCategory->title:'';
+                },
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>$assetCategoryList, 
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>''],
+                'format'=>'raw'
+            ],
+            'description',
+            [
+                'attribute'=>'asset_type',
                 'vAlign'=>'middle',
                 'width'=>'180px',
                 'value'=>function ($model, $key, $index, $widget) {
-                    return ($model->archive_category_id!=null) ? $model->archiveCategory->title:'';
+                    return ($model->asset_type!=null) ? $model->getOneAssetType($model->asset_type):'';
                 },
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>$archiveCategoryList,
+                'filter'=>$assetTypeList,
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],
                 ],
@@ -74,33 +96,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw'
             ],
             [
-                'attribute' => 'created_at',
-                'value'=>'created_at',
-                'enableSorting' => true,
-                'format'=>'date',
-                'options' => [
-                    'format' => Yii::$app->params['dateDisplayFormat'],
-                ],
-                'filterType' => GridView::FILTER_DATE_RANGE,
-                'filterWidgetOptions' => ([
-                    'attribute' => 'date_range',
-                    'presetDropdown' => false,
-                    'convertFormat' => true,
-                    'pluginOptions'=>[
-                        'locale'=>['format' => Yii::$app->params['dateDisplayFormat']],
-                    ]
-                ])
+                'header'=>'View',
+                'format' => ['image',['width'=>'70','height'=>'50']],
+                'vAlign'=>'middle',
+                'width'=>'50px',
+                'value'=>function ($model, $key, $index, $widget) {
+                    return ($model->getAssetUrl());
+                },
             ],
-                        
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
-                'template'=>'{update} {view}',
+                'template'=>'{copy} {update} {view} {delete}',
                 'buttons' => [
+                    'copy' => function ($url, $model) {
+                        return ClipboardJsWidget::widget([
+                            'text' => 'https://'.Yii::$app->getRequest()->serverName.$model->getAssetUrl(),
+                            'label' => IconHelper::getClipboard(),
+                            'htmlOptions' => ['class' => 'btn btn-sm btn-info'],
+                            'tag' => 'button',
+                        ]);
+                    },
                     'update' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-pencil-alt"></i>',
-                            Yii::$app->urlManager->createUrl(['archive/view', 'id' => $model->id, 'edit' => 't']),
+                        return Html::a('<i class="fas fa-pencil-alt"></i>',
+                            Yii::$app->urlManager->createUrl(['asset/view', 'id' => $model->id, 'edit' => 't']),
                             [
                                 'title' => Yii::t('yii', 'Edit'),
                                 'class'=>'btn btn-sm btn-info',
@@ -108,14 +127,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         );
                     },
                     'view' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-eye"></i>',
-                            Yii::$app->urlManager->createUrl(['archive/view', 'id' => $model->id]),
+                        return Html::a('<i class="fas fa-eye"></i>',
+                            Yii::$app->urlManager->createUrl(['asset/view', 'id' => $model->id]),
                             [
                                 'title' => Yii::t('yii', 'View'),
                                 'class'=>'btn btn-sm btn-info',
                             ]
                         );
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-trash"></i>', ['asset/delete', 'id' => $model->id],
+                            ['class' => 'btn btn-sm btn-danger', 'data-confirm' => "Delete Asset?",
+                                'data-method' => 'POST', 'title' => 'Delete Asset?']);
                     },
                 ],
             ],
@@ -134,10 +157,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'type' => 'default',
             //'before' => Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),
             //'after' => Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
-            'showFooter' => false
+            'showFooter' => false,
+
         ],
-    ]);
-Pjax::end(); ?>
+    ]); Pjax::end(); ?>
     
 
 </div>

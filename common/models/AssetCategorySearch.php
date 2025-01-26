@@ -2,15 +2,16 @@
 
 namespace common\models;
 
+use common\service\CacheService;
+use kartik\daterange\DateRangeBehavior;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Archive;
-use kartik\daterange\DateRangeBehavior;
+
 /**
- * ArchiveSearch represents the model behind the search form about `common\models\Archive`.
+ * ArchiveCategorySearch represents the model behind the search form about `common\models\ArchiveCategory`.
  */
-class ArchiveSearch extends Archive
+class AssetCategorySearch extends AssetCategory
 {
     public $date_range;
     public $date_first;
@@ -20,19 +21,20 @@ class ArchiveSearch extends Archive
     {
         return [
             [
-                'class' => DateRangeBehavior::className(),
+                'class' => DateRangeBehavior::class,
                 'attribute' => 'created_at',
                 'dateStartAttribute' => 'date_first',
                 'dateEndAttribute' => 'date_last',
             ],          
         ];
-    }  
+    }   
     
     public function rules()
     {
         return [
-            [['id', 'is_visible', 'archive_type', 'archive_category_id', 'size', 'view_counter', 'download_counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
-            [['title', 'date_issued', 'file_name', 'archive_url', 'mime_type', 'description', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['id', 'sequence', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['title', 'description', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
+            
             //TAMBAHAN
             [['date_range'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
         ];
@@ -46,7 +48,8 @@ class ArchiveSearch extends Archive
 
     public function search($params)
     {
-        $query = Archive::find();
+        $officeId = CacheService::getInstance()->getOfficeId();
+        $query = AssetCategory::find()->orderBy('sequence ASC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,13 +61,7 @@ class ArchiveSearch extends Archive
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'is_visible' => $this->is_visible,
-            'archive_type' => $this->archive_type,
-            'archive_category_id' => $this->archive_category_id,
-            'date_issued' => $this->date_issued,
-            'size' => $this->size,
-            'view_counter' => $this->view_counter,
-            'download_counter' => $this->download_counter,
+            'sequence' => $this->sequence,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'is_deleted' => $this->is_deleted,
@@ -74,9 +71,6 @@ class ArchiveSearch extends Archive
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'file_name', $this->file_name])
-            ->andFilterWhere(['like', 'archive_url', $this->archive_url])
-            ->andFilterWhere(['like', 'mime_type', $this->mime_type])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         if($this->date_first!=null && $this->date_last!=null):

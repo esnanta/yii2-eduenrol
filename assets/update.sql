@@ -203,3 +203,128 @@ ALTER TABLE `tx_transportation` CHANGE `updated_at` `updated_at` DATETIME;
 
 ALTER TABLE `tx_transportation` ADD `deleted_at` DATETIME NULL AFTER `updated_by`,
                        ADD `deleted_by` INT NULL AFTER `deleted_at`;
+
+
+ALTER TABLE `tx_office` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
+ALTER TABLE `tx_office` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_office` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_office` CHANGE `created_at` `created_at` DATETIME;
+ALTER TABLE `tx_office` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_office` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_office` CHANGE `updated_at` `updated_at` DATETIME;
+ALTER TABLE `tx_office` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
+UPDATE `tx_office` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
+ALTER TABLE `tx_office` CHANGE `deleted_at` `deleted_at` DATETIME;
+
+ALTER TABLE `tx_office`
+    ADD COLUMN `unique_id` VARCHAR(15) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant` ADD CONSTRAINT
+    `FK_tx_applicant_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `tx_applicant_almamater`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant_almamater` ADD CONSTRAINT
+    `Fk_applicant_almamater_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `tx_applicant_document`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant_document` ADD CONSTRAINT
+    `Fk_applicant_document_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `tx_applicant_family`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant_family` ADD CONSTRAINT
+    `Fk_applicant_family_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `tx_applicant_grade`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_applicant_grade` ADD CONSTRAINT
+    `Fk_applicant_grade_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+
+ALTER TABLE `tx_staff`
+    ADD COLUMN `office_id` INT(11) NULL AFTER `id`;
+
+ALTER TABLE `tx_staff` ADD CONSTRAINT
+    `Fk_staff_office` FOREIGN KEY (`office_id`)
+        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `tx_staff`
+    ADD COLUMN `user_id` INT(11) NULL AFTER `office_id`;
+
+ALTER TABLE `tx_staff` ADD CONSTRAINT
+    `Fk_staff_user` FOREIGN KEY (`user_id`)
+        REFERENCES `tx_user`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+--
+-- ASSET CATEGORY
+--
+
+RENAME TABLE `tx_archive_category` TO `tx_asset_category`;
+
+ALTER TABLE `tx_asset_category`
+    ADD COLUMN `uuid` VARCHAR(36) DEFAULT NULL AFTER `verlock`;
+
+
+ALTER TABLE `tx_asset_category` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_asset_category` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_asset_category` CHANGE `created_at` `created_at` DATETIME;
+
+ALTER TABLE `tx_asset_category` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_asset_category` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_asset_category` CHANGE `updated_at` `updated_at` DATETIME;
+
+ALTER TABLE `tx_asset_category` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
+UPDATE `tx_asset_category` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
+ALTER TABLE `tx_asset_category` CHANGE `deleted_at` `deleted_at` DATETIME;
+
+
+--
+-- ARCHIVE
+--
+RENAME TABLE `tx_archive` TO `tx_asset`;
+
+ALTER TABLE `tx_asset`
+    ADD COLUMN `uuid` VARCHAR(36) DEFAULT NULL AFTER `verlock`;
+
+ALTER TABLE `tx_asset` CHANGE `file_name` `asset_name` VARCHAR(100);
+
+ALTER TABLE `tx_asset` CHANGE `archive_type` `asset_type` INT(11);
+ALTER TABLE `tx_asset` CHANGE `archive_category_id`  `asset_category_id` INT(11);
+ALTER TABLE `tx_asset` CHANGE `archive_url` `asset_url` VARCHAR(500) NULL DEFAULT NULL;
+
+
+ALTER TABLE `tx_asset`
+    ADD COLUMN `asset_group` INTEGER(11) NULL AFTER `asset_type`;
+
+ALTER TABLE `tx_asset` CHANGE `date_issued` `date_issued` VARCHAR(20);
+UPDATE `tx_asset` SET `date_issued` = FROM_UNIXTIME(`date_issued`);
+ALTER TABLE `tx_asset` CHANGE `date_issued` `date_issued` DATE;
+
+ALTER TABLE `tx_asset` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_asset` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_asset` CHANGE `created_at` `created_at` DATETIME;
+
+ALTER TABLE `tx_asset` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_asset` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_asset` CHANGE `updated_at` `updated_at` DATETIME;
+
+ALTER TABLE `tx_asset` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
+UPDATE `tx_asset` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
+ALTER TABLE `tx_asset` CHANGE `deleted_at` `deleted_at` DATETIME;
+

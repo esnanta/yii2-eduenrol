@@ -1,6 +1,7 @@
 <?php
 namespace common\helper;
 
+use kartik\detail\DetailView;
 use Yii;
 use yii\helpers\Html;
 
@@ -58,6 +59,10 @@ class LabelHelper
     {
         return '<span class="badge bg-primary text-white">'.$text.'</span>';
     }
+    public static function getSecondary($text): string
+    {
+        return '<span class="badge bg-secondary text-white">'.$text.'</span>';
+    }
     public static function getSuccess($text): string
     {
         return '<span class="badge bg-success text-white">'.$text.'</span>';
@@ -69,6 +74,10 @@ class LabelHelper
     public static function getWarning($text): string
     {
         return '<span class="badge bg-warning text-white">'.$text.'</span>';
+    }
+    public static function getInfo($text): string
+    {
+        return '<span class="badge bg-info text-white">'.$text.'</span>';
     }
     public static function getCreateButton($route = ['create']): string
     {
@@ -114,5 +123,9 @@ class LabelHelper
         $brands = self::getLabelList();
 
         return $brands[$$label] ?? 'Unknown';
+    }
+    public static function getDetailViewType(): string
+    {
+        return DetailView::TYPE_DEFAULT;
     }
 }

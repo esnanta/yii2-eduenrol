@@ -2,16 +2,17 @@
 
 namespace common\models\base;
 
-use mootensai\behaviors\UUIDBehavior;
 use Yii;
-use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use mootensai\behaviors\UUIDBehavior;
 
 /**
  * This is the base model class for table "tx_office".
  *
  * @property integer $id
- * @property integer $user_id
+ * @property string $unique_id
+ * @property string $token
  * @property string $title
  * @property string $phone_number
  * @property string $fax_number
@@ -35,38 +36,12 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $verlock
  * @property string $uuid
  *
- * @property \common\models\AccountDetail[] $accountDetails
- * @property \common\models\AccountHeader[] $accountHeaders
- * @property \common\models\AccountPayable[] $accountPayables
- * @property \common\models\AccountPayableDetail[] $accountPayableDetails
- * @property \common\models\AccountReceivable[] $accountReceivables
- * @property \common\models\AccountReceivableDetail[] $accountReceivableDetails
- * @property \common\models\Balance[] $balances
- * @property \common\models\Counter[] $counters
- * @property \common\models\Employment[] $employments
- * @property \common\models\Inventory[] $inventories
- * @property \common\models\Item[] $items
- * @property \common\models\ItemBrand[] $itemBrands
- * @property \common\models\ItemCategory[] $itemCategories
- * @property \common\models\ItemUnit[] $itemUnits
- * @property \User $user
- * @property \common\models\Product[] $products
- * @property \common\models\ProductDetail[] $productDetails
- * @property \common\models\Purchase[] $purchases
- * @property \common\models\PurchaseReceive[] $purchaseReceives
- * @property \common\models\Rack[] $racks
+ * @property \common\models\Applicant[] $applicants
+ * @property \common\models\ApplicantAlmamater[] $applicantAlmamaters
+ * @property \common\models\ApplicantDocument[] $applicantDocuments
+ * @property \common\models\ApplicantFamily[] $applicantFamilies
+ * @property \common\models\ApplicantGrade[] $applicantGrades
  * @property \common\models\Staff[] $staff
- * @property \common\models\StockAdjustment[] $stockAdjustments
- * @property \common\models\StockDistribution[] $stockDistributions
- * @property \common\models\StockDistributionDetail[] $stockDistributionDetails
- * @property \common\models\StockOpname[] $stockOpnames
- * @property \common\models\Supplier[] $suppliers
- * @property \common\models\Theme[] $themes
- * @property \common\models\Warehouse[] $warehouses
- * @property \common\models\WorkOrder[] $workOrders
- * @property \common\models\WorkOrderDetail[] $workOrderDetails
- * @property \common\models\WorkRequest[] $workRequests
- * @property \common\models\WorkRequestDetail[] $workRequestDetails
  */
 class Office extends \yii\db\ActiveRecord
 {
@@ -94,38 +69,12 @@ class Office extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'accountDetails',
-            'accountHeaders',
-            'accountPayables',
-            'accountPayableDetails',
-            'accountReceivables',
-            'accountReceivableDetails',
-            'balances',
-            'counters',
-            'employments',
-            'inventories',
-            'items',
-            'itemBrands',
-            'itemCategories',
-            'itemUnits',
-            'user',
-            'products',
-            'productDetails',
-            'purchases',
-            'purchaseReceives',
-            'racks',
-            'staff',
-            'stockAdjustments',
-            'stockDistributions',
-            'stockDistributionDetails',
-            'stockOpnames',
-            'suppliers',
-            'themes',
-            'warehouses',
-            'workOrders',
-            'workOrderDetails',
-            'workRequests',
-            'workRequestDetails'
+            'applicants',
+            'applicantAlmamaters',
+            'applicantDocuments',
+            'applicantFamilies',
+            'applicantGrades',
+            'staff'
         ];
     }
 
@@ -135,9 +84,11 @@ class Office extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['description'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['unique_id'], 'string', 'max' => 15],
+            [['token'], 'string', 'max' => 5],
             [['title', 'phone_number', 'fax_number', 'email', 'web', 'address', 'latitude', 'longitude', 'facebook', 'google_plus', 'instagram', 'twitter'], 'string', 'max' => 100],
             [['uuid'], 'string', 'max' => 36],
             [['verlock'], 'default', 'value' => '0'],
@@ -171,7 +122,8 @@ class Office extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User'),
+            'unique_id' => Yii::t('app', 'Unique ID'),
+            'token' => Yii::t('app', 'Token'),
             'title' => Yii::t('app', 'Title'),
             'phone_number' => Yii::t('app', 'Phone Number'),
             'fax_number' => Yii::t('app', 'Fax Number'),
@@ -194,161 +146,41 @@ class Office extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountDetails()
+    public function getApplicants()
     {
-        return $this->hasMany(\common\models\AccountDetail::className(), ['office_id' => 'id']);
+        return $this->hasMany(\common\models\Applicant::className(), ['office_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountHeaders()
+    public function getApplicantAlmamaters()
     {
-        return $this->hasMany(\common\models\AccountHeader::className(), ['office_id' => 'id']);
+        return $this->hasMany(\common\models\ApplicantAlmamater::className(), ['office_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountPayables()
+    public function getApplicantDocuments()
     {
-        return $this->hasMany(\common\models\AccountPayable::className(), ['office_id' => 'id']);
+        return $this->hasMany(\common\models\ApplicantDocument::className(), ['office_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountPayableDetails()
+    public function getApplicantFamilies()
     {
-        return $this->hasMany(\common\models\AccountPayableDetail::className(), ['office_id' => 'id']);
+        return $this->hasMany(\common\models\ApplicantFamily::className(), ['office_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccountReceivables()
+    public function getApplicantGrades()
     {
-        return $this->hasMany(\common\models\AccountReceivable::className(), ['staff_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAccountReceivableDetails()
-    {
-        return $this->hasMany(\common\models\AccountReceivableDetail::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBalances()
-    {
-        return $this->hasMany(\common\models\Balance::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCounters()
-    {
-        return $this->hasMany(\common\models\Counter::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmployments()
-    {
-        return $this->hasMany(\common\models\Employment::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getInventories()
-    {
-        return $this->hasMany(\common\models\Inventory::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItems()
-    {
-        return $this->hasMany(\common\models\Item::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemBrands()
-    {
-        return $this->hasMany(\common\models\ItemBrand::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemCategories()
-    {
-        return $this->hasMany(\common\models\ItemCategory::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemUnits()
-    {
-        return $this->hasMany(\common\models\ItemUnit::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(\User::className(), ['id' => 'user_id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProducts()
-    {
-        return $this->hasMany(\common\models\Product::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductDetails()
-    {
-        return $this->hasMany(\common\models\ProductDetail::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPurchases()
-    {
-        return $this->hasMany(\common\models\Purchase::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPurchaseReceives()
-    {
-        return $this->hasMany(\common\models\PurchaseReceive::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRacks()
-    {
-        return $this->hasMany(\common\models\Rack::className(), ['office_id' => 'id']);
+        return $this->hasMany(\common\models\ApplicantGrade::className(), ['office_id' => 'id']);
     }
         
     /**
@@ -357,94 +189,6 @@ class Office extends \yii\db\ActiveRecord
     public function getStaff()
     {
         return $this->hasMany(\common\models\Staff::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockAdjustments()
-    {
-        return $this->hasMany(\common\models\StockAdjustment::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockDistributions()
-    {
-        return $this->hasMany(\common\models\StockDistribution::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockDistributionDetails()
-    {
-        return $this->hasMany(\common\models\StockDistributionDetail::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStockOpnames()
-    {
-        return $this->hasMany(\common\models\StockOpname::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuppliers()
-    {
-        return $this->hasMany(\common\models\Supplier::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getThemes()
-    {
-        return $this->hasMany(\common\models\Theme::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWarehouses()
-    {
-        return $this->hasMany(\common\models\Warehouse::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkOrders()
-    {
-        return $this->hasMany(\common\models\WorkOrder::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkOrderDetails()
-    {
-        return $this->hasMany(\common\models\WorkOrderDetail::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkRequests()
-    {
-        return $this->hasMany(\common\models\WorkRequest::className(), ['office_id' => 'id']);
-    }
-        
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkRequestDetails()
-    {
-        return $this->hasMany(\common\models\WorkRequestDetail::className(), ['office_id' => 'id']);
     }
     
     /**

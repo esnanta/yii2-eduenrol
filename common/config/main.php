@@ -11,7 +11,7 @@ return [
         '@npm' => '@vendor/npm-asset',
     ],
 
-    'name'=>'Retread',
+    'name' => 'Edu-Enrol',
     'timeZone' => 'Asia/Bangkok',
     'language' => 'id-ID',
 
@@ -137,7 +137,7 @@ return [
             //CHECK MAILER IN MAIN-LOCAL.PHP
             'mailer' => [
                 'viewPath' => '@common/mail',
-                'sender' => ['no-reply@smanmba.sch.id' => 'PSB SMAN Modal Bangsa Arun']
+                'sender' => ['no-reply@smanmba.sch.id' => 'PPDB SMAN Modal Bangsa Arun']
             ]
         ],
 

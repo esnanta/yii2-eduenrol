@@ -5,12 +5,12 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var common\models\ArchiveSearch $model
+ * @var common\models\AssetSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="archive-search">
+<div class="asset-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -21,17 +21,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'is_visible') ?>
 
-    <?= $form->field($model, 'archive_type') ?>
+    <?= $form->field($model, 'asset_type') ?>
 
-    <?= $form->field($model, 'archive_category_id') ?>
+    <?= $form->field($model, 'asset_category_id') ?>
 
     <?= $form->field($model, 'title') ?>
 
     <?php // echo $form->field($model, 'date_issued') ?>
 
-    <?php // echo $form->field($model, 'file_name') ?>
+    <?php // echo $form->field($model, 'asset_name') ?>
 
-    <?php // echo $form->field($model, 'archive_url') ?>
+    <?php // echo $form->field($model, 'asset_url') ?>
 
     <?php // echo $form->field($model, 'size') ?>
 

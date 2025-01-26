@@ -1,16 +1,16 @@
 <?php
 
-use yii\helpers\Html;
 use kartik\grid\GridView;
+use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var common\models\ArchiveCategorySearch $searchModel
+ * @var common\models\AssetCategorySearch $searchModel
  */
 
-$this->title = Yii::t('app', 'Archive Categories');
+$this->title = Yii::t('app', 'Asset Categories');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="archive-category-index">
@@ -19,13 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Archive Category',
+    'modelClass' => 'Asset Category',
 ]), ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        
+        'pageSummaryPosition' => GridView::POS_BOTTOM,
+        'showPageSummary' => true,
         'toolbar' => [
             [
                 'content'=>
@@ -61,17 +62,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         'locale'=>['format' => Yii::$app->params['dateDisplayFormat']],
                     ]                
                 ])
-            ],
+            ], 
 
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
-                'template'=>'{update} {view}',
+                'template'=>'{update} {view}',                
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-pencil-alt"></i>',
-                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id, 'edit' => 't']),
+                        return Html::a('<i class="fas fa-pencil-alt"></i>',
+                            Yii::$app->urlManager->createUrl(['asset-category/view', 'id' => $model->id, 'edit' => 't']),
                             [
                                 'title' => Yii::t('yii', 'Edit'),
                                 'class'=>'btn btn-sm btn-info',
@@ -79,15 +79,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         );
                     },
                     'view' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fas fa-eye"></i>',
-                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id]),
+                        return Html::a('<i class="fas fa-eye"></i>',
+                            Yii::$app->urlManager->createUrl(['asset-category/view', 'id' => $model->id]),
                             [
                                 'title' => Yii::t('yii', 'View'),
                                 'class'=>'btn btn-sm btn-info',
                             ]
                         );
-                    },
+                    },        
                 ],
             ],
         ],

@@ -1,18 +1,19 @@
 <?php
 
-use kartik\datecontrol\DateControl;
+use common\helper\LabelHelper;
+use common\models\User;
 use kartik\detail\DetailView;
-use yii\helpers\Html;
+use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
- * @var common\models\ArchiveCategory $model
+ * @var common\models\AssetCategory $model
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Archive Categories'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Asset Categories'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right','style'=>'color:#333333;padding:0 5px']);
+$create = LabelHelper::getCreateButton();
 
 ?>
 <div class="archive-category-view">
@@ -24,7 +25,7 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
         'mode' => Yii::$app->request->get('edit') == 't' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
         'panel' => [
             'heading' => $this->title.$create,
-            'type' => DetailView::TYPE_DEFAULT,
+            'type' => LabelHelper::getDetailViewType(),
         ],
         'attributes' => [
 
@@ -71,13 +72,13 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                 'columns' => [
                     [
                         'attribute'=>'created_by',
-                        'value'=>($model->created_by!=null) ? common\models\User::getName($model->created_by):'',
+                        'value'=>($model->created_by!=null) ? User::getName($model->created_by):'',
                         'type'=>DetailView::INPUT_HIDDEN,
                         'valueColOptions'=>['style'=>'width:30%']
                     ],
                     [
                         'attribute'=>'updated_by',
-                        'value'=>($model->updated_by!=null) ? common\models\User::getName($model->updated_by):'',
+                        'value'=>($model->updated_by!=null) ? User::getName($model->updated_by):'',
                         'type'=>DetailView::INPUT_HIDDEN,
                         'valueColOptions'=>['style'=>'width:30%']
                     ],
@@ -87,7 +88,7 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],
         ],
-        'enableEditMode' => true,
+        'enableEditMode' => Yii::$app->user->can('update-assetcategory'),
     ]) ?>
 
 </div>

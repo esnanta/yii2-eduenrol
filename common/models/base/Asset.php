@@ -8,16 +8,17 @@ use yii\behaviors\BlameableBehavior;
 use mootensai\behaviors\UUIDBehavior;
 
 /**
- * This is the base model class for table "tx_archive".
+ * This is the base model class for table "tx_asset".
  *
  * @property integer $id
  * @property integer $is_visible
- * @property integer $archive_type
- * @property integer $archive_category_id
+ * @property integer $asset_type
+ * @property integer $asset_group
+ * @property integer $asset_category_id
  * @property string $title
  * @property string $date_issued
- * @property string $file_name
- * @property string $archive_url
+ * @property string $asset_name
+ * @property string $asset_url
  * @property integer $size
  * @property string $mime_type
  * @property integer $view_counter
@@ -33,9 +34,9 @@ use mootensai\behaviors\UUIDBehavior;
  * @property integer $verlock
  * @property string $uuid
  *
- * @property \common\models\ArchiveCategory $archiveCategory
+ * @property \common\models\AssetCategory $assetCategory
  */
-class Archive extends \yii\db\ActiveRecord
+class Asset extends \yii\db\ActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
@@ -61,7 +62,7 @@ class Archive extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'archiveCategory'
+            'assetCategory'
         ];
     }
 
@@ -71,12 +72,12 @@ class Archive extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_visible', 'archive_type', 'archive_category_id', 'size', 'view_counter', 'download_counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
+            [['is_visible', 'asset_type', 'asset_group', 'asset_category_id', 'size', 'view_counter', 'download_counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['date_issued', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['description'], 'string'],
-            [['title', 'file_name'], 'string', 'max' => 200],
-            [['archive_url'], 'string', 'max' => 500],
-            [['mime_type'], 'string', 'max' => 100],
+            [['title'], 'string', 'max' => 200],
+            [['asset_name', 'mime_type'], 'string', 'max' => 100],
+            [['asset_url'], 'string', 'max' => 500],
             [['uuid'], 'string', 'max' => 36],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
@@ -88,7 +89,7 @@ class Archive extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tx_archive';
+        return 'tx_asset';
     }
 
     /**
@@ -110,12 +111,13 @@ class Archive extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'is_visible' => Yii::t('app', 'Is Visible'),
-            'archive_type' => Yii::t('app', 'Archive Type'),
-            'archive_category_id' => Yii::t('app', 'Archive Category'),
+            'asset_type' => Yii::t('app', 'Asset Type'),
+            'asset_group' => Yii::t('app', 'Asset Group'),
+            'asset_category_id' => Yii::t('app', 'Asset Category ID'),
             'title' => Yii::t('app', 'Title'),
             'date_issued' => Yii::t('app', 'Date Issued'),
-            'file_name' => Yii::t('app', 'File Name'),
-            'archive_url' => Yii::t('app', 'Archive Url'),
+            'asset_name' => Yii::t('app', 'Asset Name'),
+            'asset_url' => Yii::t('app', 'Asset Url'),
             'size' => Yii::t('app', 'Size'),
             'mime_type' => Yii::t('app', 'Mime Type'),
             'view_counter' => Yii::t('app', 'View Counter'),
@@ -130,9 +132,9 @@ class Archive extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getArchiveCategory()
+    public function getAssetCategory()
     {
-        return $this->hasOne(\common\models\ArchiveCategory::className(), ['id' => 'archive_category_id']);
+        return $this->hasOne(\common\models\AssetCategory::className(), ['id' => 'asset_category_id']);
     }
     
     /**
