@@ -169,8 +169,8 @@ class AssetService
 
     public function getPath(Asset $asset): string
     {
-        $officeUniqueId = $asset->office->unique_id;
-        return '/uploads/asset/' . $officeUniqueId;
+
+        return '/uploads/asset/';
     }
 
     private function getExtractFolderName(Asset $asset): string

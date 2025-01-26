@@ -14,11 +14,14 @@ use mootensai\behaviors\UUIDBehavior;
  * @property string $title
  * @property integer $sequence
  * @property string $description
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ * @property string $deleted_at
+ * @property integer $deleted_by
  * @property integer $verlock
+ * @property string $uuid
  *
  * @property \common\models\ApplicantFamily[] $applicantFamilies
  */
@@ -58,9 +61,11 @@ class Occupation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sequence', 'created_at', 'updated_at', 'created_by', 'updated_by', 'verlock'], 'integer'],
+            [['sequence', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['description'], 'string'],
+            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 100],
+            [['uuid'], 'string', 'max' => 36],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ];
@@ -96,6 +101,7 @@ class Occupation extends \yii\db\ActiveRecord
             'sequence' => Yii::t('app', 'Sequence'),
             'description' => Yii::t('app', 'Description'),
             'verlock' => Yii::t('app', 'Verlock'),
+            'uuid' => Yii::t('app', 'Uuid'),
         ];
     }
     

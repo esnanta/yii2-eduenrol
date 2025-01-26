@@ -113,7 +113,16 @@ class MessageHelper
             )]
         );
     }
-
+    public static function getFlashUploadFailed(): void
+    {
+        Yii::$app->getSession()->setFlash(
+            'danger',
+            ['message' => Yii::t(
+                'app',
+                'Upload failed.'
+            )]
+        );
+    }
     public static function getFlashFeatureDisabled(): void
     {
         Yii::$app->getSession()->setFlash(
@@ -187,5 +196,16 @@ class MessageHelper
                 return 'about ' . $r . ' ' . $str . ( $r > 1 ? 's' : '' ) . ' ago';
             }
         }
+    }
+
+    public static function getFlashExtractFileSuccess(): void
+    {
+        Yii::$app->getSession()->setFlash(
+            'success',
+            ['message' => Yii::t(
+                'app',
+                'File extracted successfully.'
+            )]
+        );
     }
 }

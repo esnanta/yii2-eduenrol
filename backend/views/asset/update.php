@@ -5,6 +5,9 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  * @var common\models\Asset $model
+ * @var common\models\Asset $isVisibleList
+ * @var common\models\Asset $assetTypeList
+ * @var common\models\AssetCategory $assetCategoryList
  */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
@@ -25,7 +28,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         <div class="period-create">
             <?= $this->render('_form', [
                 'model' => $model,
-                'officeList' => $officeList,
                 'assetCategoryList'=>$assetCategoryList,
                 'isVisibleList' => $isVisibleList,
                 'assetTypeList' => $assetTypeList,

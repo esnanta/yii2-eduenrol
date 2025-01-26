@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
@@ -27,15 +28,45 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
             'type' => DetailView::TYPE_DEFAULT,
         ],
         'attributes' => [
-            'id',
             'title',
             'sequence',
             'description:ntext',
-            'created_at',
-            'updated_at',
-            'created_by',
-            'updated_by',
-            'verlock',
+            [
+                'group'=>true,
+                'rowOptions'=>['class'=>'default']
+            ],
+            [
+                'columns' => [
+                    [
+                        'attribute' => 'created_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                ],
+            ],
+            [
+                'columns' => [
+                    [
+                        'attribute' => 'created_by',
+                        'value' => ($model->created_by != null) ? User::getName($model->created_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_by',
+                        'value' => ($model->updated_by != null) ? User::getName($model->updated_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                ],
+            ],
         ],
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],

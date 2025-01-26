@@ -1,8 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
@@ -27,43 +27,45 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
             'type' => DetailView::TYPE_DEFAULT,
         ],
         'attributes' => [
-            'id',
             'title',
-            'description:ntext',
             'sequence',
+            'description:ntext',
             [
-                'attribute' => 'created_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
+                'group'=>true,
+                'rowOptions'=>['class'=>'default']
             ],
             [
-                'attribute' => 'updated_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
+                'columns' => [
+                    [
+                        'attribute' => 'created_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
                 ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
             ],
-            'created_by',
-            'updated_by',
-            'is_deleted',
-            'deleted_at',
-            'deleted_by',
-            'verlock',
-            'uuid',
+            [
+                'columns' => [
+                    [
+                        'attribute' => 'created_by',
+                        'value' => ($model->created_by != null) ? User::getName($model->created_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_by',
+                        'value' => ($model->updated_by != null) ? User::getName($model->updated_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                ],
+            ],
         ],
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],

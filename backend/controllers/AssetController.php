@@ -54,7 +54,6 @@ class AssetController extends Controller
             $searchModel = new AssetSearch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-            $officeList         = DataListService::getOffice();
             $assetCategoryList  = DataListService::getAssetCategory();
             $assetTypeList      = Asset::getArrayAssetType();
 
@@ -62,7 +61,6 @@ class AssetController extends Controller
             return $this->render('index', [
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel,
-                'officeList' => $officeList,
                 'assetCategoryList' => $assetCategoryList,
                 'assetTypeList' => $assetTypeList,
                 'isVisibleList' => $isVisibleList,
@@ -84,10 +82,7 @@ class AssetController extends Controller
         if (Yii::$app->user->can('view-asset')) {
             $model = $this->findModel($id);
 
-            $scheduleDetailList   = $model->scheduleDetails;
-            $officeList           = DataListService::getOffice();
             $assetCategoryList    = DataListService::getAssetCategory();
-
             $isVisibleList        = Asset::getArrayIsVisible();
             $assetTypeList        = Asset::getArrayAssetType();
             $fileExtensionList    = Asset::getArrayFileExtension();
@@ -153,8 +148,6 @@ class AssetController extends Controller
 
             return $this->render('view', [
                 'model' => $model,
-                'scheduleDetailList' => $scheduleDetailList,
-                'officeList' => $officeList,
                 'assetCategoryList' => $assetCategoryList,
                 'isVisibleList' => $isVisibleList,
                 'assetTypeList' => $assetTypeList,
@@ -184,7 +177,6 @@ class AssetController extends Controller
             $assetCategoryList    = DataListService::getAssetCategory();
 
             $model              = new Asset;
-            $model->office_id   = $officeId;
             $model->date_issued = date(DateHelper::getDateSaveFormat());
             $model->is_visible  = Asset::IS_VISIBLE_PRIVATE;
 

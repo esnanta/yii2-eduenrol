@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
@@ -20,25 +19,10 @@ use kartik\datecontrol\DateControl;
         'form' => $form,
         'columns' => 1,
         'attributes' => [
-
-            'sequence' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Urutan...']],
-
-            'created_at' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter created_at...']],
-
-            'updated_at' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter updated_at...']],
-
-            'created_by' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter created_by...']],
-
-            'updated_by' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter updated_by...']],
-
-            'verlock' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Verlock...']],
-
-            'description' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Description...','rows' => 6]],
-
             'title' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Title...', 'maxlength' => 100]],
-
+            'sequence' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Urutan...']],
+            'description' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Description...','rows' => 6]],
         ]
-
     ]);
 
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),

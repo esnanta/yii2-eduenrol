@@ -132,6 +132,18 @@ ALTER TABLE `tx_employment` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
 UPDATE `tx_employment` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
 ALTER TABLE `tx_employment` CHANGE `deleted_at` `deleted_at` DATETIME;
 
+
+ALTER TABLE `tx_educational_stage` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
+ALTER TABLE `tx_educational_stage` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_educational_stage` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_educational_stage` CHANGE `created_at` `created_at` DATETIME;
+ALTER TABLE `tx_educational_stage` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_educational_stage` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_educational_stage` CHANGE `updated_at` `updated_at` DATETIME;
+
+ALTER TABLE `tx_educational_stage` ADD `deleted_at` DATETIME NULL AFTER `updated_by`,
+                          ADD `deleted_by` INT NULL AFTER `deleted_at`;
+
 ALTER TABLE `tx_income` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
 ALTER TABLE `tx_income` CHANGE `created_at` `created_at` VARCHAR(20);
 UPDATE `tx_income` SET `created_at` = FROM_UNIXTIME(`created_at`);
@@ -143,6 +155,17 @@ ALTER TABLE `tx_income` CHANGE `updated_at` `updated_at` DATETIME;
 ALTER TABLE `tx_income` ADD `deleted_at` DATETIME NULL AFTER `updated_by`,
                             ADD `deleted_by` INT NULL AFTER `deleted_at`;
 
+
+ALTER TABLE `tx_occupation` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
+ALTER TABLE `tx_occupation` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_occupation` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_occupation` CHANGE `created_at` `created_at` DATETIME;
+ALTER TABLE `tx_occupation` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_occupation` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_occupation` CHANGE `updated_at` `updated_at` DATETIME;
+
+ALTER TABLE `tx_occupation` ADD `deleted_at` DATETIME NULL AFTER `updated_by`,
+                                   ADD `deleted_by` INT NULL AFTER `deleted_at`;
 
 ALTER TABLE `tx_religion` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
 ALTER TABLE `tx_religion` CHANGE `created_at` `created_at` VARCHAR(20);

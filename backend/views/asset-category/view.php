@@ -28,43 +28,42 @@ $create = LabelHelper::getCreateButton();
             'type' => LabelHelper::getDetailViewType(),
         ],
         'attributes' => [
-
             'title',
             'sequence',
             'description:ntext',
-            
             [
-                'group'=>true,
-                'rowOptions'=>['class'=>'default']
+                'group' => true,
+                'rowOptions' => ['class' => 'default']
             ],
-
             [
                 'columns' => [
                     [
                         'attribute' => 'created_at',
-                        'format' => [
-                            'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                                ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                                : 'd-m-Y H:i:s A'
-                        ],
-                        'type'=>DetailView::INPUT_HIDDEN,
-                        'widgetOptions' => [
-                            'class' => DateControl::class,
-                            'type' => DateControl::FORMAT_DATETIME
-                        ]
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
                     ],
                     [
                         'attribute' => 'updated_at',
-                        'format' => [
-                            'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                                ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                                : 'd-m-Y H:i:s A'
-                        ],
-                        'type'=>DetailView::INPUT_HIDDEN,
-                        'widgetOptions' => [
-                            'class' => DateControl::class,
-                            'type' => DateControl::FORMAT_DATETIME
-                        ]
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                ],
+            ],
+            [
+                'columns' => [
+                    [
+                        'attribute' => 'created_by',
+                        'value' => ($model->created_by != null) ? \common\models\User::getName($model->created_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_by',
+                        'value' => ($model->updated_by != null) ? \common\models\User::getName($model->updated_by) : '',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
                     ],
                 ],
             ],

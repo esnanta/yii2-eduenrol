@@ -36,7 +36,6 @@ $deleteAsset = Html::a('<i class="fa fa-trash"></i> Delete File', ['asset/delete
 
             <?= $this->render('_view_side', [
                 'model' => $model,
-                'scheduleDetailList'=>$scheduleDetailList,
                 'assetUrl' => $assetUrl,
                 'fileType' => $fileType,
                 'helper' => $helper,
