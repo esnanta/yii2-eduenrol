@@ -97,7 +97,7 @@ return [
             'theme' => [
                 'pathMap' => [
                     '@app/views' => '@app/web/themes-b5-modernize/views',
-                    '@dektrium/user/views' => '@app/views/user'
+                    '@dektrium/user/views' => '@app/web/themes-b5-modernize/views/user'
                 ],
                 'basePath' => '@app/web/themes-b5-modernize',
                 'baseUrl' => '@web/web/themes-b5-modernize',

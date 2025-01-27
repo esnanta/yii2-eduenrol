@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
 <div class="card">
-    <div class="card-header text-white bg-danger">
+    <div class="card-header text-white bg-info">
         <?=Yii::t('app', 'Authentication')?>
     </div>
     <div class="card-body">

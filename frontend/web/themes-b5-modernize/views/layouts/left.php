@@ -15,13 +15,16 @@ function getMenu($_menuName, $_classIcon): string
             '</span>' .
             '<span class="hide-menu">' . $_menuName . '</span>';
 }
+
+$homeUrl = str_replace('user/','',Url::to(['site/index']));
+$welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest':Yii::$app->user->identity->username;
 ?>
 
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="<?= Url::to(['site/index'])?>" class="text-nowrap logo-img">
+            <a href="<?= $homeUrl ?>" class="text-nowrap logo-img">
                 <img src="<?= Url::base() ?>/frontend/web/themes-b5-modernize/assets/images/logos/dark-logo.svg"
                      width="180" alt="" />
             </a>
@@ -33,6 +36,19 @@ function getMenu($_menuName, $_classIcon): string
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
+
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu"><?= $welcomeMessage; ?></span>
+                </li>
+                <li class="sidebar-item">
+                    <?= Html::a(
+                        getMenu('Dashboard', 'fa fa-dashboard'),
+                        ['/site/index'],
+                        ['class' => 'sidebar-link']
+                    ) ?>
+                </li>
+
 
                 <?php if (!Yii::$app->user->isGuest) { ?>
                     <li class="nav-small-cap">

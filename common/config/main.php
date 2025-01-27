@@ -11,7 +11,7 @@ return [
         '@npm' => '@vendor/npm-asset',
     ],
 
-    'name' => 'Edu-Enrol',
+    'name' => 'Edu Enrolment',
     'timeZone' => 'Asia/Bangkok',
     'language' => 'id-ID',
 
