@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 
 /**
  * @var yii\web\View $this
@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Sign in');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
         <div class="panel panel-default">

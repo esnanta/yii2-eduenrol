@@ -99,10 +99,10 @@ return [
 
         'user' => [
             'class' => 'dektrium\user\Module',
-            'enableUnconfirmedLogin' => false,
-            'enablePasswordRecovery' => false,
-            'enableRegistration' => false,
-            'enableConfirmation' => false,
+            'enableUnconfirmedLogin' => true,
+            'enablePasswordRecovery' => true,
+            'enableRegistration' => true,
+            'enableConfirmation' => true,
             'confirmWithin' => 21600,
             'cost' => 12,
             'admins' => ['admin'],

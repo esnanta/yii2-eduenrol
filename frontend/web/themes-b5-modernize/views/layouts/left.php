@@ -42,94 +42,97 @@ $welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest':Yii::$app->user->identity
                     <span class="hide-menu"><?= $welcomeMessage; ?></span>
                 </li>
                 <li class="sidebar-item">
-                    <?= Html::a(
-                        getMenu('Dashboard', 'fa fa-dashboard'),
-                        ['/site/index'],
+                    <?php
+                    $index = Html::a(
+                        getMenu(Yii::t('app', 'Home'), 'fa fa-home'),
+                        ['site/index'],
                         ['class' => 'sidebar-link']
-                    ) ?>
+                    );
+                    echo str_replace('user/', '', $index);
+                    ?>
                 </li>
 
 
                 <?php if (!Yii::$app->user->isGuest) { ?>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Home</span>
+                        <span class="hide-menu">
+                            Home
+                        </span>
+                    </li>
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu"><?=Yii::t('app', 'Data')?></span>
                     </li>
                     <li class="sidebar-item">
                         <?= Html::a(
-                            getMenu('Dashboard', 'fa fa-dashboard'),
-                            ['/site/index'],
+                            getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'),
+                            ['/applicant/profile'],
+                            ['class' => 'sidebar-link']
+                        ) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(
+                            getMenu(Yii::t('app', 'Assessment'), 'fa fa-angle-right'),
+                            ['/assessment/index'],
+                            ['class' => 'sidebar-link']
+                        ) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(
+                            getMenu(Yii::t('app', 'Chart'), 'fa fa-angle-right'),
+                            ['/chart/participant-chart'],
                             ['class' => 'sidebar-link']
                         ) ?>
                     </li>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Retread</span>
+                        <span class="hide-menu">
+                            <?=Yii::t('app', 'Auth');?>
+                        </span>
                     </li>
                     <li class="sidebar-item">
-                        <?= Html::a(
-                            getMenu('Customer', 'fa fa-angle-right'),
-                            ['/customer/index'],
-                            ['class' => 'sidebar-link']
-                        ) ?>
-                    </li>
-                    <li class="sidebar-item">
-                        <?= Html::a(
-                            getMenu('Permintaan Kerja', 'fa fa-angle-right'),
-                            ['/work-request/index'],
-                            ['class' => 'sidebar-link']
-                        ) ?>
-                    </li>
-
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">AUTH</span>
-                    </li>
-                    <li class="sidebar-item">
-
                         <?=
                         Html::a(
-                            getMenu('Logout', 'fa fa-sign-out'),
-                            ['/user/logout'],
+                            getMenu(Yii::t('app', 'Logout'), 'fa fa-sign-out'),
+                            ['/site/logout'],
                             ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'sidebar-link']
                         )
                         ?>
                     </li>
                 <?php } else { ?>
+
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">AUTH</span>
+                        <span class="hide-menu"><?=Yii::t('app', 'Auth');?></span>
                     </li>
+                    <?php if ($module->enableRegistration) : ?>
+                        <li class="sidebar-item">
+                            <?php
+                            $register = Html::a(
+                                getMenu(Yii::t('app', 'Register'), 'fa fa-user-plus'),
+                                ['user/register'],
+                                ['class' => 'sidebar-link']
+                            );
+
+                            echo str_replace('user/user/', 'user/', $register);
+                            ?>
+                        </li>
+                    <?php endif ?>
                     <li class="sidebar-item">
-                    <?= Html::a(getMenu('Login', 'fa fa-sign-in'), ['/user/login'], ['class' => 'sidebar-link']) ?>
+                        <?php
+                        $login = Html::a(
+                            getMenu(Yii::t('app', 'Login'), 'fa fa-sign-in'),
+                            ['user/login'],
+                            ['class' => 'sidebar-link']
+                        );
+
+                        echo str_replace('user/user/', 'user/', $login);
+                        ?>
                     </li>
 
                 <?php } ?>
-
-                <?php if ($module->enableRegistration) : ?>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-user-plus"></i>
-                            </span>
-                            <span class="hide-menu">Register</span>
-                        </a>
-                    </li>
-                <?php endif ?>
             </ul>
-
-
-            <!--            <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
-                            <div class="d-flex">
-                                <div class="unlimited-access-title me-3">
-                                    <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-                                    <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-                                </div>
-                                <div class="unlimited-access-img">
-                                    <img src="../assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
-                                </div>
-                            </div>
-                        </div>-->
         </nav>
         <!-- End Sidebar navigation -->
     </div>
