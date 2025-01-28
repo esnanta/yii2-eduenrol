@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Nav;
 
 /**
  * @var \yii\web\View $this
@@ -25,14 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
 <?= $this->render('_menu') ?>
-
 <div class="row">
+    <!-- Sidebar Navigation -->
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card mb-4">
+            <div class="card-body">
                 <?= Nav::widget([
                     'options' => [
-                        'class' => 'nav-pills nav-stacked',
+                        'class' => 'nav flex-column nav-pills', // Updated classes for Bootstrap 5
                     ],
                     'items' => [
                         [
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'url' => ['/user/admin/assignments', 'id' => $user->id],
                             'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
                         ],
-                        '<hr>',
+                        '<div class="dropdown-divider"></div>', // Replaces <hr>
                         [
                             'label' => Yii::t('user', 'Confirm'),
                             'url' => ['/user/admin/confirm', 'id' => $user->id],
@@ -94,9 +94,11 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+
+    <!-- Content Section -->
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
                 <?= $content ?>
             </div>
         </div>

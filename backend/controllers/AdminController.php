@@ -17,6 +17,7 @@ use yii;
 use yii\helpers\Url;
 
 use common\helper\MessageHelper;
+use yii\web\ForbiddenHttpException;
 
 /**
  * AdminController allows you to administrate users.

@@ -15,15 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="applicant-index">
 
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Applicant',
-]),
-        ['create'], ['class' => 'btn btn-success'])*/  ?>
-    </p>
-
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
         
@@ -48,50 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             'email:email',
             'record_number',
-//            'family_card_number', 
-//            'identity_number', 
-//            'birth_certificate_number', 
-//            'title', 
-//            'nick_name', 
-//            'gender_status', 
-//            'birth_place', 
-//            ['attribute' => 'date_birth','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'religion_id', 
-//            'citizenship_status', 
-//            'address_street', 
-//            'address_village', 
-//            'address_sub_district', 
-//            'address_city', 
-//            'address_province', 
-//            'phone_number', 
-//            'hobby:ntext', 
-//            'blood_type', 
-//            'height', 
-//            'weight', 
-//            'head_circle', 
-//            'number_of_sibling', 
-//            'number_of_dependent', 
-//            'number_of_step_sibling', 
-//            'birth_order', 
-//            'child_status', 
-//            'native_language', 
-//            'illness:ntext', 
-//            'disability:ntext', 
-//            'file_name', 
-//            'final_status', 
-//            ['attribute' => 'date_final','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'approval_status', 
-//            'date_approval', 
-//            'approved_by', 
-//            'description:ntext', 
-//            ['attribute' => 'created_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            ['attribute' => 'updated_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'created_by', 
-//            'updated_by', 
-//            ['attribute' => 'deleted_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'deleted_by', 
-//            'verlock', 
-//            'uuid', 
 
             [
                 'class' => 'common\widgets\ActionColumn',
@@ -138,6 +85,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'showFooter' => false
         ],
     ]); Pjax::end(); ?>
-    
-
 </div>

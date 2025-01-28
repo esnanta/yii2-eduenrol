@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use yii\bootstrap4\ActiveForm;
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Nav;
 use yii\helpers\Html;
 
 /**
@@ -28,12 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $this->render('_menu') ?>
 
 <div class="row">
+    <!-- Sidebar Navigation -->
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card mb-4">
+            <div class="card-body">
                 <?= Nav::widget([
                     'options' => [
-                        'class' => 'nav-pills nav-stacked',
+                        'class' => 'nav flex-column nav-pills', // Bootstrap 5 classes for vertical navigation
                     ],
                     'items' => [
                         ['label' => Yii::t('user', 'Account details'), 'url' => ['/user/admin/create']],
@@ -50,29 +51,34 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+
+    <!-- Main Content Section -->
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
+                <!-- Alert Section -->
                 <div class="alert alert-info">
                     <?= Yii::t('user', 'Credentials will be sent to the user by email') ?>.
                     <?= Yii::t('user', 'A password will be generated automatically if not provided') ?>.
                 </div>
+
                 <?php $form = ActiveForm::begin([
                     'layout' => 'horizontal',
                     'enableAjaxValidation' => true,
                     'enableClientValidation' => false,
                     'fieldConfig' => [
                         'horizontalCssClasses' => [
-                            'wrapper' => 'col-sm-9',
+                            'wrapper' => 'col-sm-9', // Bootstrap 5 grid system is compatible with this class
                         ],
                     ],
                 ]); ?>
 
                 <?= $this->render('_user', ['form' => $form, 'user' => $user]) ?>
 
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-9">
-                        <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-block btn-success']) ?>
+                <!-- Submit Button -->
+                <div class="mb-3 row">
+                    <div class="offset-sm-3 col-sm-9">
+                        <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-success w-100']) ?>
                     </div>
                 </div>
 
@@ -81,3 +87,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
