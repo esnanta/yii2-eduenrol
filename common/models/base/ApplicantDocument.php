@@ -11,6 +11,7 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_applicant_document".
  *
  * @property integer $id
+ * @property integer $office_id
  * @property integer $applicant_id
  * @property integer $event_id
  * @property integer $document_id
@@ -31,6 +32,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\Applicant $applicant
  * @property \common\models\Document $document
  * @property \common\models\Event $event
+ * @property \common\models\Office $office
  */
 class ApplicantDocument extends \yii\db\ActiveRecord
 {
@@ -60,7 +62,8 @@ class ApplicantDocument extends \yii\db\ActiveRecord
         return [
             'applicant',
             'document',
-            'event'
+            'event',
+            'office'
         ];
     }
 
@@ -70,7 +73,7 @@ class ApplicantDocument extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['applicant_id', 'event_id', 'document_id', 'quantity', 'document_status', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'applicant_id', 'event_id', 'document_id', 'quantity', 'document_status', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['description'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 100],
@@ -107,6 +110,7 @@ class ApplicantDocument extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'office_id' => Yii::t('app', 'Office ID'),
             'applicant_id' => Yii::t('app', 'Applicant ID'),
             'event_id' => Yii::t('app', 'Event ID'),
             'document_id' => Yii::t('app', 'Document ID'),
@@ -142,6 +146,14 @@ class ApplicantDocument extends \yii\db\ActiveRecord
     public function getEvent()
     {
         return $this->hasOne(\common\models\Event::className(), ['id' => 'event_id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffice()
+    {
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
     }
     
     /**

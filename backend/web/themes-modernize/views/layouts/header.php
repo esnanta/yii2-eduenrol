@@ -27,7 +27,22 @@ if (!Yii::$app->user->isGuest) {
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
+
+                <?=
+                    Html::a(
+                        '<i class="fas fa-recycle fa-fw"></i>',
+                        ['/site/flush'],
+                        [
+                            'data-method' => 'post',
+                            'data-confirm' => 'Flush now?',
+                            'class' => 'btn btn-danger',
+                            'role' => 'button',
+                            'title'=>'Flush'
+                        ]
+                    )
+                ?>
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                        aria-expanded="false">

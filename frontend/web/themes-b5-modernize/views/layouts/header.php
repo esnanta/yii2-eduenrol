@@ -1,14 +1,21 @@
 <?php
 
+use common\models\Applicant;
+use common\models\Office;
 use common\models\Staff;
-use common\service\CacheService;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 if (!Yii::$app->user->isGuest) {
-    $cacheCloud = new CacheService;
-    $staffId = $cacheCloud->getStaffId();
-    $model = Staff::find()->where(['id' => $staffId])->one();
+    $model = Staff::find()->where(['user_id' => Yii::$app->user->id])->one();
+    if (empty($model)) :
+        $model = Applicant::find()->where(['user_id' => Yii::$app->user->id])->one();
+    endif;
+
+    if ($model->office->unique_id=='') :
+        $office = Office::find()->where(['id' => $model->office_id])->one();
+        $office->save();
+    endif;
 }
 ?>
 <header class="app-header">
@@ -29,12 +36,8 @@ if (!Yii::$app->user->isGuest) {
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <?php
-                if (!Yii::$app->user->isGuest) :
-                    ?>
+                <?php if (!Yii::$app->user->isGuest) : ?>
 
-                    <a href="<?= Url::to(['admin/site/index']) ?>"
-                       target="_blank" class="btn btn-primary">Backend</a>
                 <?php endif; ?>
 
                 <li class="nav-item dropdown">

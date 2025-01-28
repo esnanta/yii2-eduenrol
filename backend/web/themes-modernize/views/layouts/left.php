@@ -153,8 +153,6 @@ function getMenu($_menuName, $_classIcon)
                     <li class="sidebar-item">
                         <?= Html::a(getMenu('Logout', 'fa fa-sign-out'), ['/user/logout'], ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'sidebar-link']) ?>
                     </li>
-                <?php endif; ?>
-                <?php if (Yii::$app->user->identity->isAdmin) : ?>
                     <li class="sidebar-item">
                         <?= Html::a(getMenu('User', 'fa fa-angle-right'), ['/user/admin/index'], ['class' => 'sidebar-link']) ?>
                     </li>

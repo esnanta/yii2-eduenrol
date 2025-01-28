@@ -13,6 +13,7 @@ use common\models\Group;
 use common\models\Office;
 use common\models\Participant;
 use common\models\Period;
+use common\models\Religion;
 use common\models\Room;
 use common\models\Schedule;
 use common\models\Staff;
@@ -43,23 +44,15 @@ class DataListService
             ->asArray()->all(), 'id', 'title');
     }
 
+    public static function getReligion(): array
+    {
+        return ArrayHelper::map(Religion::find()
+            ->asArray()->all(), 'id', 'title');
+    }
+
     public static function getEmployment(): array
     {
         return ArrayHelper::map(Employment::find()
-            ->where(['office_id' => DataIdService::getOfficeId()])
-            ->asArray()->all(), 'id', 'title');
-    }
-
-    public static function getArchive(): array
-    {
-        return ArrayHelper::map(Archive::find()
-            ->where(['office_id' => DataIdService::getOfficeId()])
-            ->asArray()->all(), 'id', 'title');
-    }
-
-    public static function getArchiveCategory(): array
-    {
-        return ArrayHelper::map(ArchiveCategory::find()
             ->where(['office_id' => DataIdService::getOfficeId()])
             ->asArray()->all(), 'id', 'title');
     }
@@ -70,4 +63,6 @@ class DataListService
             ->where(['office_id' => DataIdService::getOfficeId()])
             ->asArray()->all(), 'id', 'title');
     }
+
+
 }

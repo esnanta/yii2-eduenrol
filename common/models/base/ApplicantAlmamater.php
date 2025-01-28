@@ -11,6 +11,7 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_applicant_almamater".
  *
  * @property integer $id
+ * @property integer $office_id
  * @property integer $applicant_id
  * @property integer $event_id
  * @property string $title
@@ -47,6 +48,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\Applicant $applicant
  * @property \common\models\EducationalStage $educationalStage
  * @property \common\models\Event $event
+ * @property \common\models\Office $office
  * @property \common\models\Residence $residence
  * @property \common\models\Transportation $transportation
  */
@@ -79,6 +81,7 @@ class ApplicantAlmamater extends \yii\db\ActiveRecord
             'applicant',
             'educationalStage',
             'event',
+            'office',
             'residence',
             'transportation'
         ];
@@ -90,7 +93,7 @@ class ApplicantAlmamater extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['applicant_id', 'event_id', 'educational_stage_id', 'school_status', 'study_time_length', 'tuition_payer', 'residence_id', 'distance', 'transportation_id', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'applicant_id', 'event_id', 'educational_stage_id', 'school_status', 'study_time_length', 'tuition_payer', 'residence_id', 'distance', 'transportation_id', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['date_graduation', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province', 'description'], 'string'],
             [['title', 'phone_number'], 'string', 'max' => 100],
@@ -128,6 +131,7 @@ class ApplicantAlmamater extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'office_id' => Yii::t('app', 'Office ID'),
             'applicant_id' => Yii::t('app', 'Applicant ID'),
             'event_id' => Yii::t('app', 'Event ID'),
             'title' => Yii::t('app', 'Title'),
@@ -179,6 +183,14 @@ class ApplicantAlmamater extends \yii\db\ActiveRecord
     public function getEvent()
     {
         return $this->hasOne(\common\models\Event::className(), ['id' => 'event_id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffice()
+    {
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
     }
         
     /**

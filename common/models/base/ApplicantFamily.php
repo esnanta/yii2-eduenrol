@@ -11,6 +11,7 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_applicant_family".
  *
  * @property integer $id
+ * @property integer $office_id
  * @property integer $applicant_id
  * @property integer $event_id
  * @property integer $family_type
@@ -44,6 +45,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\Event $event
  * @property \common\models\Income $income
  * @property \common\models\Occupation $occupation
+ * @property \common\models\Office $office
  * @property \common\models\Religion $religion
  */
 class ApplicantFamily extends \yii\db\ActiveRecord
@@ -77,6 +79,7 @@ class ApplicantFamily extends \yii\db\ActiveRecord
             'event',
             'income',
             'occupation',
+            'office',
             'religion'
         ];
     }
@@ -87,7 +90,7 @@ class ApplicantFamily extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['applicant_id', 'event_id', 'family_type', 'religion_id', 'educational_stage_id', 'occupation_id', 'income_id', 'citizenship_status', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'applicant_id', 'event_id', 'family_type', 'religion_id', 'educational_stage_id', 'occupation_id', 'income_id', 'citizenship_status', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['date_birth', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['description'], 'string'],
             [['title', 'birth_place'], 'string', 'max' => 100],
@@ -124,6 +127,7 @@ class ApplicantFamily extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'office_id' => Yii::t('app', 'Office ID'),
             'applicant_id' => Yii::t('app', 'Applicant ID'),
             'event_id' => Yii::t('app', 'Event ID'),
             'family_type' => Yii::t('app', 'Family Type'),
@@ -186,6 +190,14 @@ class ApplicantFamily extends \yii\db\ActiveRecord
     public function getOccupation()
     {
         return $this->hasOne(\common\models\Occupation::className(), ['id' => 'occupation_id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffice()
+    {
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
     }
         
     /**

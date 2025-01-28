@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use User;
-
 /**
  * This is the ActiveQuery class for [[User]].
  *

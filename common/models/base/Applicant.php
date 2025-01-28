@@ -11,6 +11,7 @@ use mootensai\behaviors\UUIDBehavior;
  * This is the base model class for table "tx_applicant".
  *
  * @property integer $id
+ * @property integer $office_id
  * @property integer $event_id
  * @property integer $user_id
  * @property string $email
@@ -61,6 +62,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property string $uuid
  *
  * @property \common\models\Event $event
+ * @property \common\models\Office $office
  * @property \common\models\Religion $religion
  * @property \common\models\ApplicantAlmamater[] $applicantAlmamaters
  * @property \common\models\ApplicantDocument[] $applicantDocuments
@@ -95,6 +97,7 @@ class Applicant extends \yii\db\ActiveRecord
     {
         return [
             'event',
+            'office',
             'religion',
             'applicantAlmamaters',
             'applicantDocuments',
@@ -110,7 +113,7 @@ class Applicant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['event_id', 'user_id', 'gender_status', 'religion_id', 'citizenship_status', 'blood_type', 'height', 'weight', 'head_circle', 'number_of_sibling', 'number_of_dependent', 'number_of_step_sibling', 'birth_order', 'child_status', 'final_status', 'approval_status', 'date_approval', 'approved_by', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'event_id', 'user_id', 'gender_status', 'religion_id', 'citizenship_status', 'blood_type', 'height', 'weight', 'head_circle', 'number_of_sibling', 'number_of_dependent', 'number_of_step_sibling', 'birth_order', 'child_status', 'final_status', 'approval_status', 'date_approval', 'approved_by', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['date_birth', 'date_final', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['hobby', 'illness', 'disability', 'description'], 'string'],
             [['email', 'title', 'nick_name', 'native_language', 'file_name'], 'string', 'max' => 100],
@@ -148,6 +151,7 @@ class Applicant extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'office_id' => Yii::t('app', 'Office ID'),
             'event_id' => Yii::t('app', 'Event ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'email' => Yii::t('app', 'Email'),
@@ -199,6 +203,14 @@ class Applicant extends \yii\db\ActiveRecord
     public function getEvent()
     {
         return $this->hasOne(\common\models\Event::className(), ['id' => 'event_id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffice()
+    {
+        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
     }
         
     /**

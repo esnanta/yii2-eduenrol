@@ -8,33 +8,36 @@ use yii\behaviors\BlameableBehavior;
 use mootensai\behaviors\UUIDBehavior;
 
 /**
- * This is the base model class for table "tx_applicant_grade".
+ * This is the base model class for table "tx_event".
  *
  * @property integer $id
- * @property integer $office_id
- * @property integer $applicant_id
- * @property integer $event_id
- * @property integer $course_id
  * @property string $title
- * @property integer $semester_id
- * @property string $grade
+ * @property integer $date_start
+ * @property integer $date_end
+ * @property string $location
+ * @property string $content
+ * @property integer $view_counter
  * @property string $description
- * @property string $created_at
- * @property string $updated_at
+ * @property integer $is_open_registration
+ * @property integer $is_using_comingsoon
+ * @property integer $is_active
+ * @property integer $days_for_comingsoon
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
- * @property string $deleted_at
+ * @property integer $is_deleted
+ * @property integer $deleted_at
  * @property integer $deleted_by
  * @property integer $verlock
- * @property string $uuid
  *
- * @property \common\models\Office $office
- * @property \common\models\Applicant $applicant
- * @property \common\models\Course $course
- * @property \common\models\Event $event
- * @property \common\models\Semester $semester
+ * @property \common\models\Applicant[] $applicants
+ * @property \common\models\ApplicantAlmamater[] $applicantAlmamaters
+ * @property \common\models\ApplicantDocument[] $applicantDocuments
+ * @property \common\models\ApplicantFamily[] $applicantFamilies
+ * @property \common\models\ApplicantGrade[] $applicantGrades
  */
-class ApplicantGrade extends \yii\db\ActiveRecord
+class Event extends \yii\db\ActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
@@ -60,11 +63,11 @@ class ApplicantGrade extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'office',
-            'applicant',
-            'course',
-            'event',
-            'semester'
+            'applicants',
+            'applicantAlmamaters',
+            'applicantDocuments',
+            'applicantFamilies',
+            'applicantGrades'
         ];
     }
 
@@ -74,12 +77,11 @@ class ApplicantGrade extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['office_id', 'applicant_id', 'event_id', 'course_id', 'semester_id', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
-            [['grade'], 'number'],
-            [['description'], 'string'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['title'], 'string', 'max' => 100],
-            [['uuid'], 'string', 'max' => 36],
+            [['date_start', 'date_end', 'view_counter', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['location', 'content', 'description'], 'string'],
+            [['title'], 'string', 'max' => 200],
+            [['is_open_registration', 'is_using_comingsoon', 'is_active'], 'string', 'max' => 1],
+            [['days_for_comingsoon'], 'string', 'max' => 2],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ];
@@ -90,7 +92,7 @@ class ApplicantGrade extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tx_applicant_grade';
+        return 'tx_event';
     }
 
     /**
@@ -111,57 +113,60 @@ class ApplicantGrade extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'office_id' => Yii::t('app', 'Office ID'),
-            'applicant_id' => Yii::t('app', 'Applicant ID'),
-            'event_id' => Yii::t('app', 'Event ID'),
-            'course_id' => Yii::t('app', 'Course ID'),
             'title' => Yii::t('app', 'Title'),
-            'semester_id' => Yii::t('app', 'Semester ID'),
-            'grade' => Yii::t('app', 'Grade'),
+            'date_start' => Yii::t('app', 'Date Start'),
+            'date_end' => Yii::t('app', 'Date End'),
+            'location' => Yii::t('app', 'Location'),
+            'content' => Yii::t('app', 'Content'),
+            'view_counter' => Yii::t('app', 'View Counter'),
             'description' => Yii::t('app', 'Description'),
+            'is_open_registration' => Yii::t('app', 'Is Open Registration'),
+            'is_using_comingsoon' => Yii::t('app', 'Is Using Comingsoon'),
+            'is_active' => Yii::t('app', 'Is Active'),
+            'days_for_comingsoon' => Yii::t('app', 'Days For Comingsoon'),
+            'is_deleted' => Yii::t('app', 'Is Deleted'),
             'verlock' => Yii::t('app', 'Verlock'),
-            'uuid' => Yii::t('app', 'Uuid'),
         ];
     }
     
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOffice()
+    public function getApplicants()
     {
-        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
+        return $this->hasMany(\common\models\Applicant::className(), ['event_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getApplicant()
+    public function getApplicantAlmamaters()
     {
-        return $this->hasOne(\common\models\Applicant::className(), ['id' => 'applicant_id']);
+        return $this->hasMany(\common\models\ApplicantAlmamater::className(), ['event_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourse()
+    public function getApplicantDocuments()
     {
-        return $this->hasOne(\common\models\Course::className(), ['id' => 'course_id']);
+        return $this->hasMany(\common\models\ApplicantDocument::className(), ['event_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEvent()
+    public function getApplicantFamilies()
     {
-        return $this->hasOne(\common\models\Event::className(), ['id' => 'event_id']);
+        return $this->hasMany(\common\models\ApplicantFamily::className(), ['event_id' => 'id']);
     }
         
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSemester()
+    public function getApplicantGrades()
     {
-        return $this->hasOne(\common\models\Semester::className(), ['id' => 'semester_id']);
+        return $this->hasMany(\common\models\ApplicantGrade::className(), ['event_id' => 'id']);
     }
     
     /**

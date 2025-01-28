@@ -17,7 +17,7 @@ function getMenu($_menuName, $_classIcon): string
 }
 
 $homeUrl = str_replace('user/','',Url::to(['site/index']));
-$welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest':Yii::$app->user->identity->username;
+$welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest' : Yii::$app->user->identity->username;
 ?>
 
 <aside class="left-sidebar">
@@ -56,18 +56,12 @@ $welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest':Yii::$app->user->identity
                 <?php if (!Yii::$app->user->isGuest) { ?>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">
-                            Home
-                        </span>
-                    </li>
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu"><?=Yii::t('app', 'Data')?></span>
                     </li>
                     <li class="sidebar-item">
                         <?= Html::a(
                             getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'),
-                            ['/applicant/profile'],
+                            ['/applicant/profile','title'=>Yii::$app->user->identity->username],
                             ['class' => 'sidebar-link']
                         ) ?>
                     </li>

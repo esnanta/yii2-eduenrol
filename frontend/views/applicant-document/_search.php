@@ -5,12 +5,12 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var common\models\CustomerSearch $model
+ * @var common\models\ApplicantDocumentSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="customer-search">
+<div class="applicant-document-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -19,29 +19,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'office_id') ?>
+    <?= $form->field($model, 'applicant_id') ?>
 
-    <?= $form->field($model, 'area_id') ?>
+    <?= $form->field($model, 'event_id') ?>
 
-    <?= $form->field($model, 'reg_number') ?>
+    <?= $form->field($model, 'document_id') ?>
 
-    <?= $form->field($model, 'date_issued') ?>
+    <?= $form->field($model, 'title') ?>
 
-    <?php // echo $form->field($model, 'title') ?>
+    <?php // echo $form->field($model, 'quantity') ?>
 
-    <?php // echo $form->field($model, 'address') ?>
+    <?php // echo $form->field($model, 'file_name') ?>
 
-    <?php // echo $form->field($model, 'province_id') ?>
-
-    <?php // echo $form->field($model, 'city_id') ?>
-
-    <?php // echo $form->field($model, 'district_id') ?>
-
-    <?php // echo $form->field($model, 'subdistrict_id') ?>
+    <?php // echo $form->field($model, 'document_status') ?>
 
     <?php // echo $form->field($model, 'description') ?>
-
-    <?php // echo $form->field($model, 'phone_number') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 
@@ -50,8 +42,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'created_by') ?>
 
     <?php // echo $form->field($model, 'updated_by') ?>
-
-    <?php // echo $form->field($model, 'is_deleted') ?>
 
     <?php // echo $form->field($model, 'deleted_at') ?>
 

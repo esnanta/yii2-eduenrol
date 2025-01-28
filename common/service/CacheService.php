@@ -1,6 +1,7 @@
 <?php
 namespace common\service;
 
+use common\models\Applicant;
 use common\models\AuthAssignment;
 use common\models\Participant;
 use common\models\Staff;
@@ -75,6 +76,14 @@ class CacheService
     {
         return Yii::$app->cache->getOrSet($this->cacheOfficeUniqueId.$this->combineCache, function () {
             $model = Staff::find()->where(['user_id' => $this->userId])->one();
+            return $model->office->unique_id;
+        });
+    }
+
+    public function getOfficeUniqueIdByApplicant()
+    {
+        return Yii::$app->cache->getOrSet($this->cacheOfficeUniqueId.$this->combineCache, function () {
+            $model = Applicant::find()->where(['user_id' => $this->userId])->one();
             return $model->office->unique_id;
         });
     }

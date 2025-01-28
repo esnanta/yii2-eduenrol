@@ -6,16 +6,16 @@ use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
- * @var common\models\Applicant $model
+ * @var common\models\ApplicantFamily $model
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicants'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicant Families'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right','style'=>'color:#333333;padding:0 5px']);
 
 ?>
-<div class="applicant-view">
+<div class="applicant-family-view">
 
     <?= DetailView::widget([
         'model' => $model,
@@ -28,17 +28,11 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
         ],
         'attributes' => [
             'id',
-            'office_id',
+            'applicant_id',
             'event_id',
-            'user_id',
-            'email:email',
-            'record_number',
-            'family_card_number',
-            'identity_number',
-            'birth_certificate_number',
+            'family_type',
             'title',
-            'nick_name',
-            'gender_status',
+            'identity_number',
             'birth_place',
             [
                 'attribute' => 'date_birth',
@@ -54,44 +48,16 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                 ]
             ],
             'religion_id',
+            'educational_stage_id',
+            'occupation_id',
+            'income_id',
+            'phone_number',
             'citizenship_status',
             'address_street',
             'address_village',
             'address_sub_district',
             'address_city',
             'address_province',
-            'phone_number',
-            'hobby:ntext',
-            'blood_type',
-            'height',
-            'weight',
-            'head_circle',
-            'number_of_sibling',
-            'number_of_dependent',
-            'number_of_step_sibling',
-            'birth_order',
-            'child_status',
-            'native_language',
-            'illness:ntext',
-            'disability:ntext',
-            'file_name',
-            'final_status',
-            [
-                'attribute' => 'date_final',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
-            ],
-            'approval_status',
-            'date_approval',
-            'approved_by',
             'description:ntext',
             [
                 'attribute' => 'created_at',

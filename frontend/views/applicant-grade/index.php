@@ -7,20 +7,21 @@ use yii\widgets\Pjax;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var common\models\CustomerSearch $searchModel
+ * @var common\models\ApplicantGradeSearch $searchModel
  */
 
-$this->title = Yii::t('app', 'Customers');
+$this->title = Yii::t('app', 'Applicant Grades');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="customer-index">
+<div class="applicant-grade-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Customer',
-]), ['create'], ['class' => 'btn btn-success'])*/  ?>
+    'modelClass' => 'Applicant Grade',
+]),
+        ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
     <?php Pjax::begin(); echo GridView::widget([
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'content'=>
                     Html::a('<i class="fas fa-plus"></i> Add New', ['create'], ['class' => 'btn btn-success'])
-                    . ' ' .
+                     . ' '.
                     Html::a('<i class="fas fa-redo"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
                 'options' => ['class' => 'btn-group-md']
             ],
@@ -41,24 +42,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute'=>'area_id',
-                'vAlign'=>'middle',
-                'width'=>'180px',
-                'value'=>function ($model, $key, $index, $widget) {
-                    return ($model->area_id!=null) ? $model->area->title:'';
-                },
-                'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>$areaList,
-                'filterWidgetOptions'=>[
-                    'pluginOptions'=>['allowClear'=>true],
-                ],
-                'filterInputOptions'=>['placeholder'=>''],
-                'format'=>'raw'
-            ],
+
+                'id',
+            'applicant_id',
+            'event_id',
+            'course_id',
             'title',
-            'phone_number',
-            'address',
+//            'semester_id', 
+//            'grade', 
+//            'description:ntext', 
+//            ['attribute' => 'created_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
+//            ['attribute' => 'updated_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
+//            'created_by', 
+//            'updated_by', 
+//            ['attribute' => 'deleted_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
+//            'deleted_by', 
+//            'verlock', 
+//            'uuid', 
+
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
@@ -103,8 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'after' => Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter' => false
         ],
-    ]);
-Pjax::end(); ?>
+    ]); Pjax::end(); ?>
     
 
 </div>

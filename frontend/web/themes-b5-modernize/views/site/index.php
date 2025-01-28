@@ -2,6 +2,7 @@
 
 /** @var yii\web\View $this */
 
+use common\models\Applicant;
 use yii\bootstrap5\Html;
 
 $this->title = Yii::$app->name;
@@ -57,12 +58,12 @@ $this->title = Yii::$app->name;
                         <tr>
                             <td>Username</td>
                             <td>:</td>
-                            <td><?= $applicant->user->username; ?></td>
+                            <td><?= $applicant->title; ?></td>
                         </tr>
                         <tr>
                             <td>Email</td>
                             <td>:</td>
-                            <td><?= $applicant->user->email; ?></td>
+                            <td><?= $applicant->title; ?></td>
                         </tr>
                         </tbody>
                     </table>
