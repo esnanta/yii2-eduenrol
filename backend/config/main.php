@@ -47,12 +47,10 @@ return [
         'view' => [
             'theme' => [
                 'pathMap' =>
-
-                
                 [
+                    '@app/views' => '@app/web/themes-modernize/views',
                     '@dektrium/user/views' => '@app/web/themes-modernize/dektrium/user',
                     '@dektrium/rbac/views' => '@app/web/themes-modernize/dektrium/rbac',
-                    '@app/views' => '@app/web/themes-modernize/views',
                 ],
                 'basePath' => '@app/web/themes-modernize',
                 'baseUrl' => '@web/web/themes-modernize',

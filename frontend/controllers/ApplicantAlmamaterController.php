@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Applicant;
+use common\service\DataListService;
 use Yii;
 use common\models\ApplicantAlmamater;
 use common\models\ApplicantAlmamaterSearch;
@@ -170,4 +172,59 @@ class ApplicantAlmamaterController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Displays a single Applicant model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionProfile($edu,$title=null)
+    {
+        if(Yii::$app->user->can('update-applicant')){
+
+            $applicant  = $this->findModelByUser(Yii::$app->user->identity->id);
+            $model      = ApplicantAlmamater::find()->where([
+                'applicant_id'=>$applicant->id,
+                'educational_stage_id'=>$edu])->one();
+
+            if(empty($model)){
+
+                $applicantAlmamater = new ApplicantAlmamater;
+                $applicantAlmamater->applicant_id = $applicant->id;
+                $applicantAlmamater->educational_stage_id = $edu;
+                $applicantAlmamater->save();
+
+                $model = ApplicantAlmamater::find()->where([
+                    'applicant_id'=>$applicant->id,
+                    'educational_stage_id'=>$edu])->one();
+            }
+
+            $editMode               = !(($applicant->final_status == Applicant::FINAL_STATUS_YES));
+
+            $educationalStageList   = DataListService::getEducationalStage();
+            $residenceList          = DataListService::getResidence();
+            $transportationList     = DataListService::getTransportation();
+            $schoolStatusList       = ApplicantAlmamater::getArraySchoolStatus();
+            $tuitionPayerList       = ApplicantAlmamater::getArrayTuitionPayer();
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['applicant-almamater/almamater', 'edu'=>$edu, 'title'=>$model->title]);
+            } else {
+                return $this->render('almamater', [
+                    'model'                 => $model,
+                    'educationalStageList'  => $educationalStageList,
+                    'residenceList'         => $residenceList,
+                    'transportationList'    => $transportationList,
+                    'schoolStatusList'      => $schoolStatusList,
+                    'tuitionPayerList'      => $tuitionPayerList,
+                    'editMode'              => $editMode
+                ]);
+            }
+        }
+        else{
+            Yii::$app->getSession()->setFlash('error', ['message' => Yii::t('app', Helper::getAccessDenied())]);
+            throw new ForbiddenHttpException;
+        }
+    }
+
 }

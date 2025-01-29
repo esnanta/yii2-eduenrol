@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use yii\helpers\Html;
-use kartik\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 
 /**
  * @var yii\web\View $this
@@ -21,53 +21,66 @@ use kartik\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Sign up');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-
-
-
-
 <!-- Signup -->
-<section class="container g-py-100">
-    <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-9 col-lg-6">
-            <div class="g-brd-around g-brd-gray-light-v4 rounded g-py-40 g-px-30">
-                <header class="text-center mb-4">
-                    <h2 class="h2 g-color-black g-font-weight-600"><?= Html::encode($this->title) ?></h2>
-                </header>
+<div class="container d-flex justify-content-center align-items-center min-vh-50">
+    <div class="card shadow" style="max-width: 400px; width: 100%;">
+        <div class="card-header bg-info text-white text-center">
+            <?= Yii::t('app', 'Create Account') ?>
+        </div>
+        <div class="card-body">
+            <?php $form = ActiveForm::begin([
+                'id' => 'registration-form',
+                'options' => ['class' => 'needs-validation'],
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => false,
+            ]); ?>
 
-                <?php $form = ActiveForm::begin([
-                    'id' => 'registration-form',
-                    'enableAjaxValidation' => true,
-                    'enableClientValidation' => false,
-                ]); ?>
+            <?= $form->field($model, 'email', [
+                'inputOptions' => [
+                    'class' => 'form-control form-control-lg',
+                    'autofocus' => true,
+                ],
+            ])->label(Yii::t('user', 'Email')) ?>
 
-                <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'username')->hiddenInput()->label(false); ?>
 
-                <?= $form->field($model, 'username') ?>
-
-                <?php if ($module->enableGeneratingPassword == false): ?>
-                    <?= $form->field($model, 'password')->passwordInput() ?>
-                <?php endif ?>
-
-                <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
-
-                <?php ActiveForm::end(); ?>                
-
-                <footer class="text-center">
-                    <p class="g-color-gray-dark-v5 g-font-size-13 mb-0">
-                        <?= "Already have an account? ".Html::a(Yii::t('user', 'signin'), ['/user/security/login']) ?>
-                    </p>                    
-                </footer>
+            <?php if (!$module->enableGeneratingPassword): ?>
+                <?= $form->field($model, 'password', [
+                    'inputOptions' => [
+                        'class' => 'form-control form-control-lg',
+                    ],
+                ])->passwordInput()
+                    ->label(Yii::t('user', 'Password')) ?>
+            <?php endif ?>
+            <div class="form-check mb-3">
+                <?= Html::checkbox('reveal-password', false, [
+                    'id' => 'reveal-password',
+                    'class' => 'form-check-input',
+                ]) ?>
+                <label class="form-check-label" for="reveal-password">
+                    <?= Yii::t('user', 'Show Password') ?>
+                </label>
             </div>
+            <?= Html::submitButton(Yii::t('user', 'Sign up'), [
+                'class' => 'btn btn-primary w-100',
+            ]) ?>
+
+            <?php ActiveForm::end(); ?>
+        </div>
+        <div class="card-footer text-center">
+            <p class="mb-0">
+                <?= Yii::t('app', "Already have an account? ") .
+                Html::a(Yii::t('app', 'Sign in'), ['/user/security/login']) ?>
+            </p>
         </div>
     </div>
-</section>
+</div>
 <!-- End Signup -->
 
-
-
-
-
-
-
-
-
+<?php
+$this->registerJs(
+    "jQuery('#reveal-password').change(function(){
+            jQuery('#register-form-password').attr('type', this.checked ? 'text' : 'password');
+        });"
+);
+?>

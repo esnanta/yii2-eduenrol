@@ -6,7 +6,7 @@ function getMenu($_menuName, $_classIcon)
 {
     return '<span><i class="' . $_classIcon . '"></i></span><span class="hide-menu">' . $_menuName . '</span>';
 }
-
+$paddingLeftChildMenu = '10px';
 ?>
 
 <aside class="left-sidebar">
@@ -37,16 +37,16 @@ function getMenu($_menuName, $_classIcon)
                             <?= getMenu(Yii::t('app', 'Applicant'), 'fa fa-users') ?>
                         </a>
                         <ul class="collapse list-unstyled" id="applicantMenu" data-bs-parent="#sidebarnav">
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'), ['/applicant/index'], ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Almamater'), 'fa fa-angle-right'), ['/applicant-almamater/index'], ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Family'), 'fa fa-angle-right'), ['/applicant-family/index'], ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Grade'), 'fa fa-angle-right'), ['/applicant-grade/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
@@ -59,13 +59,13 @@ function getMenu($_menuName, $_classIcon)
                             <?= getMenu(Yii::t('app', 'Office'), 'fa fa-university') ?>
                         </a>
                         <ul class="collapse list-unstyled" id="officeMenu" data-bs-parent="#sidebarnav">
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Office'), 'fa fa-angle-right'), ['/office/index'], ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Employment'), 'fa fa-angle-right'), ['/employment/index'], ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Staff'), 'fa fa-angle-right'), ['/staff/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
@@ -77,62 +77,62 @@ function getMenu($_menuName, $_classIcon)
                             <?= getMenu('Master', 'fa fa-cogs') ?>
                         </a>
                         <ul class="collapse list-unstyled" id="masterMenu" data-bs-parent="#sidebarnav">
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Asset Category'),
                                     'fa fa-angle-right'), ['/asset-category/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Asset'),
                                     'fa fa-angle-right'), ['/asset/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Course'),
                                     'fa fa-angle-right'), ['/course/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Document'),
                                     'fa fa-angle-right'), ['/document/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Educational Stage'),
                                     'fa fa-angle-right'), ['/educational-stage/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Employment'),
                                     'fa fa-angle-right'), ['/employment/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Income'),
                                     'fa fa-angle-right'), ['/income/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Occupation'),
                                     'fa fa-angle-right'), ['/occupation/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Religion'),
                                     'fa fa-angle-right'), ['/religion/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Residence'),
                                     'fa fa-angle-right'), ['/residence/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Semester'),
                                     'fa fa-angle-right'), ['/semester/index'],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Transportation'),
                                     'fa fa-angle-right'), ['/transportation/index'],
                                     ['class' => 'sidebar-link']) ?>
@@ -151,13 +151,24 @@ function getMenu($_menuName, $_classIcon)
                     </li>
                 <?php else : ?>
                     <li class="sidebar-item">
-                        <?= Html::a(getMenu('Logout', 'fa fa-sign-out'), ['/user/logout'], ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'sidebar-link']) ?>
+                        <?= Html::a(getMenu('Logout', 'fa fa-sign-out'),
+                            ['/user/logout'],
+                            ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'sidebar-link']) ?>
                     </li>
                     <li class="sidebar-item">
-                        <?= Html::a(getMenu('User', 'fa fa-angle-right'), ['/user/admin/index'], ['class' => 'sidebar-link']) ?>
+                        <?= Html::a(getMenu('User', 'fa fa-angle-right'),
+                            ['/user/admin/index'],
+                            ['class' => 'sidebar-link']) ?>
                     </li>
                     <li class="sidebar-item">
-                        <?= Html::a(getMenu('Gii', 'fa fa-angle-right'), ['/gii'], ['class' => 'sidebar-link']) ?>
+                        <?= Html::a(getMenu('Gii', 'fa fa-angle-right'),
+                            ['/gii'],
+                            ['class' => 'sidebar-link']) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu('Update Auth', 'fa fa-angle-right'),
+                            ['/site/update-auth'],
+                            ['class' => 'sidebar-link']) ?>
                     </li>
                 <?php endif; ?>
             </ul>

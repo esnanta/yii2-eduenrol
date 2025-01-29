@@ -96,11 +96,12 @@ return [
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@app/views' => '@app/web/themes-b5-modernize/views',
-                    '@dektrium/user/views' => '@app/web/themes-b5-modernize/views/user'
+                    '@app/views' => '@app/web/themes-modernize/views',
+                    '@dektrium/user/views' => '@app/web/themes-modernize/dektrium/user',
+                    '@dektrium/rbac/views' => '@app/web/themes-modernize/dektrium/rbac',
                 ],
-                'basePath' => '@app/web/themes-b5-modernize',
-                'baseUrl' => '@web/web/themes-b5-modernize',
+                'basePath' => '@app/web/themes-modernize',
+                'baseUrl' => '@web/web/themes-modernize',
             ],
         ],
     ],

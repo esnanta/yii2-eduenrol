@@ -180,7 +180,7 @@ class ApplicantController extends Controller
      */
     public function actionProfile($title=null)
     {
-        //if(Yii::$app->user->can('update-applicant')){
+        if(Yii::$app->user->can('update-applicant')){
             $model = $this->findModelByUser(Yii::$app->user->identity->id);
 
             if(empty($model)){
@@ -216,11 +216,11 @@ class ApplicantController extends Controller
                     'editMode'          => $editMode
                 ]);
             }
-//        }
-//        else{
-//            MessageHelper::getFlashAccessDenied();
-//            throw new ForbiddenHttpException;
-//        }
+        }
+        else{
+            MessageHelper::getFlashAccessDenied();
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\helper\MessageHelper;
+use common\models\AuthAssignment;
 use common\models\Employment;
 use common\models\Item;
 use common\models\ItemBrand;
@@ -34,7 +35,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error','create-owner','create-reguler'],
+                        'actions' => ['login', 'error','create-owner','create-reguler','update-auth'],
                         'allow' => true,
                     ],
                     [
@@ -188,15 +189,15 @@ class SiteController extends Controller
         $officeId   = $cacheCloud->getOfficeId();
         $authItemName   = $cacheCloud->getAuthItemName();
         
-        $canCreateReguler = false;
+        $canCreateRegular = false;
         if ($authItemName == Yii::$app->params['userRoleAdmin'] ||
             $authItemName == Yii::$app->params['userRoleOwner']) {
-            $canCreateReguler = true;
+            $canCreateRegular = true;
         }
 
-        if ($canCreateReguler==true) {
+        if ($canCreateRegular==true) {
             $model          = new User;
-            $userTypeList[] = [Yii::$app->params['userRoleReguler'] => 'Staff'];
+            $userTypeList[] = [Yii::$app->params['userRoleRegular'] => 'Staff'];
 
             $employmentList = ArrayHelper::map(Employment::find()
                 ->where(['office_id' => $officeId])
@@ -240,98 +241,30 @@ class SiteController extends Controller
             throw new ForbiddenHttpException;
         }
     }
-    
-    public function actionTestCreateDummy()
+
+    public function actionUpdateAuth()
     {
-        
-/**
- * DAFTAR MENU
- * 01 Fuel Sales        OK
- * 02 Item Brand        OK
- * 03 Item Category     OK
- * 04 Item              OK
- * 05 Item Unit         OK
- * 06 Purchase          OK
- * 07 Purchase Receive  OK
- * 08 Supplier          OK
- * 09 Warehouse         OK
- * 10 Work Shift        OK
- */
-        
-        $faker = \Faker\Factory::create();
-        
-        
-        $transaction    = Yii::$app->db->beginTransaction();
-        try {
-            $officeId   = 1;
-            $userId     = 1;
+        $userList = User::find()->all();
+        $no = 0;
+        foreach ($userList as $user) {
+            if ($user->id != 1) {
 
-            $itemUnit = new ItemUnit;
-            $itemUnit->office_id = $officeId;
-            $itemUnit->title = 'Kg '.$itemUnit->office->title;
-            $itemUnit->description = 'Kilogram';
-            $itemUnit->save();
-            
-            $itemBrand = new ItemBrand;
-            $itemBrand->office_id = $officeId;
-            $itemBrand->title = 'Pertamina - '.$itemBrand->office->title;
-            $itemBrand->description = 'Indonesia';
-            $itemBrand->save();
-            
-            $itemBrand = new ItemBrand;
-            $itemBrand->office_id = $officeId;
-            $itemBrand->title = 'Petronas - '.$itemBrand->office->title;
-            $itemBrand->description = 'Malaysia';
-            $itemBrand->save();
-            
-            
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
+                Yii::$app->db->createCommand()->insert('tx_auth_assignment', [
+                    'item_name'         => Yii::$app->params['userRoleRegular'],
+                    'user_id'           => $user->id,
+                    'created_at'        => time(),
+                ])->execute();
 
-        for ($i=0; $i<1; $i++) {
-            $office = new Office();
-            $office->title = 'Office - '.$i;
-            $office->phone_number = '0192837465';
-            $office->address = 'Jl. Office iterator '.$i;
-            $office->save();
-            
-            $workShift = new \common\models\WorkShift;
-            $workShift->office_id = $office->id;
-            $workShift->
-            
-            $supplier = new \common\models\Supplier;
-            $supplier->office_id = $office->id;
-            $supplier->title = 'Supplier - '.$i;
-            $supplier->phone_number = '0192837465';
-            $supplier->address = 'Jl. Supplier iterator '.$i;
-            $supplier->save();
+                $no++;
+            }
         }
-    }
-    
-    public function testCreateTransaction()
-    {
-        $cacheCloud = new CacheService();
-        $officeId   = $cacheCloud->getOfficeId();
-        $staffId    = $cacheCloud->getStaffId();
-        for ($i=0; $i<50; $i++) {
-            $dateIssued = date('Y-m-d', strtotime('+'.mt_rand(0, 30).' days'));
-
-            $model = new FuelSales();
-            $model->date_issued = $dateIssued;
-            $model->office_id=$officeId;
-            $model->work_shift_id=rand(1, 2);
-            $model->staff_id=$staffId;
-            $model->warehouse_id=1;
-            $model->fuel_id=rand(1, 2);
-            $model->start_liter = rand(100000, 150000);
-            $model->final_liter = rand(150001, 200000);
-            $model->save();
-        }
+        Yii::$app->session->setFlash(
+            'info',
+            ['message' => Yii::t(
+                'app',
+                'Update ' . $no . ' records.'
+            )]
+        );
+        $this->redirect(['/site/index']);
     }
 }

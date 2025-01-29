@@ -14,33 +14,34 @@ use yii\bootstrap5\Html;
 
 /**
  * @var yii\web\View $this
- * @var dektrium\user\models\ResendForm $model
+ * @var yii\widgets\ActiveForm $form
+ * @var dektrium\user\models\RecoveryForm $model
  */
 
-$this->title = Yii::t('user', 'Request new confirmation message');
+$this->title = Yii::t('user', 'Reset your password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="container d-flex justify-content-center align-items-center min-vh-50">
     <div class="card shadow" style="max-width: 400px; width: 100%;">
         <div class="card-header bg-info text-white text-center">
-            <?= Html::encode($this->title) ?>
+            <h3 class="h5 mb-0"><?= Html::encode($this->title) ?></h3>
         </div>
         <div class="card-body">
             <?php $form = ActiveForm::begin([
-                'id' => 'resend-form',
+                'id' => 'password-recovery-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => false,
             ]); ?>
 
-            <?= $form->field($model, 'email', [
+            <?= $form->field($model, 'password', [
                 'inputOptions' => [
                     'class' => 'form-control form-control-lg',
-                    'autofocus' => true,
                 ],
-            ])->label(Yii::t('user', 'Email')) ?>
+            ])->passwordInput()->label(Yii::t('user', 'New Password')) ?>
 
-            <?= Html::submitButton(Yii::t('user', 'Continue'), [
-                'class' => 'btn btn-primary w-100',
+            <?= Html::submitButton(Yii::t('user', 'Finish'), [
+                'class' => 'btn btn-success w-100',
             ]) ?>
 
             <?php ActiveForm::end(); ?>
