@@ -159,4 +159,13 @@ class ApplicantAlmamater extends BaseApplicantAlmamater
         $queryCount = $query->asArray()->count();
         return (!empty($queryCount)) ? $queryCount: 0 ;
     }
+
+    public static function getElementarySchool(): int
+    {
+        return 3;
+    }
+    public static function getJuniorHighSchool(): int
+    {
+        return 4;
+    }
 }

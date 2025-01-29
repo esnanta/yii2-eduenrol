@@ -10,6 +10,14 @@ use \common\models\base\ApplicantFamily as BaseApplicantFamily;
  */
 class ApplicantFamily extends BaseApplicantFamily
 {
+
+    const FAMILY_TYPE_FATHER        = 1;
+    const FAMILY_TYPE_MOTHER        = 2;
+    const FAMILY_TYPE_GUARDIAN      = 3;
+
+    const CITIZENSHIP_STATUS_WNI    = 1;
+    const CITIZENSHIP_STATUS_WNA    = 2;
+
     /**
      * @inheritdoc
      */
@@ -27,5 +35,75 @@ class ApplicantFamily extends BaseApplicantFamily
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ]);
     }
-	
+
+    public static function getArrayModule()
+    {
+        return [
+            //MASTER
+            self::FAMILY_TYPE_FATHER     => Yii::t('app', 'Father'),
+            self::FAMILY_TYPE_MOTHER     => Yii::t('app', 'Mother'),
+            self::FAMILY_TYPE_GUARDIAN   => Yii::t('app', 'Guardian'),
+        ];
+    }
+
+    public static function getOneModule($_module = null)
+    {
+        if($_module)
+        {
+            $arrayModule = self::getArrayModule();
+            $returnValue = 'NULL';
+
+            switch ($_module) {
+                case ($_module == self::FAMILY_TYPE_FATHER):
+                    $returnValue = '<span class="label label-primary">'.$arrayModule[$_module].'</span>';
+                    break;
+                case ($_module == self::FAMILY_TYPE_MOTHER):
+                    $returnValue = '<span class="label label-success">'.$arrayModule[$_module].'</span>';
+                    break;
+                case ($_module == self::FAMILY_TYPE_GUARDIAN):
+                    $returnValue = '<span class="label label-warning">'.$arrayModule[$_module].'</span>';
+                    break;
+                default:
+                    $returnValue = '<span class="label label-default">'.$arrayModule[$_module].'</span>';
+            }
+
+            return $returnValue;
+        }
+        else
+            return;
+    }
+
+    public static function getArrayCitizenshipStatus()
+    {
+        return [
+            //MASTER
+            self::CITIZENSHIP_STATUS_WNI    => Yii::t('app', 'Indonesian'),
+            self::CITIZENSHIP_STATUS_WNA    => Yii::t('app', 'Foreign'),
+        ];
+    }
+
+    public static function getOneCitizenshipStatus($_module = null)
+    {
+        if($_module)
+        {
+            $arrayModule = self::getArrayCitizenshipStatus();
+            $returnValue = 'NULL';
+
+            switch ($_module) {
+                case ($_module == self::CITIZENSHIP_STATUS_WNI):
+                    $returnValue = '<span class="label label-primary">'.$arrayModule[$_module].'</span>';
+                    break;
+                case ($_module == self::CITIZENSHIP_STATUS_WNA):
+                    $returnValue = '<span class="label label-warning">'.$arrayModule[$_module].'</span>';
+                    break;
+                default:
+                    $returnValue = '<span class="label label-default">'.$arrayModule[$_module].'</span>';
+            }
+
+            return $returnValue;
+
+        }
+        else
+            return;
+    }
 }

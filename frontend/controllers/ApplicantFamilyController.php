@@ -2,11 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Applicant;
+use common\service\DataListService;
 use Yii;
 use common\models\ApplicantFamily;
-use common\models\ApplicantFamilySearch;
 use yii\web\Controller;
-use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
@@ -30,144 +30,84 @@ class ApplicantFamilyController extends Controller
     }
 
     /**
-     * Lists all ApplicantFamily models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        if(Yii::$app->user->can('index-applicantfamily')){
-                            $searchModel = new ApplicantFamilySearch;
-                    $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
-                    return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ]);
-                    }
-        else{
-            MessageHelper::getFlashAccessDenied();
-            throw new ForbiddenHttpException;
-        }
-    }
-
-    /**
-     * Displays a single ApplicantFamily model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        if(Yii::$app->user->can('view-applicantfamily')){
-            $model = $this->findModel($id);
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                MessageHelper::getFlashUpdateSuccess();
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('view', ['model' => $model]);
-            }
-        }
-        else{
-            MessageHelper::getFlashAccessDenied();
-            throw new ForbiddenHttpException;
-        }
-    }
-
-    /**
-     * Creates a new ApplicantFamily model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        if(Yii::$app->user->can('create-applicantfamily')){
-            $model = new ApplicantFamily;
-
-            try {
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    MessageHelper::getFlashSaveSuccess();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } 
-                else {
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
-                }
-            }
-            catch (StaleObjectException $e) {
-                throw new StaleObjectException('The object being updated is outdated.');
-            }
-        }
-        else{
-            MessageHelper::getFlashAccessDenied();
-            throw new ForbiddenHttpException;
-        }
-    }
-
-    /**
-     * Updates an existing ApplicantFamily model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        if(Yii::$app->user->can('update-applicantfamily')){
-            try {
-                $model = $this->findModel($id);
-
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    MessageHelper::getFlashUpdateSuccess();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    return $this->render('update', [
-                        'model' => $model,
-                    ]);
-                }
-            }
-            catch (StaleObjectException $e) {
-                throw new StaleObjectException('The object being updated is outdated.');
-            }
-        }
-        else{
-            MessageHelper::getFlashAccessDenied();
-            throw new ForbiddenHttpException;
-        }
-    }
-
-    /**
-     * Deletes an existing ApplicantFamily model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws ForbiddenHttpException
-     */
-    public function actionDelete($id)
-    {
-        if(Yii::$app->user->can('delete-applicantfamily')){
-            $this->findModel($id)->delete();
-            MessageHelper::getFlashDeleteSuccess();
-            return $this->redirect(['index']);
-        }
-        else{
-            MessageHelper::getFlashLoginInfo();
-            throw new ForbiddenHttpException;
-        }
-    }
-
-    /**
-     * Finds the ApplicantFamily model based on its primary key value.
+     * Finds the Applicant model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ApplicantFamily the loaded model
+     * @return array|\yii\db\ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModelByUser($id)
     {
-        if (($model = ApplicantFamily::findOne($id)) !== null) {
+        if (($model = Applicant::find()->where(['user_id'=>$id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * Displays a single Applicant model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($type,$title=null)
+    {
+        if(Yii::$app->user->can('update-applicant')){
+            $applicant      = $this->findModelByUser(Yii::$app->user->identity->id);
+            $familyTypeId   = ApplicantFamily::FAMILY_TYPE_FATHER;
+
+            if($type==ApplicantFamily::FAMILY_TYPE_MOTHER){
+                $familyTypeId   = ApplicantFamily::FAMILY_TYPE_MOTHER;
+            }
+            elseif($type==ApplicantFamily::FAMILY_TYPE_GUARDIAN){
+                $familyTypeId   = ApplicantFamily::FAMILY_TYPE_GUARDIAN;
+            }
+
+            $editMode   = ($applicant->final_status == Applicant::FINAL_STATUS_YES) ? false : true;
+
+            $checkApplicantFamily = ApplicantFamily::find()
+                ->where(['applicant_id'=>$applicant->id, 'family_type'=>$familyTypeId])
+                ->one();
+
+            if(empty($checkApplicantFamily)){
+                ////////////////////////////////////////////////////////////////
+                $newFamily                  = new ApplicantFamily();
+                $newFamily->applicant_id    = $applicant->id;
+                $newFamily->family_type     = $familyTypeId;
+                $newFamily->save();
+            }
+
+            $model      = ApplicantFamily::find()->where([
+                'applicant_id'=>$applicant->id,
+                'family_type'=>$familyTypeId,
+            ])->one();
+
+            $familyTypeList         = ApplicantFamily::getArrayModule();
+            $religionList           = DataListService::getReligion();
+            $educationalStageList   = DataListService::getEducationalStage();
+            $occupationList         = DataListService::getOccupation();
+            $incomeList             = DataListService::getIncome();
+            $citizenshipList        = ApplicantFamily::getArrayCitizenshipStatus();
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['applicant-family/view', 'type' => $type, 'title'=>$applicant->title]);
+            }
+            else {
+                return $this->render('view', [
+                    'model'                 => $model,
+                    'familyTypeList'        => $familyTypeList,
+                    'religionList'          => $religionList,
+                    'educationalStageList'  => $educationalStageList,
+                    'occupationList'        => $occupationList,
+                    'incomeList'            => $incomeList,
+                    'citizenshipList'       => $citizenshipList,
+                    'editMode'              => $editMode
+                ]);
+            }
+        }
+        else{
+            MessageHelper::getFlashAccessDenied();
+            throw new ForbiddenHttpException;
         }
     }
 }

@@ -417,25 +417,30 @@ class Applicant extends BaseApplicant
     public function addChildData(){
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            $applicantAlmamater = new ApplicantAlmamater();
-            $applicantAlmamater->applicant_id = $this->id;
-            $applicantAlmamater->save();
+            $applicantAlmamaterElementary = new ApplicantAlmamater();
+            $applicantAlmamaterElementary->applicant_id = $this->id;
+            $applicantAlmamaterElementary->educational_stage_id = $applicantAlmamaterElementary->getElementarySchool();
+            $applicantAlmamaterElementary->save();
+
+            $applicantAlmamaterJunior = new ApplicantAlmamater();
+            $applicantAlmamaterJunior->applicant_id = $this->id;
+            $applicantAlmamaterJunior->educational_stage_id = $applicantAlmamaterJunior->getJuniorHighSchool();
+            $applicantAlmamaterJunior->save();
 
             $applicantFamilyFather                  = new ApplicantFamily();
             $applicantFamilyFather->applicant_id    = $this->id;
-            $applicantFamilyFather->family_type     = \common\models\ApplicantFamily::FAMILY_TYPE_FATHER;
+            $applicantFamilyFather->family_type     = ApplicantFamily::FAMILY_TYPE_FATHER;
             $applicantFamilyFather->save();
 
-            $applicantFamilyMother                  = new \common\models\ApplicantFamily();
+            $applicantFamilyMother                  = new ApplicantFamily();
             $applicantFamilyMother->applicant_id    = $this->id;
             $applicantFamilyMother->family_type     = ApplicantFamily::FAMILY_TYPE_MOTHER;
             $applicantFamilyMother->save();
 
-            $applicantFamilyGuardian                = new \common\models\ApplicantFamily();
+            $applicantFamilyGuardian                = new ApplicantFamily();
             $applicantFamilyGuardian->applicant_id  = $this->id;
-            $applicantFamilyGuardian->family_type   = \common\models\ApplicantFamily::FAMILY_TYPE_GUARDIAN;
+            $applicantFamilyGuardian->family_type   = ApplicantFamily::FAMILY_TYPE_GUARDIAN;
             $applicantFamilyGuardian->save();
-
 
             $semesters  = Semester::find()->orderBy(['sequence'=>SORT_ASC])->all();
             $courses    = Course::find()->orderBy(['sequence'=>SORT_ASC])->all();
@@ -452,14 +457,14 @@ class Applicant extends BaseApplicant
                 }
             }
 
-            $documents = Document::find()->orderBy(['sequence'=>SORT_ASC])->all();
-            foreach ($documents as $documentModel) {
-                $applicantDocument                  = new ApplicantDocument();
-                $applicantDocument->applicant_id    = $this->id;
-                $applicantDocument->document_id     = $documentModel->id;
-                $applicantDocument->document_status = Document::APPROVAL_STATUS_UNCONFIRM;
-                $applicantDocument->save();
-            }
+//            $documents = Document::find()->orderBy(['sequence'=>SORT_ASC])->all();
+//            foreach ($documents as $documentModel) {
+//                $applicantDocument                  = new ApplicantDocument();
+//                $applicantDocument->applicant_id    = $this->id;
+//                $applicantDocument->document_id     = $documentModel->id;
+//                $applicantDocument->document_status = Document::APPROVAL_STATUS_UNCONFIRM;
+//                $applicantDocument->save();
+//            }
 
             $transaction->commit();
         }
@@ -484,13 +489,6 @@ class Applicant extends BaseApplicant
         return Yii::$app->formatter->asDecimal(round($value,2,PHP_ROUND_HALF_UP));
     }
 
-    public function getFinalStatus(){
-
-        $applicantStanding  = ApplicantStanding::find()->where(['applicant_id'=>$this->id])->one();
-        $finalStatus = $applicantStanding->final_status;
-
-        return $finalStatus;
-    }
     public function getDateFinal(){
 
 

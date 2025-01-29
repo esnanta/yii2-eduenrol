@@ -7,19 +7,19 @@ use yii\widgets\Pjax;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var common\models\ApplicantFamilySearch $searchModel
+ * @var common\models\ApplicantDocumentSearch $searchModel
  */
 
-$this->title = Yii::t('app', 'Applicant Families');
+$this->title = Yii::t('app', 'Applicant Documents');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="applicant-family-index">
+<div class="applicant-document-index">
 
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Applicant Family',
+    'modelClass' => 'Applicant Document',
 ]),
         ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'content'=>
                     Html::a('<i class="fas fa-plus"></i> Add New', ['create'], ['class' => 'btn btn-success'])
-                     . ' '.
+                    . ' index.php' .
                     Html::a('<i class="fas fa-redo"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
                 'options' => ['class' => 'btn-group-md']
             ],
@@ -46,22 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id',
             'applicant_id',
             'event_id',
-            'family_type',
+            'document_id',
             'title',
-//            'identity_number', 
-//            'birth_place', 
-//            ['attribute' => 'date_birth','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'religion_id', 
-//            'educational_stage_id', 
-//            'occupation_id', 
-//            'income_id', 
-//            'phone_number', 
-//            'citizenship_status', 
-//            'address_street', 
-//            'address_village', 
-//            'address_sub_district', 
-//            'address_city', 
-//            'address_province', 
+//            'quantity', 
+//            'file_name', 
+//            'document_status', 
 //            'description:ntext', 
 //            ['attribute' => 'created_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
 //            ['attribute' => 'updated_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 

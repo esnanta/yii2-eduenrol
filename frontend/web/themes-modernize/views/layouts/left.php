@@ -1,4 +1,7 @@
 <?php
+
+use common\models\ApplicantAlmamater;
+use common\models\ApplicantFamily;
 use common\models\Semester;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -14,7 +17,7 @@ use yii\helpers\Url;
                 '<span class="hide-menu">' . $_menuName . '</span>';
     }
     $homeUrl = str_replace('user/','',Url::to(['site/index']));
-    $welcomeMessage = (Yii::$app->user->isGuest) ? 'Guest' : Yii::$app->user->identity->username;
+    $username = (Yii::$app->user->isGuest) ? 'Guest' : Yii::$app->user->identity->username;
 ?>
 
 <aside class="left-sidebar">
@@ -36,7 +39,7 @@ use yii\helpers\Url;
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu"><?= $welcomeMessage; ?></span>
+                    <span class="hide-menu"><?= $username; ?></span>
                 </li>
                 <li class="sidebar-item">
                     <?php
@@ -57,7 +60,7 @@ use yii\helpers\Url;
                     <li class="sidebar-item">
                         <?= Html::a(
                             getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'),
-                            ['/applicant/profile','title'=>Yii::$app->user->identity->username],
+                            ['/applicant/view','title'=>$username],
                             ['class' => 'sidebar-link']
                         ) ?>
                     </li>
@@ -70,12 +73,12 @@ use yii\helpers\Url;
                         <ul class="collapse list-unstyled" id="educationMenu" data-bs-parent="#sidebarnav">
                             <li class="sidebar-item" style="padding-left: 10px">
                                 <?= Html::a(getMenu(Yii::t('app', 'Elementary School'), 'fa fa-angle-right'),
-                                    ['/applicant-almamater/view'],
+                                    ['/applicant-almamater/view', 'edu'=>ApplicantAlmamater::getElementarySchool()],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: 10px">
                                 <?= Html::a(getMenu(Yii::t('app', 'Junior High School'), 'fa fa-angle-right'),
-                                    ['/applicant-almamater/view'],
+                                    ['/applicant-almamater/view', 'edu'=>ApplicantAlmamater::getJuniorHighSchool()],
                                     ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
@@ -89,15 +92,18 @@ use yii\helpers\Url;
                         <ul class="collapse list-unstyled" id="profileFamilyMenu" data-bs-parent="#sidebarnav">
                             <li class="sidebar-item" style="padding-left: 10px">
                                 <?= Html::a(getMenu(Yii::t('app', 'Father'), 'fa fa-angle-right'),
-                                    ['/office/index'], ['class' => 'sidebar-link']) ?>
+                                    ['/applicant-family/view','type'=> ApplicantFamily::FAMILY_TYPE_FATHER, 'title'=>$username],
+                                    ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: 10px">
                                 <?= Html::a(getMenu(Yii::t('app', 'Mother'), 'fa fa-angle-right'),
-                                    ['/employment/index'], ['class' => 'sidebar-link']) ?>
+                                    ['/applicant-family/view','type'=> ApplicantFamily::FAMILY_TYPE_MOTHER, 'title'=>$username],
+                                    ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: 10px">
                                 <?= Html::a(getMenu(Yii::t('app', 'Guardian'), 'fa fa-angle-right'),
-                                    ['/staff/index'], ['class' => 'sidebar-link']) ?>
+                                    ['/applicant-family/view','type'=> ApplicantFamily::FAMILY_TYPE_GUARDIAN, 'title'=>$username],
+                                    ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
                     </li>
@@ -142,19 +148,6 @@ use yii\helpers\Url;
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu"><?=Yii::t('app', 'Auth');?></span>
                     </li>
-                    <?php if ($module->enableRegistration) : ?>
-                        <li class="sidebar-item">
-                            <?php
-                            $register = Html::a(
-                                getMenu(Yii::t('app', 'Register'), 'fa fa-user-plus'),
-                                ['user/register'],
-                                ['class' => 'sidebar-link']
-                            );
-
-                            echo str_replace('user/user/', 'user/', $register);
-                            ?>
-                        </li>
-                    <?php endif ?>
                     <li class="sidebar-item">
                         <?php
                         $login = Html::a(
@@ -166,7 +159,18 @@ use yii\helpers\Url;
                         echo str_replace('user/user/', 'user/', $login);
                         ?>
                     </li>
-
+                    <?php if ($module->enableRegistration) : ?>
+                        <li class="sidebar-item">
+                            <?php
+                            $register = Html::a(
+                                getMenu(Yii::t('app', 'Register'), 'fa fa-user-plus'),
+                                ['user/register'],
+                                ['class' => 'sidebar-link']
+                            );
+                            echo str_replace('user/user/', 'user/', $register);
+                            ?>
+                        </li>
+                    <?php endif ?>
                 <?php } ?>
             </ul>
         </nav>

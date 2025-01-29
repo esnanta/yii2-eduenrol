@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var common\models\Applicant $model
+ * @var common\models\ApplicantDocument $model
  */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Applicant',
-]) . ' ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicants'), 'url' => ['index']];
+        'modelClass' => 'Applicant Document',
+    ]) . ' update.php' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicant Documents'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
@@ -20,11 +20,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         <div class="panel-title">
             Please fill out the form below
             <div class="pull-right">
-                Applicant            </div>
+                ApplicantDocument            </div>
         </div>
     </div>
     <div class="panel-body">
-        <div class="applicant-update">
+        <div class="applicant-document-update">
             <?= $this->render('_form', [
                 'model' => $model,
             ]) ?>

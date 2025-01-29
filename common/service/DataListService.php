@@ -7,6 +7,8 @@ use common\models\AssetCategory;
 use common\models\Course;
 use common\models\EducationalStage;
 use common\models\Employment;
+use common\models\Income;
+use common\models\Occupation;
 use common\models\Office;
 use common\models\Religion;
 use common\models\Residence;
@@ -40,6 +42,16 @@ class DataListService
     public static function getEducationalStage(): array
     {
         return ArrayHelper::map(EducationalStage::find()
+            ->asArray()->all(), 'id', 'title');
+    }
+    public static function getIncome(): array
+    {
+        return ArrayHelper::map(Income::find()
+            ->asArray()->all(), 'id', 'title');
+    }
+    public static function getOccupation(): array
+    {
+        return ArrayHelper::map(Occupation::find()
             ->asArray()->all(), 'id', 'title');
     }
     public static function getReligion(): array
