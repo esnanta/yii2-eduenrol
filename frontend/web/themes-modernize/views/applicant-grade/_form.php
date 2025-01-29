@@ -21,11 +21,18 @@ use kartik\datecontrol\DateControl;
         'columns' => 1,
         'attributes' => [
 
-            'applicant_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Applicant ID...']],
-
             'event_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Event ID...']],
-
-            'course_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Course ID...']],
+            'course_id' => [
+                'type' => Form::INPUT_WIDGET,
+                'widgetClass' => Select2::class,
+                'options' => [
+                    'data' => $courseList,
+                    'options' => ['placeholder' => 'Choose Course', 'disabled' => (Yii::$app->user->identity->isAdmin) ? false : true],
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ],
 
             'semester_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Semester ID...']],
 

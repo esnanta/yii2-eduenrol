@@ -27,5 +27,10 @@ class ApplicantGrade extends BaseApplicantGrade
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ]);
     }
-	
+    public function beforeSave($insert) {
+        if(empty($this->event_id)){
+            $this->event_id = $this->applicant->event_id;
+        }
+        return parent::beforeSave($insert);
+    }
 }

@@ -118,7 +118,8 @@ use yii\helpers\Url;
                             ?>
                                     <li class="sidebar-item" style="padding-left: 10px">
                                         <?= Html::a(getMenu($semester->title, 'fa fa-angle-right'),
-                                            ['/grade/view'], ['class' => 'sidebar-link']) ?>
+                                            ['/applicant-grade/index','sem'=>$semester->id,'title'=>$semester->title],
+                                            ['class' => 'sidebar-link']) ?>
                                     </li>
                             <?php
                                 }

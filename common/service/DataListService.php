@@ -12,6 +12,7 @@ use common\models\Occupation;
 use common\models\Office;
 use common\models\Religion;
 use common\models\Residence;
+use common\models\Semester;
 use common\models\Staff;
 use common\models\Transportation;
 use yii\helpers\ArrayHelper;
@@ -62,6 +63,11 @@ class DataListService
     public static function getResidence(): array
     {
         return ArrayHelper::map(Residence::find()
+            ->asArray()->all(), 'id', 'title');
+    }
+    public static function getSemester(): array
+    {
+        return ArrayHelper::map(Semester::find()
             ->asArray()->all(), 'id', 'title');
     }
     public static function getTransportation(): array

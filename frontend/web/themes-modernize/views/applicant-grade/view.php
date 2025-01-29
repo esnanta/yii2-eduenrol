@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+use kartik\widgets\Select2;
 use kartik\detail\DetailView;
-use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
@@ -10,10 +9,9 @@ use kartik\datecontrol\DateControl;
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicant Grades'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicant Grades'),
+    'url' => ['index','sem'=>$model->semester_id]];
 $this->params['breadcrumbs'][] = $this->title;
-$create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right','style'=>'color:#333333;padding:0 5px']);
-
 ?>
 <div class="applicant-grade-view">
 
@@ -23,62 +21,57 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
         'hover' => true,
         'mode' => Yii::$app->request->get('edit') == 't' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
         'panel' => [
-            'heading' => $this->title.$create,
+            'heading' => $this->title,
             'type' => DetailView::TYPE_DEFAULT,
         ],
+        'buttons1' => '{update}',
         'attributes' => [
-            'id',
-            'applicant_id',
-            'event_id',
-            'course_id',
-            'title',
-            'semester_id',
+            [
+                'attribute' => 'course_id',
+                'value' => ($model->course_id != null) ? $model->course->title : '',
+                'format' => 'html',
+                'type' => DetailView::INPUT_SELECT2,
+                'options' => ['id' => 'course_id', 'prompt' => '', 'disabled' => true],
+                'items' => $courseList,
+                'widgetOptions' => [
+                    'class' => Select2::class,
+                    'data' => $courseList,
+                ],
+            ],
+            [
+                'attribute' => 'semester_id',
+                'value' => ($model->semester_id != null) ? $model->semester->title : '',
+                'format' => 'html',
+                'type' => DetailView::INPUT_SELECT2,
+                'options' => ['id' => 'semester_id', 'prompt' => '', 'disabled' => true],
+                'items' => $semesterList,
+                'widgetOptions' => [
+                    'class' => Select2::class,
+                    'data' => $semesterList,
+                ],
+            ],
             'grade',
-            'description:ntext',
+
             [
-                'attribute' => 'created_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
+                'group'=>true,
+                'rowOptions'=>['class'=>'default']
             ],
             [
-                'attribute' => 'updated_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
+                'columns' => [
+                    [
+                        'attribute' => 'created_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => 'date',
+                        'type' => DetailView::INPUT_HIDDEN,
+                        'valueColOptions' => ['style' => 'width:30%']
+                    ],
                 ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
             ],
-            'created_by',
-            'updated_by',
-            [
-                'attribute' => 'deleted_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
-            ],
-            'deleted_by',
-            'verlock',
-            'uuid',
         ],
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],

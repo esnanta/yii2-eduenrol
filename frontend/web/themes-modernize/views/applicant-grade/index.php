@@ -26,40 +26,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        
+
         'toolbar' => [
-            [
-                'content'=>
-                    Html::a('<i class="fas fa-plus"></i> Add New', ['create'], ['class' => 'btn btn-success'])
-                    . ' index.php' .
-                    Html::a('<i class="fas fa-redo"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
-                'options' => ['class' => 'btn-group-md']
-            ],
-            //'{export}',
-            //'{toggleData}'
+
         ],
-        
+
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
-            'applicant_id',
-            'event_id',
-            'course_id',
-            'title',
-//            'semester_id', 
-//            'grade', 
-//            'description:ntext', 
-//            ['attribute' => 'created_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            ['attribute' => 'updated_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'created_by', 
-//            'updated_by', 
-//            ['attribute' => 'deleted_at','format' => ['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'deleted_by', 
-//            'verlock', 
-//            'uuid', 
-
+            [
+                'attribute'=>'course_id',
+                'vAlign'=>'middle',
+                'width'=>'180px',
+                'value'=>function ($model, $key, $index, $widget) {
+                    return ($model->course_id!=null) ? $model->course->title:'';
+                },
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>$courseList,
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>''],
+                'format'=>'raw'
+            ],
+            'semester_id',
+            'grade',
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
@@ -68,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($url, $model) {
                         return Html::a(
                             '<i class="fas fa-pencil-alt"></i>',
-                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id, 'edit' => 't']),
+                            Yii::$app->urlManager->createUrl(['applicant-grade/view', 'id' => $model->id, 'edit' => 't']),
                             [
                                 'title' => Yii::t('yii', 'Edit'),
                                 'class'=>'btn btn-sm btn-info',
@@ -78,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view' => function ($url, $model) {
                         return Html::a(
                             '<i class="fas fa-eye"></i>',
-                            Yii::$app->urlManager->createUrl(['customer/view', 'id' => $model->id]),
+                            Yii::$app->urlManager->createUrl(['applicant-grade/view', 'id' => $model->id]),
                             [
                                 'title' => Yii::t('yii', 'View'),
                                 'class'=>'btn btn-sm btn-info',
