@@ -1,6 +1,7 @@
 <?php
 
 use bajadev\ckeditor\CKEditor;
+use common\helper\DateHelper;
 use common\models\User;
 use kartik\datecontrol\DateControl;
 use kartik\detail\DetailView;
@@ -34,25 +35,23 @@ $create = Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'], ['clas
                 'attribute'=>'title',
                 'type'=>DetailView::INPUT_TEXT,
             ],
+
             [
                 'attribute'=>'date_start',
-                'format'=> DateControl::FORMAT_DATE,
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=>[
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATE,
+                    'class'=>DateControl::class,
+                    'type'=>DateControl::FORMAT_DATETIME,
+                    'displayFormat' => DateHelper::getDatetimeDisplayFormat(),
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute'=>'date_end',
-                'format'=> DateControl::FORMAT_DATE,
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=>[
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATE,
+                    'class'=>DateControl::class,
+                    'type'=>DateControl::FORMAT_DATETIME,
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             'location:ntext',
             [

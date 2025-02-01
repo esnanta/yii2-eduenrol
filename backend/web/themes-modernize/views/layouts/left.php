@@ -30,29 +30,6 @@ $paddingLeftChildMenu = '10px';
                     <li class="sidebar-item">
                         <?= Html::a(getMenu('Dashboard', 'fa fa-dashboard'), ['/site/index'], ['class' => 'sidebar-link']) ?>
                     </li>
-
-                    <!-- Example Collapsible Parent Menu -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link has-arrow collapsed" data-bs-toggle="collapse" href="#applicantMenu" aria-expanded="false" aria-controls="applicantMenu">
-                            <?= getMenu(Yii::t('app', 'Applicant'), 'fa fa-users') ?>
-                        </a>
-                        <ul class="collapse list-unstyled" id="applicantMenu" data-bs-parent="#sidebarnav">
-                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'), ['/applicant/index'], ['class' => 'sidebar-link']) ?>
-                            </li>
-                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Almamater'), 'fa fa-angle-right'), ['/applicant-almamater/index'], ['class' => 'sidebar-link']) ?>
-                            </li>
-                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Family'), 'fa fa-angle-right'), ['/applicant-family/index'], ['class' => 'sidebar-link']) ?>
-                            </li>
-                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Grade'), 'fa fa-angle-right'), ['/applicant-grade/index'], ['class' => 'sidebar-link']) ?>
-                            </li>
-                        </ul>
-                    </li>
-
-
                     <!-- Example Collapsible Parent Menu -->
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow collapsed" data-bs-toggle="collapse" href="#officeMenu" aria-expanded="false" aria-controls="applicantMenu">
@@ -70,6 +47,26 @@ $paddingLeftChildMenu = '10px';
                             </li>
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Event'), 'fa fa-angle-right'), ['/event/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Example Collapsible Parent Menu -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow collapsed" data-bs-toggle="collapse" href="#applicantMenu" aria-expanded="false" aria-controls="applicantMenu">
+                            <?= getMenu(Yii::t('app', 'Applicant'), 'fa fa-users') ?>
+                        </a>
+                        <ul class="collapse list-unstyled" id="applicantMenu" data-bs-parent="#sidebarnav">
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Profile'), 'fa fa-angle-right'), ['/applicant/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Almamater'), 'fa fa-angle-right'), ['/applicant-almamater/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Family'), 'fa fa-angle-right'), ['/applicant-family/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Grade'), 'fa fa-angle-right'), ['/applicant-grade/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
                     </li>

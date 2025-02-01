@@ -31,15 +31,15 @@ return [
     'googleplus_name'           => ['itemprop' => 'name', 'content' => 'title'],
     'googleplus_description'    => ['itemprop' => 'description', 'content' => 'description'],
     'googleplus_image'          => ['itemprop' => 'image', 'content' => 'image'],
-    
+
     'dateDisplayFormat'         => 'd-m-Y',
-    'timeDisplayFormat'         => 'hh:mm:ss a',
-    'datetimeDisplayFormat'     => 'dd-MM-yyyy hh:mm:ss a',
-    
+    'timeDisplayFormat'         => 'H:i:s',
+    'datetimeDisplayFormat'     => 'd-m-Y H:i:s',  // Correct format
+
     'dateSaveFormat'            => 'Y-m-d',
     'timeSaveFormat'            => 'H:i:s',
     'datetimeSaveFormat'        => 'Y-m-d H:i:s',
-    
+
     'userRoleAdmin'             => 'admin',
     'userRoleOwner'             => 'owner',
     'userRoleRegular'           => 'regular'

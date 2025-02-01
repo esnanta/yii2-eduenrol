@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'date_birth',
-                'format'=>'date',
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=>[
                     'class'=>DateControl::classname(),

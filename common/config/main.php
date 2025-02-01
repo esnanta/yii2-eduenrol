@@ -12,7 +12,7 @@ return [
     ],
 
     'name' => 'Edu Enrolment',
-    'timeZone' => 'Asia/Bangkok',
+    'timeZone' => 'Asia/Jakarta',
     'language' => 'id-ID',
 
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -170,14 +170,16 @@ return [
             'displaySettings' => [
                 Module::FORMAT_DATE => 'dd-MM-yyyy',
                 Module::FORMAT_TIME => 'hh:mm:ss a',
-                Module::FORMAT_DATETIME => 'dd-MM-yyyy hh:mm:ss a',
+                //Module::FORMAT_DATETIME => 'dd-MM-yyyy hh:mm:ss a', ex:24-04-2024 10:04:38 PM
+                Module::FORMAT_DATETIME => 'dd-MM-yyyy hh:mm:ss',
             ],
 
             // format settings for saving each date attribute (PHP format example)
             'saveSettings' => [
                 Module::FORMAT_DATE => 'php:Y-m-d',
                 Module::FORMAT_TIME => 'php:H:i:s',
-                Module::FORMAT_DATETIME => 'php:Y-m-d H:i:s',
+                //Module::FORMAT_DATETIME => 'php:Y-m-d H:i:ss',
+                Module::FORMAT_DATETIME => 'php:Y-m-d H:i:00',
             ],
 
             'ajaxConversion'=>false,

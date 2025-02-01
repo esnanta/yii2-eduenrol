@@ -33,7 +33,7 @@ class DateHelper
     }
     public static function getDatetimeDisplayFormat(): string
     {
-        return 'dd-MM-yyyy hh:mm:ss a';
+        return 'dd-MM-yyyy hh:mm:ss';
     }
 
     public static function getDateSaveFormat(): string

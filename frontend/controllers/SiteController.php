@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Applicant;
+use common\models\Event;
 use Yii;
 
 use yii\captcha\CaptchaAction;
@@ -76,12 +78,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-//        if (Yii::$app->user->isGuest) {
-//            return $this->redirect(['user/login']);
-//        } else {
-//            return $this->render('index');
-//        }
+        $event = Event::find()->where(['is_active' => Event::IS_ACTIVE_ENABLED])->one();
+        return $this->render('index', [
+            'event' => $event,
+        ]);
     }
 
     /**

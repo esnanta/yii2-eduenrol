@@ -1,6 +1,7 @@
 <?php
 
 use bajadev\ckeditor\CKEditor;
+use common\helper\DateHelper;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\ActiveForm;
@@ -28,13 +29,13 @@ use yii\helpers\Html;
             'date_start' => [
                 'type' => Form::INPUT_WIDGET, 
                 'widgetClass'=> DateControl::className(),
-                'format'=>'date',
+                'format'=> DateControl::FORMAT_DATETIME,
             ],
 
             'date_end' => [
                 'type' => Form::INPUT_WIDGET, 
                 'widgetClass'=> DateControl::className(),
-                'format'=>'date',
+                'format'=>DateControl::FORMAT_DATETIME,
             ],             
             
             'location' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Location...','rows' => 6]],

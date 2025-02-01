@@ -113,7 +113,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'date_graduation',
-                'format' => 'date',
                 'type' => DetailView::INPUT_HIDDEN,
                 'widgetOptions' => [
                     'class' => DateControl::classname(),
