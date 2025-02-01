@@ -384,28 +384,6 @@ ALTER TABLE `tx_asset` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
 UPDATE `tx_asset` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
 ALTER TABLE `tx_asset` CHANGE `deleted_at` `deleted_at` DATETIME;
 
-
-
-ALTER TABLE `tx_applicant` ADD CONSTRAINT
-    `FK_tx_applicant_office` FOREIGN KEY (`office_id`)
-        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE `tx_applicant_almamater` ADD CONSTRAINT
-    `FK_tx_applicant_almamater_office` FOREIGN KEY (`office_id`)
-        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE `tx_applicant_document` ADD CONSTRAINT
-    `FK_tx_applicant_document_office` FOREIGN KEY (`office_id`)
-        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE `tx_applicant_family` ADD CONSTRAINT
-    `FK_tx_applicant_family_office` FOREIGN KEY (`office_id`)
-        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE `tx_applicant_grade` ADD CONSTRAINT
-    `FK_tx_applicant_family_grade` FOREIGN KEY (`office_id`)
-        REFERENCES `tx_office`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 UPDATE `tx_applicant` SET `office_id` = 1 where `office_id` IS NULL;
 UPDATE `tx_applicant_almamater` SET `office_id` = 1 where `office_id` IS NULL;
 UPDATE `tx_applicant_document` SET `office_id` = 1 where `office_id` IS NULL;
@@ -414,3 +392,26 @@ UPDATE `tx_applicant_grade` SET `office_id` = 1 where `office_id` IS NULL;
 
 UPDATE `tx_staff` SET `office_id` = 1 where `id` = 1;
 UPDATE `tx_staff` SET `user_id` = 1 where `id` = 1;
+
+
+ALTER TABLE `tx_event` CHANGE `date_start` `date_start` VARCHAR(20);
+UPDATE `tx_event` SET `date_start` = FROM_UNIXTIME(`date_start`);
+ALTER TABLE `tx_event` CHANGE `date_start` `date_start` DATETIME;
+
+ALTER TABLE `tx_event` CHANGE `date_end` `date_end` VARCHAR(20);
+UPDATE `tx_event` SET `date_end` = FROM_UNIXTIME(`date_end`);
+ALTER TABLE `tx_event` CHANGE `date_end` `date_end` DATETIME;
+
+ALTER TABLE `tx_event` CHANGE `created_at` `created_at` VARCHAR(20);
+UPDATE `tx_event` SET `created_at` = FROM_UNIXTIME(`created_at`);
+ALTER TABLE `tx_event` CHANGE `created_at` `created_at` DATETIME;
+
+ALTER TABLE `tx_event` CHANGE `updated_at` `updated_at` VARCHAR(20);
+UPDATE `tx_event` SET `updated_at` = FROM_UNIXTIME(`updated_at`);
+ALTER TABLE `tx_event` CHANGE `updated_at` `updated_at` DATETIME;
+
+ALTER TABLE `tx_event` CHANGE `deleted_at` `deleted_at` VARCHAR(20);
+UPDATE `tx_event` SET `deleted_at` = FROM_UNIXTIME(`deleted_at`);
+ALTER TABLE `tx_event` CHANGE `deleted_at` `deleted_at` DATETIME;
+
+ALTER TABLE `tx_event` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;

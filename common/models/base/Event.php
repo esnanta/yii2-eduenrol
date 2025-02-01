@@ -12,8 +12,8 @@ use mootensai\behaviors\UUIDBehavior;
  *
  * @property integer $id
  * @property string $title
- * @property integer $date_start
- * @property integer $date_end
+ * @property string $date_start
+ * @property string $date_end
  * @property string $location
  * @property string $content
  * @property integer $view_counter
@@ -22,12 +22,12 @@ use mootensai\behaviors\UUIDBehavior;
  * @property integer $is_using_comingsoon
  * @property integer $is_active
  * @property integer $days_for_comingsoon
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  * @property integer $is_deleted
- * @property integer $deleted_at
+ * @property string $deleted_at
  * @property integer $deleted_by
  * @property integer $verlock
  *
@@ -77,8 +77,9 @@ class Event extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date_start', 'date_end', 'view_counter', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['date_start', 'date_end', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['location', 'content', 'description'], 'string'],
+            [['view_counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['is_open_registration', 'is_using_comingsoon', 'is_active'], 'string', 'max' => 1],
             [['days_for_comingsoon'], 'string', 'max' => 2],

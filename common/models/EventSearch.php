@@ -45,6 +45,7 @@ class EventSearch extends \common\models\Event
             [['title', 'location', 'content','description'], 'safe'],
             [['is_open_registration'], 'string', 'max' => 1],
             [['is_using_comingsoon'], 'string', 'max' => 1],
+            [['is_active'], 'string', 'max' => 1],
             [['date_start_range', 'date_end_range'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
         ];
     }
@@ -82,7 +83,13 @@ class EventSearch extends \common\models\Event
             ->andFilterWhere(['like', 'description', $this->description]);
 
         $query->andFilterWhere(['>=', 'date_start', $this->date_start_first])
-              ->andFilterWhere(['<', 'date_start', $this->date_start_last]);      
+              ->andFilterWhere(['<', 'date_start', $this->date_start_last])
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'is_open_registration', $this->is_open_registration])
+            ->andFilterWhere(['like', 'is_using_comingsoon', $this->is_using_comingsoon])
+            ->andFilterWhere(['like', 'is_active', $this->is_active])
+            ->andFilterWhere(['like', 'days_for_comingsoon', $this->days_for_comingsoon]);
         
         $query->andFilterWhere(['>=', 'date_end', $this->date_end_first])
               ->andFilterWhere(['<', 'date_end', $this->date_end_last]);           

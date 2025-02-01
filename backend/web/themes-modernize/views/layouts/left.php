@@ -68,6 +68,9 @@ $paddingLeftChildMenu = '10px';
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Staff'), 'fa fa-angle-right'), ['/staff/index'], ['class' => 'sidebar-link']) ?>
                             </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Event'), 'fa fa-angle-right'), ['/event/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
                         </ul>
                     </li>
 

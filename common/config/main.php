@@ -76,6 +76,20 @@ return [
             ],
         ],
 
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@app/mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                //'host' => 'smtp.gmail.com', // your host, here using fake email server (https://mailtrap.io/). You can use gmail: 'host' => 'smtp.gmail.com'
+                'host' => 'mail.smanmba.sch.id', // your host, here using fake email server (https://mailtrap.io/). You can use gmail: 'host' => 'smtp.gmail.com'
+                'username' => 'no-reply@smanmba.sch.id',
+                'password' => 'noreply3a21',
+                'encryption' => 'tls',
+            ],
+        ],
+
         //https://www.yiiframework.com/doc/api/2.0/yii-web-user
         'user' => [
             'class' => 'yii\web\User',

@@ -27,8 +27,9 @@ class Event extends BaseEvent
     public function rules()
     {
         return [
-            [['date_start', 'date_end', 'view_counter', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['date_start', 'date_end', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['location', 'content', 'description'], 'string'],
+            [['view_counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
             [['title'], 'string', 'max' => 200],
             [['is_open_registration', 'is_using_comingsoon', 'is_active'], 'string', 'max' => 1],
             [['days_for_comingsoon'], 'string', 'max' => 2],
