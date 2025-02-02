@@ -2,7 +2,6 @@
 
 namespace frontend\controllers;
 
-use common\models\Applicant;
 use common\models\Event;
 use Yii;
 

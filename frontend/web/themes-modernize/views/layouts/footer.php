@@ -1,8 +1,13 @@
 <?php
-use yii\bootstrap5\Html;
+use common\helper\IconHelper;
 ?>
-<div class="mt-auto py-6 px-6 text-center d-print-none">
+
+<div class="mt-auto py-6 px-6 text-center">
     <p class="mb-0 fs-4">
-        &copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?>
-        <?= Yii::powered() ?></p>
+        Copyright &copy; by Nantha Seutia  <?=date('Y')?> |
+        <?= IconHelper::getGithub();?>
+        Yii2 Edu Enrolment
+        |
+        <?= IconHelper::getGlobe();?> Daraspace
+    </p>
 </div>

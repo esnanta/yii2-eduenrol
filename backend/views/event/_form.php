@@ -28,13 +28,13 @@ use yii\helpers\Html;
             
             'date_start' => [
                 'type' => Form::INPUT_WIDGET, 
-                'widgetClass'=> DateControl::className(),
+                'widgetClass'=> DateControl::class,
                 'format'=> DateControl::FORMAT_DATETIME,
             ],
 
             'date_end' => [
                 'type' => Form::INPUT_WIDGET, 
-                'widgetClass'=> DateControl::className(),
+                'widgetClass'=> DateControl::class,
                 'format'=>DateControl::FORMAT_DATETIME,
             ],             
             
@@ -44,7 +44,7 @@ use yii\helpers\Html;
 
     ]);   
     
-    echo $form->field($model, 'content')->widget(CKEditor::className(), [
+    echo $form->field($model, 'content')->widget(CKEditor::class, [
         'editorOptions' => [
             'preset' => 'full', // basic, standard, full
             'inline' => false,

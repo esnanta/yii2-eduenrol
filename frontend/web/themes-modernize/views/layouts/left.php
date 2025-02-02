@@ -2,6 +2,7 @@
 
 use common\models\ApplicantAlmamater;
 use common\models\ApplicantFamily;
+use common\models\Event;
 use common\models\Semester;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -166,16 +167,25 @@ use yii\helpers\Url;
                         ?>
                     </li>
                     <?php if ($module->enableRegistration) : ?>
-                        <li class="sidebar-item">
-                            <?php
-                            $register = Html::a(
-                                getMenu(Yii::t('app', 'Register'), 'fa fa-user-plus'),
-                                ['user/register'],
-                                ['class' => 'sidebar-link']
-                            );
-                            echo str_replace('user/user/', 'user/', $register);
-                            ?>
-                        </li>
+                    <?php
+                        $event = Event::find()->where(['is_active' => Event::IS_ACTIVE_ENABLED])->one();
+                        $timeStart = strtotime($event->date_start);
+                        $timeEnd = strtotime($event->date_end);
+                        $currentTime = time();
+
+                        if($currentTime >= $timeStart && $currentTime <= $timeEnd):
+                    ?>
+                            <li class="sidebar-item">
+                                <?php
+                                $register = Html::a(
+                                    getMenu(Yii::t('app', 'Register'), 'fa fa-user-plus'),
+                                    ['user/register'],
+                                    ['class' => 'sidebar-link']
+                                );
+                                echo str_replace('user/user/', 'user/', $register);
+                                ?>
+                            </li>
+                        <?php endif ?>
                     <?php endif ?>
                 <?php } ?>
             </ul>
