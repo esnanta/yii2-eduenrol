@@ -274,7 +274,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'group'=>true,
-                        'label'=>'5: '.Yii::t('app', 'Description'),
+                        'label'=>'5: '.Yii::t('app', 'Alasan Masuk Sekolah Ini'),
                         'rowOptions'=>['class'=>'default']
                     ],
 
