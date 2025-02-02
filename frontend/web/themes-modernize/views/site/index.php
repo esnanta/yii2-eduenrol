@@ -29,7 +29,7 @@ Yii2TimerCountDown::widget([
 
 <div class="card border-default mb-3">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span class="badge text-bg-primary">PPDB SMAN MODAL BANGSA ARUN 2025/2026</span>
+        <span class="badge text-bg-primary">PPDB SMAN MODAL BANGSA ARUN</span>
         <span>
             <div class="<?= $badgeLabel; ?>">
                 <div id="time-down-counter-"></div>
