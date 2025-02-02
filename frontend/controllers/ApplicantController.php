@@ -310,7 +310,7 @@ class ApplicantController extends Controller
         $applicant              = $this->findModelByUser(Yii::$app->user->identity->id);
         $applicantAlmamaterElementary   = ApplicantAlmamater::find()->where([
             'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
-        $applicantAlmamaterSMP   = ApplicantAlmamater::find()->where([
+        $applicantAlmamaterJunior   = ApplicantAlmamater::find()->where([
             'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
 
         $courses                = DataListService::getCourse();
@@ -322,8 +322,7 @@ class ApplicantController extends Controller
             'logoRight'             => $logoRight,
             'keteranganKartu'       => $keteranganKartu,
             'applicant'             => $applicant,
-            '$applicantAlmamaterElementary'  => $applicantAlmamaterElementary,
-            '$applicantAlmamaterJunior' => $applicantAlmamaterJunior,
+            'applicantAlmamaterJunior' => $applicantAlmamaterJunior,
             'courses'               => $courses,
             'semesters'             => $semesters
 

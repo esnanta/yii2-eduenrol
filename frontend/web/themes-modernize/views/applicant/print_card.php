@@ -3,123 +3,158 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
-$width1 = '5px';
-$width2 = '300px';
 ?>
 
-<!--Invoice Header-->
-<div class="row invoice-header">
-    <div class="col-xs-3 text-center">
-        <?= Html::img(str_replace('frontend', 'backend', $logoLeft->getImageUrl()), ['class'=>'img-responsive','style'=>'width:80px;height:90px'])?> 
-    </div>
-    <div class="col-xs-6 invoice-numb text-center">
-        <h3>Kartu Peserta Ujian PPDB<br>
-        SMAN Modal Bangsa Arun<br>
-        Tahun Ajaran 2020/2021</h3>
-    </div>
-    <div class="col-xs-3 text-center">
-        <?= Html::img(str_replace('frontend', 'backend', $logoRight->getImageUrl()), ['class'=>'img-responsive pull-right','style'=>'width:80px;height:90px'])?> 
-    </div> 
-</div>
+<style>
+    @media print {
+        body {
+            width: 100%;
+            margin: 0;
+        }
+        .container-fluid {
+            padding: 0;
+        }
+    }
+</style>
 
-<br>
-
-<!--Invoice Detials-->
-<div class="row invoice-info">
-
-    <div class="col-xs-3">
-        <div class="tag-box tag-box-v3" style="padding:10px">
-            <?= Html::img(str_replace('frontend', 'backend', $applicant->getImageUrl()), ['class'=>'img-responsive','style'=>'width:100%;height:150px'])?> 
+    <div class="container-fluid">
+        <!-- Invoice Header -->
+        <div class="row my-4 align-items-center">
+            <div class="col-3 text-center">
+                <?= $logoLeft; ?>
+            </div>
+            <div class="col-6 text-center">
+                <h3>
+                    Kartu Peserta Ujian PPDB<br/>
+                    SMAN Modal Bangsa Arun<br/>
+                    Tahun Ajaran 2025/2026
+                </h3>
+            </div>
+            <div class="col-3 text-center">
+                <?= $logoRight; ?>
+            </div>
         </div>
-    </div>
-    <div class="col-xs-9">
-        <div class="tag-box tag-box-v3" style="padding:10px">
-            <h4>
-                Nomor Peserta : <?=$applicant->record_number;?>
-                <span class="pull pull-right"><small><i class="fa fa-print"></i> <?= Yii::$app->formatter->format(time(), 'date'); ?></small></span>
-            </h4>
-            <div class="row">
-                <div class="col-md-12 col-xs-12">
-                    <table class="table table-striped" style="margin-bottom:0px">
-                        <tbody>
-                            <tr>
-                                <td style="width: 50px">Nama</td>
-                                <td>: <?=$applicant->title;?></td>
-                            </tr>   
-                            <tr>
-                                <td>NISN</td>
-                                <td>: <?= $applicantAlmamater->national_registration_number;?></td>
-                            </tr>  
-                            <tr>
-                                <td style="width: 50px">Almamater</td>
-                                <td>: <?= $applicantAlmamater->title;?></td>
-                            </tr>                              
-                        </tbody>
-                    </table>                      
+
+        <!-- Invoice Details -->
+        <div class="row mb-4">
+            <div class="col-3">
+                <div class="border p-3">
+                    <?= Html::img(str_replace('frontend', 'backend', $applicant->getImageUrl()), ['class'=>'img-fluid','style'=>'max-height:150px; object-fit: contain;'])?>
                 </div>
-            </div>             
+            </div>
+            <div class="col-9">
+                <div class="border p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h4>
+                            Nomor Peserta : <?= $applicant->record_number; ?>
+                        </h4>
+                        <small class="text-muted"><i class="fas fa-print"></i> <?= Yii::$app->formatter->format(time(), 'date'); ?></small>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 80px">Nama</td>
+                                    <td>: <?= $applicant->title; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>NISN</td>
+                                    <td>: <?= $applicantAlmamaterJunior->national_registration_number; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Almamater</td>
+                                    <td>: <?= $applicantAlmamaterJunior->title; ?></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<!--End Invoice Detials-->
 
-<!--Invoice Footer-->
-<div class="row">
-    <div class="col-xs-6 text-left">
-        <div class="tag-box tag-box-v3 no-margin-bottom">
-            <?=$keteranganKartu->content;?>
-        </div>     
-    </div>
-    <div class="col-xs-6">
-        
-        <div class="tag-box tag-box-v3 no-margin-bottom">
-            <address class="no-margin-bottom">
-                <strong>VERIFIKASI PENGAWAS</strong>
-                
-                <br>
-                <br>
-                
-                <table class="table table-striped">
-                    <tbody>
+        <!-- Invoice Footer -->
+        <div class="row">
+            <div class="col-7">
+                <div class="border p-3 mb-3">
+                    <p><strong>Jadwal Kegiatan PPDB TP 2025/2026 Gel 2</strong></p>
+                    <ul class="list-unstyled">
+                        <li>Pendaftaran Calon Siswa : Senin, 03 Feb - Minggu 09 Februari 2025</li>
+                        <li>Tes Akademik, Kesehatan & Wawancara : Selasa, 11 Februari 2025, pukul 08.00 - Selesai</li>
+                        <li>Pengumuman Kelulusan : Rabu, 12 Februari 2025</li>
+                        <li>
+                            Pendaftaran Ulang : 15-21 Februari 2025, Pukul 08.30-15.00 (Sabtu,
+                            Pukul 08.30-14.00)
+                        </li>
+                    </ul>
+
+                    <p><strong>Informasi Tes Tahap 1 (Akademik)</strong></p>
+
+                    <ul class="list-unstyled">
+                        <li>Hari/Tanggal : Selasa, 11 Februari 2025</li>
+                        <li>Mapel : Matematika, Bahasa Indonesia, IPA, Bahasa Inggris</li>
+                        <li>Sesi 1 : 08.00-10.00</li>
+                        <li>Sesi 2 : 10.30-12.30</li>
+                        <li>Lokasi : SMAN Modal Bangsa Arun</li>
+                    </ul>
+
+                    <p><strong>Perlengkapan Peserta Tes</strong></p>
+                    <ul class="list-unstyled">
+                        <li>Kartu Peserta PPDB 2024/2025</li>
+                        <li>Laptop atau smartphone</li>
+                        <li>Pakaian Seragam Sekolah Asal dan Memakai Sepatu</li>
+                        <li>Alat Tulis : Pensil, Karet Penghapus, Rautan, Pulpen</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="border p-3 mb-3">
+                    <address class="mb-0">
+                        <strong>VERIFIKASI PENGAWAS</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-borderless">
+                            <tbody>
                             <tr>
                                 <td style="width: 50%">Tes Akademik</td>
                                 <td>:</td>
-                            </tr>   
+                            </tr>
                             <tr>
                                 <td>Kemampuan Bahasa</td>
                                 <td>:</td>
-                            </tr>        
+                            </tr>
                             <tr>
-                                <td>Wawancara<br></td>
+                                <td>Wawancara<br/></td>
                                 <td>:</td>
-                            </tr>   
+                            </tr>
                             <tr>
                                 <td>Baca Quran</td>
                                 <td>:</td>
-                            </tr>                    
-                    </tbody>
-                </table>                 
-                
-            </address>
-        </div>        
-        <br>
-        <div class="tag-box tag-box-v3 no-margin-bottom  text-center">
-            <address class="no-margin-bottom">
-                <span class="pull-left">Lhokseumawe,</span><br>
-                Panitia PPDB
-                <br>
-                <br>
-                <br>
-                <br> 
-                <br> 
-                (..................................................)
-            </address>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </address>
+                </div>
+                <div class="border p-3 text-center">
+                    <address class="mb-0">
+                        <span class="float-start">Lhokseumawe,</span><br>
+                        Panitia PPDB
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        (..................................................)
+                    </address>
+                </div>
+            </div>
         </div>
+        <button class="btn btn-primary my-3 float-end d-print-none" onclick="javascript:window.print();">
+            <i class="fas fa-print"></i> Print
+        </button>
     </div>
-</div>
-
-<button class="btn-u sm-margin-bottom-10 pull-right hidden-print" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</button>
 
 <?php
-    $this->title = 'Print '.$applicant->title;
+$this->title = 'Print '.$applicant->title;
 ?>
