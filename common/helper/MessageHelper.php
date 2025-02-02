@@ -208,4 +208,15 @@ class MessageHelper
             )]
         );
     }
+
+    public static function getFlashRemoveContentSuccess()
+    {
+        Yii::$app->getSession()->setFlash(
+            'success',
+            ['message' => Yii::t(
+                'app',
+                'File removed successfully.'
+            )]
+        );
+    }
 }

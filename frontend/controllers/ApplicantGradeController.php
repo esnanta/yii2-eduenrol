@@ -39,9 +39,13 @@ class ApplicantGradeController extends Controller
     {
         if (Yii::$app->user->can('index-applicantgrade')) {
             $applicant = $this->findModelByUser(Yii::$app->user->identity->id);
-            $applicantGradeList = ApplicantGrade::findAll(['applicant_id' => $applicant->id]);
+            $applicantGradeList = ApplicantGrade::findAll([
+                'applicant_id' => $applicant->id,
+                'semester_id' => $sem,
+            ]);
 
             $courseList = DataListService::getCourse();
+            $semesterList = DataListService::getSemester();
 
             if (empty($applicantGradeList)):
                 $courseListNotArray = Course::find()->orderBy(['sequence' => SORT_ASC])->all();
@@ -59,6 +63,7 @@ class ApplicantGradeController extends Controller
             $searchModel = new ApplicantGradeSearch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
             $dataProvider->query->andWhere('applicant_id = '.$applicant->id);
+            $dataProvider->query->andWhere('semester_id = '.$sem);
             $dataProvider->pagination->pageSize = 10;
             $dataProvider->setSort([
                 'defaultOrder' => [
@@ -71,6 +76,7 @@ class ApplicantGradeController extends Controller
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel,
                 'courseList' => $courseList,
+                'semesterList' => $semesterList
             ]);
 
         } else {

@@ -11,6 +11,7 @@ use common\models\Employment;
 use common\models\Income;
 use common\models\Occupation;
 use common\models\Office;
+use common\models\Page;
 use common\models\Religion;
 use common\models\Residence;
 use common\models\Semester;
@@ -91,6 +92,11 @@ class DataListService
     {
         return ArrayHelper::map(Staff::find()
             ->where(['office_id' => DataIdService::getOfficeId()])
+            ->asArray()->all(), 'id', 'title');
+    }
+    public static function getPage(): array
+    {
+        return ArrayHelper::map(Page::find()
             ->asArray()->all(), 'id', 'title');
     }
 }

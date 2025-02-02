@@ -1,15 +1,13 @@
 <?php
 
+use common\service\PageService;
 use yii\helpers\Html;
-
-$width1 = '5px';
-$width2 = '300px';
 ?>
 
 <!--Invoice Header-->
 <div class="row invoice-header">
     <div class="col-xs-3 text-center">
-        <?= Html::img(str_replace('frontend', 'backend', $logoLeft->getImageUrl()), ['class'=>'img-responsive','style'=>'width:80px;height:90px'])?> 
+        <?= $logoLeft ?>
     </div>
     <div class="col-xs-6 invoice-numb text-center">
         <h3>Dokumen Pendaftaran Siswa Baru<br>
@@ -17,7 +15,7 @@ $width2 = '300px';
         Tahun Ajaran 2020/2021</h3>
     </div>
     <div class="col-xs-3 text-center">
-        <?= Html::img(str_replace('frontend', 'backend', $logoRight->getImageUrl()), ['class'=>'img-responsive pull-right','style'=>'width:80px;height:90px'])?> 
+        <?= $logoRight; ?>
     </div> 
 </div>
 
@@ -42,15 +40,15 @@ $width2 = '300px';
                         <tbody>
                             <tr>
                                 <td style="width: 50px">NISN</td>
-                                <td>: <?= $applicantAlmamater->national_registration_number;?></td>
+                                <td>: <?= $applicantAlmamaterElementary->national_registration_number;?></td>
                             </tr>   
                             <tr>
                                 <td>Almamater</td>
-                                <td>: <?= $applicantAlmamater->title;?></td>
+                                <td>: <?= $applicantAlmamaterElementary->title;?></td>
                             </tr>   
                             <tr>
                                 <td>Rata-rata</td>
-                                <td>: <?= Yii::$app->formatter->asDecimal($applicant->sumAverage());?></td>
+                                <td>: <?= $applicant->sumAverage();?></td>
                             </tr>                    
                         </tbody>
                     </table>                      
@@ -61,9 +59,8 @@ $width2 = '300px';
 </div>
 <!--End Invoice Detials-->
 
-<?= $this->render('profile', [
+<?= $this->render('view', [
     'model'             => $applicant,
-    'userList'          => $userList,
     'religionList'      => $religionList,
     'citizenshipList'   => $citizenshipList,
     'ganderList'        => $ganderList,
@@ -140,7 +137,7 @@ $width2 = '300px';
 
                     <tr>
                         <th style="width:10px;min-width:0px">No</th>
-                        <th><?=Yii::$app->params['Attribute_Course'];?></th>
+                        <th><?=Yii::t('app', 'Course');?></th>
                             <?php
                                 foreach ($semesters as $i=>$semesterModel) { 
                             ?>                    
@@ -186,7 +183,7 @@ $width2 = '300px';
     
 <?php if(!empty($applicantFather)){ ?>    
 
-    <?= $this->render('family', [
+    <?= $this->render('/applicant-family/view', [
 
         'model'                 => $applicantFather,
         'familyTypeList'        => $familyTypeList,
@@ -213,7 +210,7 @@ $width2 = '300px';
     
 <?php if(!empty($applicantMother)){ ?>        
 
-    <?= $this->render('family', [
+    <?= $this->render('/applicant-family/view', [
 
         'model'                 => $applicantMother,
         'familyTypeList'        => $familyTypeList,
@@ -240,7 +237,7 @@ $width2 = '300px';
  
 <?php if(!empty($applicantGuardian)){ ?>
 
-    <?= $this->render('family', [
+    <?= $this->render('/applicant-family/view', [
 
         'model'                 => $applicantGuardian,
         'familyTypeList'        => $familyTypeList,

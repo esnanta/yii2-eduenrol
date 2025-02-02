@@ -123,11 +123,16 @@ use yii\helpers\Url;
                                     </li>
                             <?php
                                 }
-
                             ?>
                         </ul>
                     </li>
-
+                    <li class="sidebar-item">
+                        <?= Html::a(
+                            getMenu(Yii::t('app', 'Summary'), 'fa fa-angle-right'),
+                            ['/applicant/summary','title'=>$username],
+                            ['class' => 'sidebar-link']
+                        ) ?>
+                    </li>
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">

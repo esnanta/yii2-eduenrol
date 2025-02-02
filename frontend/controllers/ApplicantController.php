@@ -4,13 +4,18 @@ namespace frontend\controllers;
 
 use common\models\ApplicantAlmamater;
 use common\models\ApplicantFamily;
+use common\models\Course;
+use common\models\Document;
 use common\models\EducationalStage;
 use common\models\Event;
+use common\models\Page;
 use common\models\Semester;
 use common\service\DataListService;
+use common\service\PageService;
 use Yii;
 use common\models\Applicant;
 use yii\db\StaleObjectException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -177,15 +182,15 @@ class ApplicantController extends Controller
             }
 
             $applicant              = $this->findModelByUser(Yii::$app->user->identity->id);
-            $applicantAlmamaterSD   = ApplicantAlmamater::find()->where(['applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
-            $applicantAlmamaterSMP  = ApplicantAlmamater::find()->where(['applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
+            $applicantAlmamaterElementary   = ApplicantAlmamater::find()->where(['applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
+            $applicantAlmamaterJunior  = ApplicantAlmamater::find()->where(['applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
             $applicantFather        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_FATHER])->one();
             $applicantMother        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_MOTHER])->one();
             $applicantGuardian      = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_GUARDIAN])->one();
 
-            $semesters              = DataListService::getSemester();
-            $courses                = DataListService::getCourse();
-            $documents              = DataListService::getDocument();
+            $semesters              = Semester::find()->all();
+            $courses                = Course::find()->all();
+            $documents              = Document::find()->all();
 
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -194,8 +199,8 @@ class ApplicantController extends Controller
                 return $this->render('summary', [
                     'applicant'                 => $model,
                     'event'                     => $event,
-                    'applicantAlmamaterSD'      => $applicantAlmamaterSD,
-                    'applicantAlmamaterSMP'    => $applicantAlmamaterSMP,
+                    'applicantAlmamaterElementary'      => $applicantAlmamaterElementary,
+                    'applicantAlmamaterJunior'    => $applicantAlmamaterJunior,
                     'applicantFather'           => $applicantFather,
                     'applicantMother'           => $applicantMother,
                     'applicantGuardian'         => $applicantGuardian,
@@ -212,79 +217,83 @@ class ApplicantController extends Controller
     }
 
     public function actionPrintDocument($title=null){
+        if(Yii::$app->user->can('view-applicant')){
+            $logoLeft           = PageService::getLogo1('80px','90px');
+            $logoRight          = PageService::getLogo2('80px','90px');
 
-        $logoLeft               = ThemeDetail::getByToken(Yii::$app->params['ContentToken_LogoReport1']);
-        $logoRight              = ThemeDetail::getByToken(Yii::$app->params['ContentToken_LogoReport2']);
+            $applicant  = $this->findModelByUser(Yii::$app->user->identity->id);
 
-        $applicant              = $this->findModelByUser(Yii::$app->user->identity->id);
+            $applicantAlmamaterElementary   = ApplicantAlmamater::find()->where([
+                'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
+            $applicantAlmamaterJunior  = ApplicantAlmamater::find()->where([
+                'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
 
-        $applicantAlmamaterSD   = ApplicantAlmamater::find()->where([
-            'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::SD_SEDERAJAT])->one();
-        $applicantAlmamaterSMP  = ApplicantAlmamater::find()->where([
-            'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::SMP_SEDERAJAT])->one();
+            $applicantFather        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_FATHER])->one();
+            $applicantMother        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_MOTHER])->one();
+            $applicantGuardian      = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_GUARDIAN])->one();
+            //$applicantDocuments     = ApplicantDocument::find()->where(['applicant_id'=>$applicant->id])->all();
 
-        $applicantFather        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_FATHER])->one();
-        $applicantMother        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_MOTHER])->one();
-        $applicantGuardian      = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_GUARDIAN])->one();
-        $applicantDocuments     = ApplicantDocument::find()->where(['applicant_id'=>$applicant->id])->all();
+            $courses                = Course::find()->orderBy(['id'=>SORT_ASC])->all();
+            $semesters              = Semester::find()->orderBy(['id'=>SORT_ASC])->all();
 
-        $courses                = Course::find()->orderBy(['id'=>SORT_ASC])->all();
-        $semesters              = Semester::find()->orderBy(['id'=>SORT_ASC])->all();
+            $religionList           = DataListService::getReligion();
+            $applicantList          = ArrayHelper::map(Applicant::find()->asArray()->where([
+                'user_id'=>$applicant->user_id])->all(), 'id', 'title');
 
-        $userList               = ArrayHelper::map(User::find()->asArray()->where(['id'=>$applicant->user_id])->all(), 'id', 'email');
-        $religionList           = ArrayHelper::map(Religion::find()->asArray()->all(), 'id','title');
-        $applicantList          = ArrayHelper::map(Applicant::find()->asArray()->where(['user_id'=>$applicant->user_id])->all(), 'id', 'title');
+            $residenceList          = DataListService::getResidence();
+            $transportationList     = DataListService::getTransportation();
+            $educationalStageList   = DataListService::getEducationalStage();
+            $occupationList         = DataListService::getOccupation();
+            $incomeList             = DataListService::getIncome();
 
-        $residenceList          = ArrayHelper::map(Residence::find()->asArray()->all(), 'id','title');
-        $transportationList     = ArrayHelper::map(Transportation::find()->asArray()->all(), 'id','title');
-        $educationalStageList   = ArrayHelper::map(EducationalStage::find()->asArray()->all(), 'id','title');
-        $occupationList         = ArrayHelper::map(Occupation::find()->asArray()->all(), 'id','title');
-        $incomeList             = ArrayHelper::map(Income::find()->asArray()->all(), 'id','title');
+            $ganderList             = Applicant::getArrayGenderStatus();
+            $bloodTypeList          = Applicant::getArrayBloodType();
+            $childStatusList        = Applicant::getArrayChildStatus();
+            $citizenshipList        = Applicant::getArrayCitizenshipStatus();
+            $tuitionPayerList       = ApplicantAlmamater::getArrayTuitionPayer();
+            $schoolStatusList       = ApplicantAlmamater::getArraySchoolStatus();
+            $familyTypeList         = ApplicantFamily::getArrayModule();
 
-        $ganderList             = Applicant::getArrayGenderStatus();
-        $bloodTypeList          = Applicant::getArrayBloodType();
-        $childStatusList        = Applicant::getArrayChildStatus();
-        $citizenshipList        = Applicant::getArrayCitizenshipStatus();
-        $tuitionPayerList       = ApplicantAlmamater::getArrayTuitionPayer();
-        $schoolStatusList       = ApplicantAlmamater::getArraySchoolStatus();
-        $familyTypeList         = ApplicantFamily::getArrayModule();
+            return $this->render('print_document', [
 
-        return $this->render('print_document', [
+                'logoLeft'              => $logoLeft,
+                'logoRight'             => $logoRight,
 
-            'logoLeft'              => $logoLeft,
-            'logoRight'             => $logoRight,
+                'applicant'             => $applicant,
+                'applicantAlmamaterElementary'  => $applicantAlmamaterElementary,
+                'applicantAlmamaterJunior' => $applicantAlmamaterJunior,
+                'applicantFather'       => $applicantFather,
+                'applicantMother'       => $applicantMother,
+                'applicantGuardian'     => $applicantGuardian,
 
-            'applicant'             => $applicant,
-            'applicantAlmamaterSD'  => $applicantAlmamaterSD,
-            'applicantAlmamaterSMP' => $applicantAlmamaterSMP,
-            'applicantFather'       => $applicantFather,
-            'applicantMother'       => $applicantMother,
-            'applicantGuardian'     => $applicantGuardian,
-            'applicantDocuments'    => $applicantDocuments,
+                'courses'               => $courses,
+                'semesters'             => $semesters,
 
-            'courses'               => $courses,
-            'semesters'             => $semesters,
+                'religionList'          => $religionList,
+                'citizenshipList'       => $citizenshipList,
+                'ganderList'            => $ganderList,
+                'bloodTypeList'         => $bloodTypeList,
+                'childStatusList'       => $childStatusList,
 
-            'userList'              => $userList,
-            'religionList'          => $religionList,
-            'citizenshipList'       => $citizenshipList,
-            'ganderList'            => $ganderList,
-            'bloodTypeList'         => $bloodTypeList,
-            'childStatusList'       => $childStatusList,
+                'applicantList'         => $applicantList,
 
-            'applicantList'         => $applicantList,
+                'residenceList'         => $residenceList,
+                'transportationList'    => $transportationList,
+                'tuitionPayerList'      => $tuitionPayerList,
+                'educationalStageList'  => $educationalStageList,
+                'schoolStatusList'      => $schoolStatusList,
+                'familyTypeList'        => $familyTypeList,
+                'occupationList'        => $occupationList,
+                'incomeList'            => $incomeList,
 
-            'residenceList'         => $residenceList,
-            'transportationList'    => $transportationList,
-            'tuitionPayerList'      => $tuitionPayerList,
-            'educationalStageList'  => $educationalStageList,
-            'schoolStatusList'      => $schoolStatusList,
-            'familyTypeList'        => $familyTypeList,
-            'occupationList'        => $occupationList,
-            'incomeList'            => $incomeList,
+                'editMode'              => false
+            ]);
+        }
+        else{
+            MessageHelper::getFlashAccessDenied();
+            throw new ForbiddenHttpException;
+        }
 
-            'editMode'              => false
-        ]);
 
     }
 
@@ -292,13 +301,14 @@ class ApplicantController extends Controller
     public function actionPrintCard($title=null){
 
         //CACHE CONTENT
-        $logoLeft           = '-';
-        $logoRight          = '-';
+        $logoLeft           = PageService::getLogo1('80px','90px');
+        $logoRight          = PageService::getLogo2('80px','90px');
         $keteranganKartu    = '-';
 
 
+
         $applicant              = $this->findModelByUser(Yii::$app->user->identity->id);
-        $applicantAlmamaterSD   = ApplicantAlmamater::find()->where([
+        $applicantAlmamaterElementary   = ApplicantAlmamater::find()->where([
             'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
         $applicantAlmamaterSMP   = ApplicantAlmamater::find()->where([
             'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
@@ -312,12 +322,27 @@ class ApplicantController extends Controller
             'logoRight'             => $logoRight,
             'keteranganKartu'       => $keteranganKartu,
             'applicant'             => $applicant,
-            'applicantAlmamaterSD'  => $applicantAlmamaterSD,
-            'applicantAlmamaterSMP' => $applicantAlmamaterSMP,
+            '$applicantAlmamaterElementary'  => $applicantAlmamaterElementary,
+            '$applicantAlmamaterJunior' => $applicantAlmamaterJunior,
             'courses'               => $courses,
             'semesters'             => $semesters
 
         ]);
 
+    }
+
+    public function actionFinal($title=null){
+        if(Yii::$app->user->can('update-applicant')){
+            $model                  = $this->findModelByUser(Yii::$app->user->identity->id);
+            $model->final_status    = Applicant::FINAL_STATUS_YES;
+            $model->date_final      = date('Y-m-d H:i:s');
+            $model->save();
+
+            $this->redirect(['summary', 'title'=>$model->title]);
+        }
+        else{
+            MessageHelper::getFlashAccessDenied();
+            throw new ForbiddenHttpException;
+        }
     }
 }

@@ -162,6 +162,13 @@ values
     ('view-office',2,'View Office',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
     ('delete-office',2,'Delete Office',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
+insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
+values
+    ('index-page',2,'Index Page',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('create-page',2,'Create Page',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('update-page',2,'Update Page',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('view-page',2,'View Page',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP()),
+    ('delete-page',2,'Delete Page',NULL,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 insert  into `tx_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`created_at`,`updated_at`)
 values
@@ -303,6 +310,14 @@ values
     ('update-master','update-office'),
     ('view-master','view-office'),
     ('delete-master','delete-office');
+
+insert  into `tx_auth_item_child`(`parent`,`child`)
+values
+    ('index-master','index-page'),
+    ('create-master','create-page'),
+    ('update-master','update-page'),
+    ('view-master','view-page'),
+    ('delete-master','delete-page');
 
 insert  into `tx_auth_item_child`(`parent`,`child`)
 values

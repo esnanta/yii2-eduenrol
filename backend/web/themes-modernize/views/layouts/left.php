@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Page;
 use yii\helpers\Html;
 
 function getMenu($_menuName, $_classIcon)
@@ -37,16 +38,28 @@ $paddingLeftChildMenu = '10px';
                         </a>
                         <ul class="collapse list-unstyled" id="officeMenu" data-bs-parent="#sidebarnav">
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Office'), 'fa fa-angle-right'), ['/office/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Office'), 'fa fa-angle-right'),
+                                    ['/office/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Employment'), 'fa fa-angle-right'), ['/employment/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Employment'), 'fa fa-angle-right'),
+                                    ['/employment/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Staff'), 'fa fa-angle-right'), ['/staff/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Staff'), 'fa fa-angle-right'),
+                                    ['/staff/index'], ['class' => 'sidebar-link']) ?>
                             </li>
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
-                                <?= Html::a(getMenu(Yii::t('app', 'Event'), 'fa fa-angle-right'), ['/event/index'], ['class' => 'sidebar-link']) ?>
+                                <?= Html::a(getMenu(Yii::t('app', 'Event'), 'fa fa-angle-right'),
+                                    ['/event/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Page (Text)'), 'fa fa-angle-right'),
+                                    ['/page/index','type'=>Page::PAGE_TYPE_TEXT], ['class' => 'sidebar-link']) ?>
+                            </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Page (Image)'), 'fa fa-angle-right'),
+                                    ['/page/index','type'=>Page::PAGE_TYPE_IMAGE], ['class' => 'sidebar-link']) ?>
                             </li>
                         </ul>
                     </li>

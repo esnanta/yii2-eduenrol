@@ -118,4 +118,9 @@ class IconHelper
     {
         return '<i class="fas fa-copy"></i>';
     }
+
+    public static function getMinus(): string
+    {
+        return '<i class="fas fa-minus"></i>';
+    }
 }

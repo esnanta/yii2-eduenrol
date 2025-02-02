@@ -1,12 +1,21 @@
 <?php
 
+use common\helper\DataCompletionHelper;
 use common\models\Applicant;
 use common\models\ApplicantFamily;
+use common\models\ApplicantGrade;
 use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
  * @var \common\models\Applicant $applicant
+ * @var \common\models\ApplicantAlmamater $applicantAlmamaterElementary
+ * @var \common\models\ApplicantAlmamater $applicantAlmamaterJunior
+ * @var \common\models\ApplicantFamily $applicantFather
+ * @var \common\models\ApplicantFamily $applicantMother
+ * @var \common\models\ApplicantFamily $applicantGuardian
+ * @var \common\models\Semester $semesters
+ * @var \common\models\Course $courses
  */
 
 $this->title = $applicant->title;
@@ -34,292 +43,222 @@ $printKartuDisplay   = ($finalStatus == Applicant::FINAL_STATUS_YES) ?
                                 '<button type="button" class="btn btn-md btn-success" disabled><i class="fa fa-print"></i> Print Kartu</button>';
 
 
+$columnsApplicant = [
+    'identity_number', 'title', 'gender_status', 'birth_place', 'date_birth',
+    'religion_id', 'citizenship_status',
+    'address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province',
+    'phone_number', 'hobby', 'blood_type', 'height', 'weight', 'illness', 'disability'
+];
+
+$filledApplicantPercentage = DataCompletionHelper::calculateFilledPercentage(
+        $applicant, $columnsApplicant
+);
+$emptyColumnsApplicant = DataCompletionHelper::getEmptyColumns($applicant, $columnsApplicant);
+
+$columnsAcademic = [
+    'title', 'national_registration_number', 'school_registration_number',
+    'residence_id',
+    'address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province',
+    'transportation_id', 'tuition_payer'
+];
+
+$filledAcademicElementaryPercentage = DataCompletionHelper::calculateFilledPercentage(
+        $applicantAlmamaterElementary, $columnsAcademic);
+
+$emptyColumnsAcademicElementary = DataCompletionHelper::getEmptyColumns(
+        $applicantAlmamaterElementary, $columnsAcademic);
+
+$filledAcademicJuniorPercentage = DataCompletionHelper::calculateFilledPercentage(
+    $applicantAlmamaterJunior, $columnsAcademic);
+
+$emptyColumnsAcademicJunior = DataCompletionHelper::getEmptyColumns(
+    $applicantAlmamaterJunior, $columnsAcademic);
+
+$columnsFamily = [
+    'title', 'identity_number', 'birth_place', 'date_birth',
+    'religion_id', 'citizenship_status','educational_stage_id', 'occupation_id', 'income_id',
+    'address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province',
+    'phone_number'
+];
+$filledFamilyFatherPercentage = DataCompletionHelper::calculateFilledPercentage(
+    $applicantFather, $columnsFamily
+);
+$filledFamilyMotherPercentage = DataCompletionHelper::calculateFilledPercentage(
+    $applicantMother, $columnsFamily
+);
+$filledFamilyGuardianPercentage = DataCompletionHelper::calculateFilledPercentage(
+    $applicantGuardian, $columnsFamily
+);
+
+
+$fieldFilled = 0;
+$totalFields = count($semesters) * count($courses); // Total expected grade fields
+
+foreach ($semesters as $semesterModel) {
+    foreach ($courses as $courseModel) {
+
+        $applicantGrade = ApplicantGrade::find()->where([
+            'applicant_id' => $applicant->id,
+            'semester_id'  => $semesterModel->id,
+            'course_id'    => $courseModel->id,
+        ])->one();
+
+        if (!empty($applicantGrade) && $applicantGrade->grade > 0) {
+            // Check if 'grade' is filled
+            $filledPercentage = DataCompletionHelper::calculateFilledPercentage($applicantGrade, ['grade']);
+
+            if ($filledPercentage > 0) {
+                $fieldFilled++; // Count as filled
+            }
+        }
+    }
+}
+
+// Calculate the overall filled percentage
+$overallFilledGradePercentage = ceil(($totalFields > 0) ? ($fieldFilled / $totalFields) * 100 : 0);
 ?>
-
-
 <!-- Info Panel -->
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-tasks"></i> Summary</h3>
+<div class="card">
+    <div class="card-header" style="background-color:#e3f2fd; ">
+        <h3 class="card-title"><i class="fas fa-tasks"></i> Summary</h3>
     </div>
-    <div class="panel-body">
-        <h4>Progress Pengisian Data <span class="pull pull-right"><?= $finalDisplayStatus.' '.$printBerkasDisplay.' '.$printKartuDisplay; ?></span></h4>
+    <div class="card-body">
+        <h4>Progress Pengisian Data <span class="float-end"><?= $finalDisplayStatus.' '.$printBerkasDisplay.' '.$printKartuDisplay; ?></span></h4>
         <br>
-        <div class="tag-box tag-box-v2" style="margin-bottom:0px; padding:10px">
-            <ol>
-                <li style="padding-bottom:5px">Diharapkan setiap peserta mengisi data sehingga progress indikator mencapai sempurna.</li>
-                <li style="padding-bottom:5px">Klik tombol <span class="label label-primary">Finalisasi</span> setelah menyelesaikan seluruh proses pengisian data.</li>
-                <li style="padding-bottom:5px">Tombol <span class="label label-success">Print</span> bisa diakses setelah finalisasi data.</li>
-                <li style="padding-bottom:5px">Web Admin : <strong>Syahrul Hamdi, S.Pd (085 358 836836)</strong> - <strong>Nanta Es (081 804 292926)</strong></li>
+        <div class="bg-light p-3 mb-3" style="border: 1px solid #ddd;">
+            <ol class="mb-0">
+                <li class="mb-2">Diharapkan setiap peserta mengisi data sehingga progress indikator mencapai sempurna.</li>
+                <li class="mb-2">Klik tombol <span class="badge bg-primary">Finalisasi</span> setelah menyelesaikan seluruh proses pengisian data.</li>
+                <li class="mb-2">Tombol <span class="badge bg-success">Print</span> bisa diakses setelah finalisasi data.</li>
+                <li class="mb-2">Web Admin : <strong>Syahrul Hamdi, S.Pd (085 358 836836)</strong> - <strong>Nanta Es (081 804 292926)</strong></li>
             </ol>
-
         </div>
-                
-        
-        <br>
-        
-        <?php 
-            if(Yii::$app->params['Feat-Applicant']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 19;
-                
-                /*01*/(!empty($applicant->identity_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicant->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicant->gender_status)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicant->birth_place)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*05*/(!empty($applicant->date_birth)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicant->religion_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicant->citizenship_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicant->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicant->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*10*/(!empty($applicant->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*/(!empty($applicant->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*/(!empty($applicant->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*13*/(!empty($applicant->phone_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*/(!empty($applicant->hobby)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*15*/(!empty($applicant->blood_type)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*16*/(!empty($applicant->height)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*17*/(!empty($applicant->weight)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*18*/(!empty($applicant->illness)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*19*/(!empty($applicant->disability)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*20*///(!empty($applicant->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
 
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Biodata', ['applicant/profile','title'=>$applicant->title]);?> <span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+
+        <table class="table table-striped table-bordered mb-0">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col"><?=Yii::t('app', 'Data');?></th>
+                <th scope="col"><?=Yii::t('app', 'Progress');?></th>
+                <th scope="col"><?=Yii::t('app', 'Empty Columns');?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td><?=Yii::t('app', 'Bio Data');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledApplicantPercentage;?>%"
+                             aria-valuenow="<?=$filledApplicantPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledApplicantPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>
-                    
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Academic']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 13;
-                
-                /*01*/(!empty($applicantAcademic->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicantAcademic->academic_year_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicantAcademic->national_registration_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicantAcademic->school_registration_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*05*/(!empty($applicantAcademic->residence_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicantAcademic->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicantAcademic->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicantAcademic->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicantAcademic->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*10*/(!empty($applicantAcademic->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*/(!empty($applicantAcademic->distance)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*/(!empty($applicantAcademic->transportation_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*13*/(!empty($applicantAcademic->tuition_payer_status)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*///(!empty($applicantAcademic->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs">Data Akademik <span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td><?= implode(', ', $emptyColumnsApplicant) ;?></td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td><?=Yii::t('app', 'Elementary School');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledAcademicElementaryPercentage;?>%"
+                             aria-valuenow="<?=$filledAcademicElementaryPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledAcademicElementaryPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>                
-    
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Almamater']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 18;
-                
-                /*01*/(!empty($applicantAlmamater->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicantAlmamater->national_school_principal_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicantAlmamater->educational_stage_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicantAlmamater->school_status)) ? ($fieldFilled+=1) : ($fieldFilled+0);                
-                /*05*/(!empty($applicantAlmamater->national_registration_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicantAlmamater->school_registration_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicantAlmamater->date_graduation)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicantAlmamater->study_time_length)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicantAlmamater->tuition_payer)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                
-                /*10*///(!empty($applicantAlmamater->certificate_serial_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*///(!empty($applicantAlmamater->examination_serial_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*///(!empty($applicantAlmamater->examination_card_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);                
-                
-                /*13*/(!empty($applicantAlmamater->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*/(!empty($applicantAlmamater->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*15*/(!empty($applicantAlmamater->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*16*/(!empty($applicantAlmamater->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*17*/(!empty($applicantAlmamater->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);                
-                
-                /*18*/(!empty($applicantAlmamater->residence_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);                
-                /*19*/(!empty($applicantAlmamater->transportation_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*20*/(!empty($applicantAlmamater->distance)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                
-                /*21*/(!empty($applicantAlmamater->phone_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*22*///(!empty($applicantAlmamater->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Almamater', ['applicant/almamater','title'=>$applicant->title]);?><span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td><?= implode(', ', $emptyColumnsAcademicElementary) ;?></td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td><?=Yii::t('app', 'Junior High School');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledAcademicJuniorPercentage;?>%"
+                             aria-valuenow="<?=$filledAcademicJuniorPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledAcademicJuniorPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>  
-               
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Family']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 15;
-
-                /*01*/(!empty($applicantFather->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicantFather->identity_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicantFather->birth_place)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicantFather->date_birth)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*05*/(!empty($applicantFather->religion_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicantFather->educational_stage_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicantFather->occupation_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicantFather->income_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicantFather->phone_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*10*/(!empty($applicantFather->citizenship_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*/(!empty($applicantFather->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*/(!empty($applicantFather->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*13*/(!empty($applicantFather->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*/(!empty($applicantFather->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*15*/(!empty($applicantFather->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*16*///(!empty($applicantFather->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Ayah', ['applicant/family','type'=>ApplicantFamily::FAMILY_TYPE_FATHER,'title'=>$applicant->title]);?> <span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td><?= implode(', ', $emptyColumnsAcademicJunior) ;?></td>
+            </tr>
+            <tr>
+                <th scope="row">4</th>
+                <td><?= Yii::t('app', 'Father') ?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledFamilyFatherPercentage;?>%"
+                             aria-valuenow="<?=$filledFamilyFatherPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledFamilyFatherPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>                 
-            
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Family']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 15;
-
-                /*01*/(!empty($applicantMother->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicantMother->identity_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicantMother->birth_place)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicantMother->date_birth)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*05*/(!empty($applicantMother->religion_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicantMother->educational_stage_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicantMother->occupation_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicantMother->income_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicantMother->phone_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*10*/(!empty($applicantMother->citizenship_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*/(!empty($applicantMother->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*/(!empty($applicantMother->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*13*/(!empty($applicantMother->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*/(!empty($applicantMother->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*15*/(!empty($applicantMother->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*16*///(!empty($applicantMother->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Ibu', ['applicant/family','type'=>ApplicantFamily::FAMILY_TYPE_MOTHER,'title'=>$applicant->title]);?><span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">5</th>
+                <td><?=Yii::t('app', 'Mother');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledFamilyMotherPercentage;?>%"
+                             aria-valuenow="<?=$filledFamilyMotherPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledFamilyMotherPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>                
-                
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Family']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = 15;
-
-                /*01*/(!empty($applicantGuardian->title)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*02*/(!empty($applicantGuardian->identity_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*03*/(!empty($applicantGuardian->birth_place)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*04*/(!empty($applicantGuardian->date_birth)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*05*/(!empty($applicantGuardian->religion_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*06*/(!empty($applicantGuardian->educational_stage_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*07*/(!empty($applicantGuardian->occupation_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*08*/(!empty($applicantGuardian->income_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*09*/(!empty($applicantGuardian->phone_number)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*10*/(!empty($applicantGuardian->citizenship_id)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*11*/(!empty($applicantGuardian->address_street)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*12*/(!empty($applicantGuardian->address_village)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*13*/(!empty($applicantGuardian->address_sub_district)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*14*/(!empty($applicantGuardian->address_city)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*15*/(!empty($applicantGuardian->address_province)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                /*16*///(!empty($applicantGuardian->description)) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Wali', ['applicant/family','type'=>ApplicantFamily::FAMILY_TYPE_GUARDIAN,'title'=>$applicant->title]);?><span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">6</th>
+                <td><?=Yii::t('app', 'Guardian');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$filledFamilyGuardianPercentage;?>%"
+                             aria-valuenow="<?=$filledFamilyGuardianPercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$filledFamilyGuardianPercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>                
-                
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Grade']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = count($semesters)*count($courses);
-
-                
-                foreach ($semesters as $semesterModel) {    
-                    foreach ($courses as $courseModel) {
-
-                        $applicantGrade = \common\models\ApplicantGrade::find()->where([
-                            'applicant_id'=>$applicant->id,
-                            'semester_id'=>$semesterModel->id,
-                            'course_id'=>$courseModel->id,
-                        ])->one();
-
-                        if(!empty($applicantGrade)){
-                            /*01*/($applicantGrade->grade > 0) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                        }
-                    }
-
-                }
-
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs"><?= Html::a('<i class="fa fa-angle-right "></i> Raport ', ['applicant/recapitulation','title'=>$semesterModel->title]);?><span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">7</th>
+                <td><?=Yii::t('app', 'Grade');?></td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: <?=$overallFilledGradePercentage;?>%"
+                             aria-valuenow="<?=$overallFilledGradePercentage;?>"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <?=$overallFilledGradePercentage;?> %
+                        </div>
                     </div>
-                </div>
-        <?php } ?>                  
-                
-        <?php 
-            if(Yii::$app->params['Feat-Applicant-Document']){
-                
-                $fieldFilled     = 0;              
-                $totalField     = count($documents);
-
-                
-                foreach ($documents as $documentModel) {    
-                    $applicantDocument = \common\models\ApplicantDocument::find()->where([
-                        'applicant_id'=>$applicant->id,
-                        'document_id'=>$documentModel->id,
-                    ])->one();
-                    
-                    if(!empty($applicantDocument)){
-                        /*01*/($applicantDocument->document_status == \common\models\ApplicantDocument::DOCUMENT_TYPE_YES) ? ($fieldFilled+=1) : ($fieldFilled+0);
-                    }
-                    
-                }
-
-                $percentEmpty = ($fieldFilled == 0) ? 0 :ceil((($fieldFilled/$totalField)*100));
-        ?>
-                <h3 class="heading-xs">Data Dokumen <span class="pull-right"><?=$percentEmpty;?>%</span></h3>
-                <div class="progress progress-u progress-xxs">
-                    <div style="width: <?=$percentEmpty;?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?=$percentEmpty;?>" role="progressbar" class="progress-bar progress-bar-u">
-                    </div>
-                </div>
-        <?php } ?>  
-  
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- End Info Panel -->
-

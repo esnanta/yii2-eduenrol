@@ -33,9 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'group'=>true,
                 'label'=>'',
                 'rowOptions'=>['class'=>'default']
-            ],               
-                        
-            
+            ],
             [
                 'group'=>true,
                 'label'=>'1: '.Yii::t('app', 'Bio Data'),
@@ -44,17 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'identity_number',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'birth_place',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute'=>'date_birth',
@@ -63,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=>DateControl::classname(),
                     'type'=>DateControl::FORMAT_DATE,
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute'=>'religion_id',
@@ -75,10 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=> Select2::className(),
                     'data'=>$religionList,
                 ],
-               //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute'=>'citizenship_status',
+                'format' => 'html',
                 'value'=>(!empty($model->citizenship_status)) ? $model->getOneCitizenshipStatus($model->citizenship_status):'-',
                 'type'=>DetailView::INPUT_SELECT2,
                 'options' => ['id' => 'citizenship_status', 'prompt' => '', 'disabled'=>false],
@@ -87,9 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=> Select2::className(),
                     'data'=>$citizenshipList,
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
-
             [
                 'attribute'=>'educational_stage_id',
                 'value'=>(!empty($model->educational_stage_id)) ? $model->educationalStage->title:'-',
@@ -100,7 +92,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=> Select2::className(),
                     'data'=>$educationalStageList,
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute'=>'occupation_id',
@@ -112,9 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=> Select2::className(),
                     'data'=>$occupationList,
                 ],
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
-
             [
                 'attribute'=>'income_id',
                 'value'=>(!empty($model->income_id)) ? $model->income->title:'-',
@@ -125,9 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class'=> Select2::className(),
                     'data'=>$incomeList,
                 ],
-                //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
             ],
-
             [
                 'group'=>true,
                 'label'=> '2: ' .Yii::t('app', 'Address'),
@@ -136,27 +123,22 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'address_street',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'address_village',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'address_sub_district',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'address_city',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
             [
                 'attribute' => 'address_province',
                 'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
             ],
             [
                 'group'=>true,
@@ -166,12 +148,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'phone_number',
                 'type' => DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
-            ],
-            [
-                'attribute' => 'description',
-                'type' => DetailView::INPUT_TEXTAREA,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
         ],
         'deleteOptions' => [

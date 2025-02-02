@@ -8,6 +8,8 @@ use yii\widgets\Pjax;
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var common\models\ApplicantGradeSearch $searchModel
+ * @var common\models\Course $courseList
+ * @var common\models\Semester $semesterList
  */
 
 $this->title = Yii::t('app', 'Applicant Grades');
@@ -50,7 +52,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterInputOptions'=>['placeholder'=>''],
                 'format'=>'raw'
             ],
-            'semester_id',
+            [
+                'attribute'=>'semester_id',
+                'vAlign'=>'middle',
+                'width'=>'180px',
+                'value'=>function ($model, $key, $index, $widget) {
+                    return ($model->semester_id!=null) ? $model->semester->title:'';
+                },
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>$semesterList,
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>''],
+                'format'=>'raw'
+            ],
             'grade',
             [
                 'class' => 'common\widgets\ActionColumn',

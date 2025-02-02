@@ -5,12 +5,12 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var common\models\ThemeDetailSearch $model
+ * @var common\models\PageSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="theme-detail-search">
+<div class="page-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
