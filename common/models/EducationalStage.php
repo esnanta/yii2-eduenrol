@@ -10,6 +10,11 @@ use \common\models\base\EducationalStage as BaseEducationalStage;
  */
 class EducationalStage extends BaseEducationalStage
 {
+
+    //SESUAIKAN DENGAN DATABASE
+    const ELEMENTARY_SCHOOL     = 3;
+    const JUNIOR_HIGH_SCHOOL    = 4;
+
     /**
      * @inheritdoc
      */

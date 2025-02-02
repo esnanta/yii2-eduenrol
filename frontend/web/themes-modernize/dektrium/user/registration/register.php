@@ -42,7 +42,11 @@ $this->title = Yii::t('user', 'Sign up');
                 ],
             ])->label(Yii::t('user', 'Email')) ?>
 
-            <?= $form->field($model, 'username')->hiddenInput()->label(false); ?>
+            <?= $form->field($model, 'username', [
+                'inputOptions' => [
+                    'class' => 'form-control form-control-lg'
+                ],
+            ])->label(Yii::t('user', 'NIK')) ?>
 
             <?php if (!$module->enableGeneratingPassword): ?>
                 <?= $form->field($model, 'password', [

@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\FileHelper;
 use common\service\CacheService;
 use common\models\base\Applicant as BaseApplicant;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "tx_applicant".
@@ -342,7 +343,7 @@ class Applicant extends BaseApplicant
         if (!is_dir($directory)) {
             FileHelper::createDirectory($directory, $mode = 0777);
         }
-        return (!empty($this->asset_name)) ? $directory.'/'. $this->asset_name : '';
+        return (!empty($this->file_name)) ? $directory.'/'. $this->file_name : '';
     }
 
 
@@ -350,7 +351,7 @@ class Applicant extends BaseApplicant
     {
         // return a default image placeholder if your source avatar is not found
         $defaultImage = '/images/if_skype2512x512_197582.png';
-        $asset_name = (!empty($this->asset_name)) ? $this->asset_name : $defaultImage;
+        $asset_name = (!empty($this->file_name)) ? $this->file_name : $defaultImage;
         $directory = str_replace('frontend', 'backend', Yii::getAlias('@webroot')) . $this->getPath();
 
         if (file_exists($directory.'/'.$asset_name)) {
@@ -359,6 +360,7 @@ class Applicant extends BaseApplicant
                 Yii::$app->urlManager->baseUrl . $this->getPath().'/'.$asset_name;
             }
 
+            var_dump(Yii::$app->urlManager->baseUrl . $this->getPath().'/'.$asset_name);
             return Yii::$app->urlManager->baseUrl . $this->getPath().'/'.$asset_name;
         }
         else{
@@ -387,7 +389,7 @@ class Applicant extends BaseApplicant
 
         if(!$isTemporary):
             // if deletion successful, reset your file attributes
-            $this->asset_name = null;
+            $this->file_name = null;
             $this->title = null;
         endif;
 
@@ -500,5 +502,83 @@ class Applicant extends BaseApplicant
 //        }
 
         return $dateFinal;
+    }
+
+
+    /**
+     * fetch stored image file name with complete path
+     * @return string
+     */
+    public function getImageFile()
+    {
+        $directory = str_replace('frontend', 'backend', Yii::getAlias('@webroot')) . self::$path;
+        if (!is_dir($directory)) {
+            FileHelper::createDirectory($directory, $mode = 0777);
+        }
+        return (!empty($this->file_name)) ? $directory.'/'. $this->file_name : '';
+    }
+
+    /**
+     * fetch stored image url
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        // return a default image placeholder if your source avatar is not found
+        $file_name = isset($this->file_name) ? self::$path.'/'.$this->file_name : '/themes/home8/img/team/img32-md.jpg';
+        return str_replace('uploads', 'backend/web/uploads', Yii::$app->urlManager->baseUrl . $file_name);
+    }
+
+    /**
+     * Process upload of image
+     *
+     * @return mixed the uploaded image instance
+     */
+    public function uploadImage() {
+        // get the uploaded file instance. for multiple file uploads
+        // the following data will return an array (you may need to use
+        // getInstances method)
+        $image = UploadedFile::getInstance($this, 'image');
+
+        // if no image was uploaded abort the upload
+        if (empty($image)) {
+            return false;
+        }
+
+        // generate a unique file name
+        //$ext = end((explode(".", $image->name)));
+        $tmp = explode('.', $image->name);
+        $ext = end($tmp);
+
+        //$this->file_name = Yii::$app->security->generateRandomString().".{$ext}";
+        $this->file_name = $this->record_number.".{$ext}";
+
+        // the uploaded image instance
+        return $image;
+    }
+
+    /**
+     * Process deletion of image
+     *
+     * @return boolean the status of deletion
+     */
+    public function deleteImage() {
+        $file = $this->getImageFile();
+
+        // check if file exists on server
+        if (empty($file) || !file_exists($file)) {
+            return false;
+        }
+
+        // check if uploaded file can be deleted on server
+        if (!unlink($file)) {
+            return false;
+        }
+
+        // if deletion successful, reset your file attributes
+        $this->file_name = null;
+        $this->title = null;
+
+        return true;
     }
 }

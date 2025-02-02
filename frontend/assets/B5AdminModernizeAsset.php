@@ -9,8 +9,8 @@ use yii\web\AssetBundle;
  */
 class B5AdminModernizeAsset extends AssetBundle
 {
-    public $basePath = '@webroot/themes-b5-modernize';
-    public $baseUrl = '@web/themes-b5-modernize';
+    public $basePath = '@webroot/themes-modernize';
+    public $baseUrl = '@web/themes-modernize';
     public $css = [
 
         'https://use.fontawesome.com/releases/v5.3.1/css/all.css',

@@ -4,6 +4,7 @@ use dektrium\user\controllers\RegistrationController;
 use kartik\datecontrol\Module;
 use yii\caching\FileCache;
 use yii\db\Connection;
+use yii\symfonymailer\Mailer;
 
 return [
     'aliases' => [
@@ -77,7 +78,7 @@ return [
         ],
 
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => Mailer::class,
             'viewPath' => '@app/mailer',
             'useFileTransport' => false,
             'transport' => [

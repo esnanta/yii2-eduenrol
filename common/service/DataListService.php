@@ -5,6 +5,7 @@ namespace common\service;
 use common\models\Asset;
 use common\models\AssetCategory;
 use common\models\Course;
+use common\models\Document;
 use common\models\EducationalStage;
 use common\models\Employment;
 use common\models\Income;
@@ -38,6 +39,11 @@ class DataListService
     public static function getCourse(): array
     {
         return ArrayHelper::map(Course::find()
+            ->asArray()->all(), 'id', 'title');
+    }
+    public static function getDocument(): array
+    {
+        return ArrayHelper::map(Document::find()
             ->asArray()->all(), 'id', 'title');
     }
     public static function getEducationalStage(): array
