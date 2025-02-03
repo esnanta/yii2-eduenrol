@@ -1,8 +1,10 @@
 <?php
 
+use common\models\Applicant;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use kartik\select2\Select2;
 
 /**
  * @var yii\web\View $this
@@ -14,8 +16,20 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicants'), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right','style'=>'color:#333333;padding:0 5px']);
 
+$finalIcon      = ($model->final_status== Applicant::FINAL_STATUS_NO) ? '<i class="fa fa-check"></i> Finalisasi':'<i class="fa fa-remove"></i> Batalkan';
+$finalText      = ($model->final_status== Applicant::FINAL_STATUS_NO) ? 'Final':'Batal';
+$finalButton    = ($model->final_status== Applicant::FINAL_STATUS_NO) ? 'btn btn-sm btn-success pull-right':'btn btn-sm btn-danger pull-right';
+
+$finalCancelButton = Html::a($finalIcon,
+    Yii::$app->urlManager->createUrl(['applicant/finalize', 'id' => $model->id]),
+    [
+        'title' => Yii::t('yii', $finalText),
+        'class'=> $finalButton,
+    ]);
 ?>
 <div class="applicant-view">
+
+
 
     <?= DetailView::widget([
         'model' => $model,
@@ -27,6 +41,19 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
             'type' => DetailView::TYPE_DEFAULT,
         ],
         'attributes' => [
+            [
+                'attribute'=>'final_status',
+                'format'=>'html',
+                'value'=>(!empty($model->final_status)) ? $model->getOneFinalStatus($model->final_status).$finalCancelButton:'-',
+                'type'=>DetailView::INPUT_SELECT2,
+                'options' => ['id' => 'final_status', 'prompt' => '', 'disabled'=>false],
+                'items' => $finalStatusList,
+                'widgetOptions'=>[
+                    'class'=> Select2::className(),
+                    'data'=>$finalStatusList,
+                ],
+                'valueColOptions'=>['style'=>'width:30%']
+            ],
             'id',
             'office_id',
             'event_id',
@@ -75,7 +102,6 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
             'illness:ntext',
             'disability:ntext',
             'file_name',
-            'final_status',
             [
                 'attribute' => 'date_final',
                 'format' => [

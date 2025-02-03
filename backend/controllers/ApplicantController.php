@@ -59,12 +59,15 @@ class ApplicantController extends Controller
     {
         if(Yii::$app->user->can('view-applicant')){
             $model = $this->findModel($id);
-
+            $finalStatusList    = Applicant::getArrayFinalStatus();
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 MessageHelper::getFlashUpdateSuccess();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                return $this->render('view', ['model' => $model]);
+                return $this->render('view', [
+                    'model' => $model,
+                    'finalStatusList' => $finalStatusList
+                ]);
             }
         }
         else{
@@ -168,6 +171,45 @@ class ApplicantController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionFinalize($id=null)
+    {
+        if(Yii::$app->user->can('create-applicant')){
+
+            if(!empty($id)){
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+
+                    $model                  = Applicant::find()->where(['id'=>$id])->one();
+                    $finalStatus            = $model->final_status;
+
+                    if($finalStatus==Applicant::FINAL_STATUS_NO){
+                        $finalStatus=Applicant::FINAL_STATUS_YES;
+                        $model->date_final = date('Y-m-d H:i:s');
+                    }else{
+                        $finalStatus=Applicant::FINAL_STATUS_NO;
+                        $model->date_final = null;
+                    }
+
+                    $model->final_status    = $finalStatus;
+
+                    $model->save();
+                    $transaction->commit();
+                    Yii::$app->getSession()->setFlash('success', ['message' => Yii::t('app', 'Data '.'['.$model->record_number.'] '. $model->title.' '.strip_tags($model->getOneFinalStatus($model->final_status)).' Finalisasi')]);
+                }
+                catch (\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+            return $this->redirect(['view', 'id'=>$model->id]);
+
+        }
+        else{
+            MessageHelper::getFlashAccessDenied();
+            throw new ForbiddenHttpException;
         }
     }
 }

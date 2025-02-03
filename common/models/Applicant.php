@@ -24,6 +24,7 @@ class Applicant extends BaseApplicant
     const BLOOD_TYPE_B                  = 2;
     const BLOOD_TYPE_AB                 = 3;
     const BLOOD_TYPE_O                  = 4;
+    const BLOOD_TYPE_NA                 = 5;
 
     const CHILD_STATUS_BIOLOGICAL       = 1;
     const CHILD_STATUS_STEP             = 2;
@@ -161,6 +162,7 @@ class Applicant extends BaseApplicant
             self::BLOOD_TYPE_B      => 'B',
             self::BLOOD_TYPE_AB     => 'AB',
             self::BLOOD_TYPE_O      => 'O',
+            self::BLOOD_TYPE_NA      => 'Belum tahu',
         ];
     }
 
