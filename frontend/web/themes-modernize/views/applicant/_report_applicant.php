@@ -55,6 +55,7 @@ use yii\helpers\Html;
             'columns' => [
                 [
                     'attribute' => 'title',
+                    'label' => Yii::t('app', 'Full Name'),
                     'type' => DetailView::INPUT_TEXT,
                     'valueColOptions' => ['style' => 'width:30%']
                 ],

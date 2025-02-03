@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'title',
+                'label' => Yii::t('app', 'Full Name'),
                 'type'=>DetailView::INPUT_TEXT,
             ],
             [
