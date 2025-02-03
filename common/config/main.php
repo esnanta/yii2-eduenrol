@@ -82,12 +82,7 @@ return [
             'viewPath' => '@app/mailer',
             'useFileTransport' => false,
             'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                //'host' => 'smtp.gmail.com', // your host, here using fake email server (https://mailtrap.io/). You can use gmail: 'host' => 'smtp.gmail.com'
-                'host' => 'mail.smanmba.sch.id', // your host, here using fake email server (https://mailtrap.io/). You can use gmail: 'host' => 'smtp.gmail.com'
-                'username' => 'no-reply@smanmba.sch.id',
-                'password' => 'noreply3a21',
-                'encryption' => 'tls',
+                'dsn' => 'smtp://no-reply@smanmba.sch.id:noreply3a21@mail.smanmba.sch.id:587'
             ],
         ],
 
@@ -117,7 +112,7 @@ return [
             'enableUnconfirmedLogin' => true,
             'enablePasswordRecovery' => true,
             'enableRegistration' => true,
-            'enableConfirmation' => true,
+            'enableConfirmation' => false,
             'confirmWithin' => 21600,
             'cost' => 12,
             'admins' => ['admin'],
@@ -149,11 +144,18 @@ return [
                 ],
             ],
 
-            //CHECK MAILER IN MAIN-LOCAL.PHP
+//            'mailer' => [
+//                'viewPath' => '@common/mail',
+//                'sender' => ['no-reply@smanmba.sch.id' => 'PPDB SMAN Modal Bangsa Arun']
+//            ],
+
             'mailer' => [
-                'viewPath' => '@common/mail',
-                'sender' => ['no-reply@smanmba.sch.id' => 'PPDB SMAN Modal Bangsa Arun']
-            ]
+                'welcomeSubject' => null,  // Prevents welcome email
+                'confirmationSubject' => null, // Prevents confirmation email
+                'reconfirmationSubject' => null, // Prevents reconfirmation email
+                'recoverySubject' => null, // Prevents password recovery email
+            ],
+
         ],
 
         'rbac' => 'dektrium\rbac\RbacWebModule',
