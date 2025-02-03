@@ -29,7 +29,7 @@ class ApplicantSearch extends Applicant
 
     public function search($params)
     {
-        $query = Applicant::find();
+        $query = Applicant::find()->orderBy('id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

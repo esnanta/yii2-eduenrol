@@ -99,7 +99,7 @@ class ApplicantGradeController extends Controller
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 MessageHelper::getFlashUpdateSuccess();
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index', 'sem' => $model->semester_id]);
             } else {
                 return $this->render('view', [
                     'model' => $model,
