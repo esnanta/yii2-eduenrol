@@ -38,7 +38,7 @@ class ApplicantAlmamaterController extends Controller
      */
     public function actionView($edu,$title=null)
     {
-        if(Yii::$app->user->can('update-applicantalmamater')){
+        if(Yii::$app->user->can('update-applicant')){
 
             $applicant  = $this->findModelByUser(Yii::$app->user->identity->id);
             $model      = ApplicantAlmamater::find()->where([

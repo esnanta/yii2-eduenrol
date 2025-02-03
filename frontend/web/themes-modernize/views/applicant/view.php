@@ -88,6 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         //'valueColOptions'=>['style'=>'width:30%']
                     ],
                     [
+                        'attribute' => 'family_card_number',
+                        'type'=>DetailView::INPUT_TEXT,
+                        //'valueColOptions'=>['style'=>'width:30%']
+                    ],
+                    [
                         'attribute' => 'birth_certificate_number',
                         'type'=>DetailView::INPUT_TEXT,
                         //'valueColOptions'=>['style'=>'width:30%']

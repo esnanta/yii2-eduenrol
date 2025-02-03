@@ -10,21 +10,16 @@ use mootensai\behaviors\UUIDBehavior;
 /**
  * This is the base model class for table "tx_counter".
  *
- * @property integer $id
- * @property integer $office_id
- * @property string $title
+ * @property string $id
  * @property integer $counter
- * @property string $created_at
- * @property string $updated_at
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  * @property integer $is_deleted
- * @property string $deleted_at
+ * @property integer $deleted_at
  * @property integer $deleted_by
  * @property integer $verlock
- * @property string $uuid
- *
- * @property \common\models\Office $office
  */
 class Counter extends \yii\db\ActiveRecord
 {
@@ -52,7 +47,7 @@ class Counter extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'office'
+            ''
         ];
     }
 
@@ -62,11 +57,9 @@ class Counter extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['office_id', 'counter', 'created_by', 'updated_by', 'is_deleted', 'deleted_by', 'verlock'], 'integer'],
-            [['title'], 'required'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['title'], 'string', 'max' => 15],
-            [['uuid'], 'string', 'max' => 36],
+            [['id'], 'required'],
+            [['counter', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by', 'verlock'], 'integer'],
+            [['id'], 'string', 'max' => 8],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ];
@@ -98,23 +91,12 @@ class Counter extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'office_id' => Yii::t('app', 'Office'),
-            'title' => Yii::t('app', 'Title'),
             'counter' => Yii::t('app', 'Counter'),
             'is_deleted' => Yii::t('app', 'Is Deleted'),
             'verlock' => Yii::t('app', 'Verlock'),
-            'uuid' => Yii::t('app', 'Uuid'),
         ];
     }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOffice()
-    {
-        return $this->hasOne(\common\models\Office::className(), ['id' => 'office_id']);
-    }
-    
+
     /**
      * @inheritdoc
      * @return array mixed

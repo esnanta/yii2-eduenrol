@@ -41,6 +41,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \common\models\ApplicantDocument[] $applicantDocuments
  * @property \common\models\ApplicantFamily[] $applicantFamilies
  * @property \common\models\ApplicantGrade[] $applicantGrades
+ * @property \common\models\Employment[] $employments
  * @property \common\models\Staff[] $staff
  */
 class Office extends \yii\db\ActiveRecord
@@ -74,6 +75,7 @@ class Office extends \yii\db\ActiveRecord
             'applicantDocuments',
             'applicantFamilies',
             'applicantGrades',
+            'employments',
             'staff'
         ];
     }
@@ -181,6 +183,14 @@ class Office extends \yii\db\ActiveRecord
     public function getApplicantGrades()
     {
         return $this->hasMany(\common\models\ApplicantGrade::className(), ['office_id' => 'id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployments()
+    {
+        return $this->hasMany(\common\models\Employment::className(), ['office_id' => 'id']);
     }
         
     /**

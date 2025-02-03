@@ -42,7 +42,7 @@ use kartik\detail\DetailView;
 
             [
                 'group'=>true,
-                'label'=>'1 : Profil Sekolah',
+                'label'=>'1 : '.$model->educationalStage->title,
                 'rowOptions'=>['class'=>'default']
             ],
 
@@ -62,16 +62,16 @@ use kartik\detail\DetailView;
             [
                 'columns' => [
                     [
-                        'attribute'=>'educational_stage_id',
-                        'format'=>'html',
-                        'value'=>(empty($model->educational_stage_id)) ? '-' : $model->educationalStage->title,
-                        'type'=>DetailView::INPUT_DROPDOWN_LIST,
-                        'options' => ['id' => 'educational_stage_id', 'prompt' => '', 'disabled'=>false],
+                        'attribute' => 'educational_stage_id',
+                        'format' => 'html',
+                        'value' => (empty($model->educational_stage_id)) ? '-' : $model->educationalStage->title,
+                        'type' => DetailView::INPUT_DROPDOWN_LIST,
                         'items' => $educationalStageList,
-                        'widgetOptions'=>[
-                            'data'=>$educationalStageList,
+                        'widgetOptions' => [
+                            'data' => $educationalStageList,
+                            'options' => ['disabled' => true], // Move 'disabled' here
                         ],
-                        'valueColOptions'=>['style'=>'width:30%']
+                        'valueColOptions' => ['style' => 'width:30%']
                     ],
                     [
                         'attribute'=>'school_status',
@@ -139,40 +139,40 @@ use kartik\detail\DetailView;
                 'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
             ],
 
+//            [
+//                'group'=>true,
+//                'label'=>'3. Kelulusan',
+//                'rowOptions'=>['class'=>'default']
+//            ],
+//
+//            [
+//                'columns' => [
+//                    [
+//                        'attribute'=>'certificate_serial_number',
+//                        'options' => ['disabled'=>true],
+//                        'valueColOptions'=>['style'=>'width:30%']
+//                    ],
+//                    [
+//                        'attribute'=>'examination_serial_number',
+//                        'options' => ['disabled'=>true],
+//                        'valueColOptions'=>['style'=>'width:30%']
+//                    ],
+//                ],
+//            ],
+//
+//            [
+//                'columns' => [
+//                    [
+//                        'attribute'=>'examination_card_number',
+//                        'options' => ['disabled'=>true],
+//                        'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
+//                    ],
+//                ],
+//            ],
+
             [
                 'group'=>true,
-                'label'=>'3. Kelulusan',
-                'rowOptions'=>['class'=>'default']
-            ],
-
-            [
-                'columns' => [
-                    [
-                        'attribute'=>'certificate_serial_number',
-                        'options' => ['disabled'=>true],
-                        'valueColOptions'=>['style'=>'width:30%']
-                    ],
-                    [
-                        'attribute'=>'examination_serial_number',
-                        'options' => ['disabled'=>true],
-                        'valueColOptions'=>['style'=>'width:30%']
-                    ],
-                ],
-            ],
-
-            [
-                'columns' => [
-                    [
-                        'attribute'=>'examination_card_number',
-                        'options' => ['disabled'=>true],
-                        'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
-                    ],
-                ],
-            ],
-
-            [
-                'group'=>true,
-                'label'=>'4 : Alamat Sekolah',
+                'label'=>'3 : Alamat Sekolah',
                 'rowOptions'=>['class'=>'default']
             ],
 
@@ -230,6 +230,7 @@ use kartik\detail\DetailView;
                         'widgetOptions'=>[
                             'data'=>$residenceList,
                         ],
+                        'valueColOptions'=>['style'=>'width:30%']
                     ],
                     [
                         'attribute'=>'transportation_id',
@@ -241,6 +242,7 @@ use kartik\detail\DetailView;
                         'widgetOptions'=>[
                             'data'=>$transportationList,
                         ],
+                        'valueColOptions'=>['style'=>'width:30%']
                     ],
                 ],
             ],
@@ -249,28 +251,15 @@ use kartik\detail\DetailView;
                 'columns' => [
                     [
                         'attribute'=>'distance',
-                        'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
+                        'valueColOptions'=>['style'=>'width:30%']
+                    ],
+                    [
+                        'attribute' => 'phone_number',
+                        'type'=>DetailView::INPUT_TEXT,
+                        'valueColOptions'=>['style'=>'width:30%']
                     ],
                 ],
             ],
-
-            [
-                'group'=>true,
-                'label'=>'6 : Deskripsi',
-                'rowOptions'=>['class'=>'default']
-            ],
-            [
-                'attribute' => 'phone_number',
-                'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
-            ],
-            [
-                'attribute' => 'description',
-                'format'=>'html',
-                'type'=>DetailView::INPUT_TEXTAREA,
-                //'valueColOptions'=>['style'=>'width:30%']
-            ],
-
         ],
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],

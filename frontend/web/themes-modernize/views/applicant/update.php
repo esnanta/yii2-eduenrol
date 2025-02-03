@@ -8,7 +8,7 @@ use yii\helpers\Html;
  * @var common\models\Office $officeList
  */
 
-$this->title = 'Update Staff: ' . ' ' . $model->title;
+$this->title = 'Update ' . ' ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

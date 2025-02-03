@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'group'=>true,
-                'label'=> '1 : '.Yii::t('app', 'School Profile'),
+                'label'=> '1 : '.$model->educationalStage->title,
                 'rowOptions'=>['class'=>'default']
             ],
             [
@@ -53,8 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>Yii::t('app', 'School Name'),
                 //'valueColOptions'=>['style'=>'width:30%']
             ],
-
-
+            [
+                'attribute'=>'national_school_principal_number',
+                'label'=>Yii::t('app', 'National School Principal Number'),
+                //'valueColOptions'=>['style'=>'width:30%']
+            ],
             [
                 'attribute'=>'educational_stage_id',
                 'format'=>'html',
@@ -121,32 +124,32 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
             ],
             
+//            [
+//                'group'=>true,
+//                'label'=> '3 : '.Yii::t('app', 'Graduation'),
+//                'rowOptions'=>['class'=>'default']
+//            ],
+//
+//            [
+//                'attribute'=>'certificate_serial_number',
+//                'options' => ['disabled'=>true],
+//                //'valueColOptions'=>['style'=>'width:30%']
+//            ],
+//            [
+//                'attribute'=>'examination_serial_number',
+//                'options' => ['disabled'=>true],
+//                //'valueColOptions'=>['style'=>'width:30%']
+//            ],
+//
+//            [
+//                'attribute'=>'examination_card_number',
+//                'options' => ['disabled'=>true],
+//                //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
+//            ],
+
             [
                 'group'=>true,
-                'label'=> '3 : '.Yii::t('app', '3 : Graduation'),
-                'rowOptions'=>['class'=>'default']
-            ],
-
-            [
-                'attribute'=>'certificate_serial_number',
-                'options' => ['disabled'=>true],
-                //'valueColOptions'=>['style'=>'width:30%']
-            ],
-            [
-                'attribute'=>'examination_serial_number',
-                'options' => ['disabled'=>true],
-                //'valueColOptions'=>['style'=>'width:30%']
-            ],
-
-            [
-                'attribute'=>'examination_card_number',
-                'options' => ['disabled'=>true],
-                //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
-            ],
-
-            [
-                'group'=>true,
-                'label'=>Yii::t('app', '4 : School Address'),
+                'label'=>'3 : '.Yii::t('app', 'School Address'),
                 'rowOptions'=>['class'=>'default']
             ],
             [
@@ -196,7 +199,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data'=>$transportationList,
                 ],
             ],
-
+            [
+                'attribute'=>'distance',
+                //'valueColOptions'=>['style'=>'width:30%']
+            ],
             [
                 'group'=>true,
                 'label'=> '6 : '.Yii::t('app', 'Description'),

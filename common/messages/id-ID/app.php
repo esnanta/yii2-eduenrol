@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '3 : Graduation' => '3 : Tahun Lulus',
-    '4 : School Address' => '4 : Alamat Sekolah',
+    'Graduation' => 'Tahun Lulus',
+    'School Address' => 'Alamat Sekolah',
     'Access Denied! You do not have permission to access this page.' => '',
     'Active Status' => '',
     'Address' => 'Alamat',

@@ -452,3 +452,11 @@ VALUES
     (21, 1, 'About', 'VD6pJHgk7ikBhHW6gmW59mfrWLQhjpFx.png', 'Donec id elit y DESCRIPTION.', '2017-12-02 22:33:55', '2017-12-02 22:39:25', 1, 1, NULL, NULL, NULL, 0, '');
 
 
+ALTER TABLE `tx_page` CHANGE `content` `content` LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+ALTER TABLE `tx_counter` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
+ALTER TABLE `tx_user` ADD `deleted_at` DATETIME NULL AFTER `auth_tf_enabled`,
+                          ADD `deleted_by` INT NULL AFTER `deleted_at`;
+
+ALTER TABLE `tx_user` ADD `verlock` INT NULL AFTER `deleted_at`;
+ALTER TABLE `tx_user` ADD `uuid` VARCHAR(36) NULL AFTER `verlock`;
+

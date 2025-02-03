@@ -115,8 +115,10 @@ use yii\helpers\Html;
                     'valueColOptions' => ['style' => 'width:30%']
                 ],
                 [
-                    'attribute' => 'citizenship_id',
-                    'value' => (!empty($model->citizenship_id)) ? $model->citizenship->title : '-',
+                    'attribute' => 'citizenship_status',
+                    'format'=>'html',
+                    'value' => (!empty($model->citizenship_status)) ?
+                        $model->getOneCitizenshipStatus($model->citizenship_status) : '-',
                     'type' => DetailView::INPUT_SELECT2,
                     'options' => ['id' => 'citizenship_id', 'prompt' => '', 'disabled' => false],
                     'items' => $citizenshipList,

@@ -2,26 +2,38 @@
 
 namespace common\models\base;
 
-use yii\behaviors\BlameableBehavior;
+use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use mootensai\behaviors\UUIDBehavior;
 
 /**
  * This is the base model class for table "tx_user".
  *
  * @property integer $id
  * @property string $username
- * @property string $auth_key
- * @property string $password_hash
- * @property string $password_reset_token
  * @property string $email
- * @property integer $status
- * @property integer $created_at
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property string $unconfirmed_email
+ * @property string $registration_ip
+ * @property integer $flags
+ * @property integer $confirmed_at
+ * @property integer $blocked_at
  * @property integer $updated_at
- * @property integer $last_login
+ * @property integer $created_at
+ * @property integer $last_login_at
+ * @property string $auth_tf_key
+ * @property integer $auth_tf_enabled
+ * @property string $deleted_at
+ * @property integer $verlock
+ * @property string $uuid
+ * @property integer $deleted_by
  *
- * @property \common\models\Author[] $authors
  * @property \common\models\Profile $profile
  * @property \common\models\SocialAccount[] $socialAccounts
+ * @property \common\models\Staff[] $staff
+ * @property \common\models\Token[] $tokens
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -30,8 +42,7 @@ class User extends \yii\db\ActiveRecord
     private $_rt_softdelete;
     private $_rt_softrestore;
 
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
         $this->_rt_softdelete = [
             'deleted_by' => \Yii::$app->user->id,
@@ -50,9 +61,10 @@ class User extends \yii\db\ActiveRecord
     public function relationNames()
     {
         return [
-            'authors',
             'profile',
-            'socialAccounts'
+            'socialAccounts',
+            'staff',
+            'tokens'
         ];
     }
 
@@ -62,13 +74,18 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['status', 'created_at', 'updated_at', 'last_login'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            [['username', 'email', 'password_hash', 'auth_key', 'updated_at', 'created_at'], 'required'],
+            [['flags', 'confirmed_at', 'blocked_at', 'updated_at', 'created_at', 'last_login_at', 'verlock', 'deleted_by'], 'integer'],
+            [['deleted_at'], 'safe'],
+            [['username', 'email', 'unconfirmed_email'], 'string', 'max' => 255],
+            [['password_hash'], 'string', 'max' => 60],
             [['auth_key'], 'string', 'max' => 32],
-            [['email'], 'unique'],
+            [['registration_ip'], 'string', 'max' => 45],
+            [['auth_tf_key'], 'string', 'max' => 16],
+            [['auth_tf_enabled'], 'string', 'max' => 1],
+            [['uuid'], 'string', 'max' => 36],
             [['username'], 'unique'],
-            [['password_reset_token'], 'unique'],
+            [['email'], 'unique'],
             [['verlock'], 'default', 'value' => '0'],
             [['verlock'], 'mootensai\components\OptimisticLockValidator']
         ];
@@ -89,8 +106,7 @@ class User extends \yii\db\ActiveRecord
      * return string name of field are used to stored optimistic lock
      *
      */
-    public function optimisticLock()
-    {
+    public function optimisticLock() {
         return 'verlock';
     }
 
@@ -100,25 +116,24 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
-            'email' => 'Email',
-            'status' => 'Status',
-            'last_login' => 'Last Login',
+            'id' => Yii::t('app', 'ID'),
+            'username' => Yii::t('app', 'Username'),
+            'email' => Yii::t('app', 'Email'),
+            'password_hash' => Yii::t('app', 'Password Hash'),
+            'auth_key' => Yii::t('app', 'Auth Key'),
+            'unconfirmed_email' => Yii::t('app', 'Unconfirmed Email'),
+            'registration_ip' => Yii::t('app', 'Registration Ip'),
+            'flags' => Yii::t('app', 'Flags'),
+            'confirmed_at' => Yii::t('app', 'Confirmed At'),
+            'blocked_at' => Yii::t('app', 'Blocked At'),
+            'last_login_at' => Yii::t('app', 'Last Login At'),
+            'auth_tf_key' => Yii::t('app', 'Auth Tf Key'),
+            'auth_tf_enabled' => Yii::t('app', 'Auth Tf Enabled'),
+            'verlock' => Yii::t('app', 'Verlock'),
+            'uuid' => Yii::t('app', 'Uuid'),
         ];
     }
     
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuthors()
-    {
-        return $this->hasMany(\common\models\Author::className(), ['user_id' => 'id']);
-    }
-        
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -134,6 +149,22 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(\common\models\SocialAccount::className(), ['user_id' => 'id']);
     }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStaff()
+    {
+        return $this->hasMany(\common\models\Staff::className(), ['user_id' => 'id']);
+    }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTokens()
+    {
+        return $this->hasMany(\common\models\Token::className(), ['user_id' => 'id']);
+    }
     
     /**
      * @inheritdoc
@@ -146,45 +177,17 @@ class User extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
-                'value' => new \yii\db\Expression('NOW()'),
+                'value' => date('Y-m-d H:i:s'),
             ],
             'blameable' => [
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'updated_by',
             ],
+            'uuid' => [
+                'class' => UUIDBehavior::className(),
+                'column' => 'uuid',
+            ],
         ];
-    }
-
-    /**
-     * The following code shows how to apply a default condition for all queries:
-     *
-     * ```php
-     * class Customer extends ActiveRecord
-     * {
-     *     public static function find()
-     *     {
-     *         return parent::find()->where(['deleted' => false]);
-     *     }
-     * }
-     *
-     * // Use andWhere()/orWhere() to apply the default condition
-     * // SELECT FROM customer WHERE `deleted`=:deleted AND age>30
-     * $customers = Customer::find()->andWhere('age>30')->all();
-     *
-     * // Use where() to ignore the default condition
-     * // SELECT FROM customer WHERE age>30
-     * $customers = Customer::find()->where('age>30')->all();
-     * ```
-     */
-
-    /**
-     * @inheritdoc
-     * @return \common\models\UserQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new \common\models\UserQuery(get_called_class());
-        return $query->where(['tx_user.deleted_by' => 0]);
     }
 }

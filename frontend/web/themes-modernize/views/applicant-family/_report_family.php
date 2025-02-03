@@ -95,16 +95,18 @@ use kartik\select2\Select2;
                         'valueColOptions'=>['style'=>'width:30%']
                     ],
                     [
-                        'attribute'=>'citizenship_id',
-                        'value'=>(!empty($model->citizenship_id)) ? $model->citizenship->title:'-',
-                        'type'=>DetailView::INPUT_SELECT2,
-                        'options' => ['id' => 'citizenship_id', 'prompt' => '', 'disabled'=>false],
+                        'attribute' => 'citizenship_status',
+                        'format'=>'html',
+                        'value' => (!empty($model->citizenship_status)) ?
+                            $model->getOneCitizenshipStatus($model->citizenship_status) : '-',
+                        'type' => DetailView::INPUT_SELECT2,
+                        'options' => ['id' => 'citizenship_id', 'prompt' => '', 'disabled' => false],
                         'items' => $citizenshipList,
-                        'widgetOptions'=>[
-                            'class'=> Select2::className(),
-                            'data'=>$citizenshipList,
+                        'widgetOptions' => [
+                            'class' => Select2::className(),
+                            'data' => $citizenshipList,
                         ],
-                        'valueColOptions'=>['style'=>'width:30%']
+                        'valueColOptions' => ['style' => 'width:30%']
                     ],
                 ],
             ],
@@ -150,7 +152,7 @@ use kartik\select2\Select2;
                             'class'=> Select2::className(),
                             'data'=>$incomeList,
                         ],
-                        'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
+                        //'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
                     ],
                 ],
             ],
@@ -194,17 +196,12 @@ use kartik\select2\Select2;
                         'type'=>DetailView::INPUT_TEXT,
                         'valueColOptions'=>['class'=>'pull-left','style'=>'width:38%']
                     ],
+                    [
+                        'attribute' => 'phone_number',
+                        'type'=>DetailView::INPUT_TEXT,
+                        'valueColOptions'=>['style'=>'width:30%']
+                    ],
                 ],
-            ],
-            [
-                'group'=>true,
-                'label'=>'3: Deskripsi',
-                'rowOptions'=>['class'=>'default']
-            ],
-            [
-                'attribute' => 'phone_number',
-                'type'=>DetailView::INPUT_TEXT,
-                //'valueColOptions'=>['style'=>'width:30%']
             ],
         ],
         'deleteOptions' => [

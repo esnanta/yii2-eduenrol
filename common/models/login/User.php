@@ -1,6 +1,7 @@
 <?php
 namespace common\models\login;
 
+use common\models\Applicant;
 use dektrium\user\models\User as BaseUser;
 
 /**
@@ -62,5 +63,32 @@ class User extends BaseUser
             'passwordRequired' => ['password', 'required', 'on' => ['register']],
             'passwordLength'   => ['password', 'string', 'min' => 6, 'max' => 72, 'on' => ['register', 'create']],
         ];
+    }
+
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            $this->getDb()
+                ->createCommand()
+                ->insert('{{%auth_assignment}}', [
+                    'item_name' => 'regular',
+                    'user_id' => $this->id,
+                    'created_at' => time(),
+                ])
+                ->execute();
+
+            $this->saveApplicant();
+        }
+    }
+
+    private function saveApplicant(){
+        $applicant = new Applicant;
+        $applicant->office_id = 1;
+        $applicant->user_id = $this->id;
+        $applicant->save();
+
     }
 }

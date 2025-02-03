@@ -84,18 +84,20 @@ use yii\widgets\Pjax;
                         <li>Tes Akademik, Kesehatan & Wawancara : Selasa, 11 Februari 2025, pukul 08.00 - Selesai</li>
                         <li>Pengumuman Kelulusan : Rabu, 12 Februari 2025</li>
                         <li>
+                            Rapat Dengan Komite : Sabtu, 15 Februari 2025, Pukul 09.00-Selesai
+                        </li>
+                        <li>
                             Pendaftaran Ulang : 15-21 Februari 2025, Pukul 08.30-15.00 (Sabtu,
                             Pukul 08.30-14.00)
                         </li>
                     </ul>
 
-                    <p><strong>Informasi Tes Tahap 1 (Akademik)</strong></p>
+                    <p><strong>Informasi Tes</strong></p>
 
                     <ul class="list-unstyled">
                         <li>Hari/Tanggal : Selasa, 11 Februari 2025</li>
                         <li>Mapel : Matematika, Bahasa Indonesia, IPA, Bahasa Inggris</li>
-                        <li>Sesi 1 : 08.00-10.00</li>
-                        <li>Sesi 2 : 10.30-12.30</li>
+                        <li>Waktu : Tes Akademik 08.00-10.30 / Wawancara & Kesehatan (11.00 - selesai)</li>
                         <li>Lokasi : SMAN Modal Bangsa Arun</li>
                     </ul>
 

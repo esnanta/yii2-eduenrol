@@ -37,7 +37,7 @@ class ApplicantGradeController extends Controller
      */
     public function actionIndex($sem,$title=null)
     {
-        if (Yii::$app->user->can('index-applicantgrade')) {
+        if (Yii::$app->user->can('index-applicant')) {
             $applicant = $this->findModelByUser(Yii::$app->user->identity->id);
             $applicantGradeList = ApplicantGrade::findAll([
                 'applicant_id' => $applicant->id,
@@ -92,7 +92,7 @@ class ApplicantGradeController extends Controller
      */
     public function actionView($id)
     {
-        if(Yii::$app->user->can('view-applicantgrade')){
+        if(Yii::$app->user->can('view-applicant')){
             $model = $this->findModel($id);
             $courseList = DataListService::getCourse();
             $semesterList = DataListService::getSemester();

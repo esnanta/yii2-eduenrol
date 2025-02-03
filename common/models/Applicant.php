@@ -46,7 +46,7 @@ class Applicant extends BaseApplicant
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['event_id', 'user_id', 'gender_status', 'religion_id', 'citizenship_status', 'blood_type', 'height', 'weight', 'head_circle', 'number_of_sibling', 'number_of_dependent', 'number_of_step_sibling', 'birth_order', 'child_status', 'final_status', 'approval_status', 'date_approval', 'approved_by', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
+            [['office_id', 'event_id', 'user_id', 'gender_status', 'religion_id', 'citizenship_status', 'blood_type', 'height', 'weight', 'head_circle', 'number_of_sibling', 'number_of_dependent', 'number_of_step_sibling', 'birth_order', 'child_status', 'final_status', 'approval_status', 'date_approval', 'approved_by', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
             [['date_birth', 'date_final', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['hobby', 'illness', 'disability', 'description'], 'string'],
             [['email', 'title', 'nick_name', 'native_language', 'file_name'], 'string', 'max' => 100],

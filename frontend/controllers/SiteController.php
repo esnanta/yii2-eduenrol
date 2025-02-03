@@ -121,4 +121,16 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * Logs out the current user.
+     *
+     * @return mixed
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
 }
