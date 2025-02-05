@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Applicant;
+use common\models\User;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
