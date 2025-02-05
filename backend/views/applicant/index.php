@@ -37,7 +37,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'email:email',
             'record_number',
-
+            [
+                'attribute'=>'final_status',
+                'vAlign'=>'middle',
+                'width'=>'180px',
+                'value'=>function ($model, $key, $index, $widget) {
+                    return ($model->final_status!=null) ? $model->getOneFinalStatus($model->final_status):'';
+                },
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>$finalStatusList,
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>''],
+                'format'=>'html'
+            ],
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],

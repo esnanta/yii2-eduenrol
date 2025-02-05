@@ -35,16 +35,16 @@ class ApplicantController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->can('index-applicant')){
-                            $searchModel = new ApplicantSearch;
-                    $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
-                    return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ]);
-                    }
-        else{
+        if (Yii::$app->user->can('index-applicant')) {
+            $searchModel = new ApplicantSearch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            $finalStatusList = Applicant::getArrayFinalStatus();
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'finalStatusList' => $finalStatusList
+            ]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
