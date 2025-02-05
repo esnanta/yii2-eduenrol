@@ -13,7 +13,7 @@ class B5AdminModernizeAsset extends AssetBundle
     public $baseUrl = '@web/themes-modernize';
     public $css = [
 
-        'https://use.fontawesome.com/releases/v5.3.1/css/all.css',
+        'assets/vendor/fontawesome-free-5.15.4/css/all.css',
         'assets/vendor/icon-awesome/css/font-awesome.min.css',
         
         //CSS Global Compulsory
