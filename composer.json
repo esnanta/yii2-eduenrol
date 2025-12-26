@@ -1,7 +1,7 @@
 {
-    "name": "esnanta/yii2-retread",
-    "description": "Retread Management System",
-    "keywords": ["yii2", "esnanta", "retread"],
+    "name": "esnanta/yii2-eduenroll",
+    "description": "Enrollment System",
+    "keywords": ["yii2", "esnanta", "enroll"],
     "homepage": "https://www.yiiframework.com/",
     "type": "project",
     "license": "BSD-3-Clause",
@@ -14,7 +14,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0.1",
+        "php": ">=8.1",
         "yiisoft/yii2": "~2.0.48",
         "yiisoft/yii2-bootstrap4": "~2.0.6",
         "yiisoft/yii2-bootstrap5": "*",
@@ -40,8 +40,7 @@
         "kartik-v/yii2-number": "@dev",
         "kartik-v/yii2-password": "dev-master",
         "kartik-v/yii2-editors": "@dev",
-        "lesha724/yii2-document-viewer": "*",
-        "onmotion/yii2-widget-apexcharts": "*",
+
         "bajadev/yii2-ckeditor": "*",
 
         "budyaga/yii2-cropper": "*",
@@ -68,9 +67,7 @@
         "codeception/module-yii2": "^1.1",
         "codeception/module-filesystem": "^2.0 || ^1.1",
         "codeception/verify": "^2.2",
-        "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4",
-
-        "thtmorais/yii2-test": "dev-main"
+        "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
     },
     "autoload-dev": {
         "psr-4": {
@@ -80,6 +77,9 @@
         }
     },
     "config": {
+        "platform": {
+            "php": "8.1.0"
+        },
         "allow-plugins": {
             "yiisoft/yii2-composer" : true
         },
