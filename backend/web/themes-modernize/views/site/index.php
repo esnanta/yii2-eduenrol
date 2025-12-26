@@ -2,6 +2,8 @@
 
 /** @var yii\web\View $this */
 /** @var int $applicantCount */
+/** @var int $finalizedCount */
+/** @var int $notFinalizedCount */
 /** @var common\models\Event|null $activeEvent */
 
 use yii\helpers\Html;
@@ -35,7 +37,7 @@ $this->title = 'Dashboard';
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="me-3">
                             <p class="text-muted mb-0">Pendaftar Finalisasi</p>
-                            <h4 class="mb-0 fw-semibold">1,250</h4>
+                            <h4 class="mb-0 fw-semibold"><?= number_format($finalizedCount) ?></h4>
                         </div>
                         <div class="flex-shrink-0">
                             <div class="bg-success-subtle text-success d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
@@ -52,7 +54,7 @@ $this->title = 'Dashboard';
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="me-3">
                             <p class="text-muted mb-0">Belum Finalisasi</p>
-                            <h4 class="mb-0 fw-semibold">350</h4>
+                            <h4 class="mb-0 fw-semibold"><?= number_format($notFinalizedCount) ?></h4>
                         </div>
                         <div class="flex-shrink-0">
                             <div class="bg-danger-subtle text-danger d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
