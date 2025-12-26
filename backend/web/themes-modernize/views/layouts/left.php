@@ -1,20 +1,30 @@
 <?php
 
+use backend\assets\AdminModernizeAsset;
 use common\models\Page;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
-function getMenu($_menuName, $_classIcon)
-{
-    return '<span><i class="' . $_classIcon . '"></i></span><span class="hide-menu">' . $_menuName . '</span>';
+if (!function_exists('getMenu')) {
+    function getMenu($_menuName, $_classIcon): string
+    {
+        return '<span>'
+                . '<i class="' . $_classIcon . '"></i>'
+                . '</span>'
+                . '<span class="hide-menu">' . $_menuName . '</span>';
+    }
 }
 $paddingLeftChildMenu = '10px';
+$assetBundle = AdminModernizeAsset::register($this);
+$logo = $assetBundle->baseUrl . '/assets/images/logos/dark-logo.svg';
 ?>
 
 <aside class="left-sidebar">
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="./index.html" class="text-nowrap logo-img">
-                <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+            <a href="<?= Url::to(['/site/index']) ?>" class="text-nowrap logo-img">
+                <img src="<?=$logo;?>"
+                     width="180" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>

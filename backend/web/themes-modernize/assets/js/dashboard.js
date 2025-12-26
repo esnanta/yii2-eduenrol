@@ -101,8 +101,8 @@ $(function () {
 
   };
 
-  var chart = new ApexCharts(document.querySelector("#chart"), chart);
-  chart.render();
+  var profitChart = new ApexCharts(document.querySelector("#chart"), chart);
+  profitChart.render();
 
 
   // =====================================
@@ -156,8 +156,8 @@ $(function () {
     },
   };
 
-  var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
-  chart.render();
+  var breakupChart = new ApexCharts(document.querySelector("#breakup"), breakup);
+  breakupChart.render();
 
 
 

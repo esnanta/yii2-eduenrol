@@ -38,7 +38,6 @@ AdminModernizeAsset::register($this);
                 <!--  Header Start -->
                 <?= $this->render('header.php'); ?>
                 <!--  Header End -->
-
                 <div class="container-fluid">
                     <?=
                     Breadcrumbs::widget([

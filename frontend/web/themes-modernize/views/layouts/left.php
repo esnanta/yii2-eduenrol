@@ -4,7 +4,6 @@ use common\models\ApplicantAlmamater;
 use common\models\ApplicantFamily;
 use common\models\Event;
 use common\models\Semester;
-use common\helper\MenuHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
