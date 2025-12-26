@@ -4,18 +4,21 @@ use common\models\ApplicantAlmamater;
 use common\models\ApplicantFamily;
 use common\models\Event;
 use common\models\Semester;
+use common\helper\MenuHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 
 <?php
     $module = Yii::$app->getModule('user');
-    function getMenu($_menuName, $_classIcon): string
-    {
-        return '<span>' .
-                '<i class="' . $_classIcon . '"></i>' .
-                '</span>' .
-                '<span class="hide-menu">' . $_menuName . '</span>';
+    if (!function_exists('getMenu')) {
+        function getMenu($_menuName, $_classIcon): string
+        {
+            return '<span>'
+                    . '<i class="' . $_classIcon . '"></i>'
+                    . '</span>'
+                    . '<span class="hide-menu">' . $_menuName . '</span>';
+        }
     }
     $homeUrl = str_replace('user/','',Url::to(['site/index']));
     $username = (Yii::$app->user->isGuest) ? 'Guest' : Yii::$app->user->identity->username;

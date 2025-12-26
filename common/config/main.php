@@ -21,7 +21,7 @@ return [
     'components' => [
         'db' => [
             'class' => Connection::class,
-            'dsn' => 'mysql:host=localhost;dbname=yii2_retread',
+            'dsn' => 'mysql:host=localhost;dbname=zttrhcuc_psb',
             'username' => 'root',
             'password' => 'myroot',
             'charset' => 'utf8',
