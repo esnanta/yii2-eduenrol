@@ -44,8 +44,6 @@ if (!Yii::$app->user->isGuest) {
                     <li class="nav-item">
                         <?php
                         $defaultImage = "/frontend/web/themes-modernize/assets/images/profile/user-1.jpg";
-                        // Anda meminta tautan ke 'admin/user/login'. Jika halaman login Anda berbeda, silakan sesuaikan rutenya.
-                        // Contohnya, untuk halaman login default dektrium/user, Anda akan menggunakan ['/user/security/login'].
                         echo Html::a(
                             Html::img(Url::base() . $defaultImage, [
                                 'alt' => 'Login',
@@ -64,7 +62,7 @@ if (!Yii::$app->user->isGuest) {
                            aria-expanded="false">
                             <img src="<?= $model->getImageUrl(); ?>"
                                  width="35" height="35" class="rounded-circle"
-                                 alt="<?= $model->title; ?>">
+                            >
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
