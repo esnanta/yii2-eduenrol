@@ -40,7 +40,7 @@
         "kartik-v/yii2-number": "@dev",
         "kartik-v/yii2-password": "dev-master",
         "kartik-v/yii2-editors": "@dev",
-
+        "2amigos/yii2-chartjs-widget" : "~2.0",
         "bajadev/yii2-ckeditor": "*",
 
         "budyaga/yii2-cropper": "*",
