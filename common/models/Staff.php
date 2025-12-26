@@ -23,7 +23,7 @@ class Staff extends BaseStaff
     const ACTIVE_STATUS_NO      = 2;
 
     public $asset;
-
+    public static $path='/uploads/staff';
     /**
      * @inheritdoc
      */
@@ -215,7 +215,16 @@ class Staff extends BaseStaff
 
         return true;
     }
-
+    /**
+     * fetch stored image url
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        // return a default image placeholder if your source avatar is not found
+        $file_name = isset($this->file_name) ? self::$path.'/'.$this->file_name : '/themes/home8/img/team/img32-md.jpg';
+        return str_replace('uploads', 'backend/web/uploads', Yii::$app->urlManager->baseUrl . $file_name);
+    }
     public function getUrl()
     {
         return Yii::$app->getUrlManager()->createUrl(['staff/view', 'id' => $this->id, 'title' => $this->title]);
