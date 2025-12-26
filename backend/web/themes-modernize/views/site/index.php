@@ -99,7 +99,14 @@ $this->title = 'Dashboard';
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h6 class="fw-semibold text-primary mb-0">Pendaftar Harian</h6>
+                    <div>
+                        <h6 class="fw-semibold text-primary mb-0">Pendaftar Harian</h6>
+                        <?php if ($activeEvent && $activeEvent->date_start && $activeEvent->date_end): ?>
+                            <small class="text-muted">
+                                <?= Yii::$app->formatter->asDate($activeEvent->date_start, 'd MMM Y') ?> &mdash; <?= Yii::$app->formatter->asDate($activeEvent->date_end, 'd MMM Y') ?>
+                            </small>
+                        <?php endif; ?>
+                    </div>
                     <div class="dropdown">
                         <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="ti ti-dots-vertical"></i>
