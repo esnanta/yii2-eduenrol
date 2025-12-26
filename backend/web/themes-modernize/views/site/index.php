@@ -7,6 +7,8 @@
 /** @var int $approvalRejectCount */
 /** @var int $finalizedMaleCount */
 /** @var int $finalizedFemaleCount */
+/** @var array $dailyApplicantLabels */
+/** @var array $dailyApplicantData */
 /** @var common\models\Event|null $activeEvent */
 
 use common\models\Applicant;
@@ -93,24 +95,49 @@ $this->title = 'Dashboard';
 
     <div class="row mt-4">
 
-        <!-- Earnings Overview -->
+        <!-- Pendaftar Harian -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h6 class="fw-semibold text-primary mb-0">Earnings Overview</h6>
+                    <h6 class="fw-semibold text-primary mb-0">Pendaftar Harian</h6>
                     <div class="dropdown">
                         <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="ti ti-dots-vertical"></i>
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="earningsChart" height="110"></canvas>
+                <div class="card-body" style="height: 320px;">
+                    <?= ChartJs::widget([
+                        'type' => 'line',
+                        'data' => [
+                            'labels' => $dailyApplicantLabels,
+                            'datasets' => [
+                                [
+                                    'label' => 'Jumlah Pendaftar',
+                                    'data' => $dailyApplicantData,
+                                    'backgroundColor' => 'rgba(93, 135, 255, 0.2)',
+                                    'borderColor' => '#5D87FF',
+                                    'borderWidth' => 2,
+                                    'pointBackgroundColor' => '#5D87FF',
+                                    'fill' => true,
+                                    'tension' => 0.4,
+                                ],
+                            ],
+                        ],
+                        'clientOptions' => [
+                            'responsive' => true,
+                            'maintainAspectRatio' => false,
+                            'plugins' => [
+                                'legend' => ['display' => false],
+                            ],
+                            'scales' => ['y' => ['beginAtZero' => true, 'ticks' => ['precision' => 0]]],
+                        ],
+                    ]); ?>
                 </div>
             </div>
         </div>
 
-        <!-- Revenue Sources -->
+        <!-- Finalisasi Pendaftar -->
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">

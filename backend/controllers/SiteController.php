@@ -11,6 +11,7 @@ use common\models\Staff;
 use common\service\CacheService;
 use common\models\login\User;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -68,6 +69,7 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return string
+     * @throws \Exception
      */
     public function actionIndex()
     {
@@ -88,9 +90,8 @@ class SiteController extends Controller
             $office         = Office::find()->where(['id' => $officeId])->one();
             $staff          = Staff::find()->where(['id' => $staffId])->one();
 
-            // Cari event yang aktif
             $activeEvent = Event::find()
-                ->where(['is_active' => 1])
+                ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
                 ->one();
 
             $applicantCount = 0;
@@ -99,8 +100,10 @@ class SiteController extends Controller
             $approvalRejectCount = 0;
             $finalizedMaleCount = 0;
             $finalizedFemaleCount = 0;
+            $dailyApplicantLabels = [];
+            $dailyApplicantData = [];
             if ($activeEvent) {
-                $stats = (new \yii\db\Query())
+                $stats = (new Query())
                     ->select([
                         'applicantCount' => 'COUNT(*)',
                         'finalizedCount' => 'SUM(CASE WHEN final_status = ' . Applicant::FINAL_STATUS_YES . ' THEN 1 ELSE 0 END)',
@@ -119,6 +122,32 @@ class SiteController extends Controller
                 $approvalRejectCount = (int)($stats['approvalRejectCount'] ?? 0);
                 $finalizedMaleCount = (int)($stats['finalizedMaleCount'] ?? 0);
                 $finalizedFemaleCount = (int)($stats['finalizedFemaleCount'] ?? 0);
+
+                // Ambil data pendaftar harian untuk chart
+                if (!empty($activeEvent->date_start) && !empty($activeEvent->date_end)) {
+                    $eventStartDateStr = $activeEvent->date_start;
+                    $eventEndDateStr = $activeEvent->date_end;
+
+                    $startDate = new \DateTime($eventStartDateStr);
+                    $endDate = new \DateTime($eventEndDateStr);
+                    $interval = new \DateInterval('P1D');
+                    $dateRange = new \DatePeriod($startDate, $interval, (clone $endDate)->modify('+1 day'));
+
+                    $dailyCounts = (new Query())
+                        ->select(['date' => 'DATE(created_at)', 'count' => 'COUNT(*)'])
+                        ->from(Applicant::tableName())
+                        ->where(['event_id' => $activeEvent->id])
+                        ->andWhere(['between', 'DATE(created_at)', $eventStartDateStr, $eventEndDateStr])
+                        ->groupBy(['date'])
+                        ->indexBy('date')
+                        ->all();
+
+                    foreach ($dateRange as $date) {
+                        $formattedDate = $date->format('Y-m-d');
+                        $dailyApplicantLabels[] = $date->format('d M');
+                        $dailyApplicantData[] = (int)($dailyCounts[$formattedDate]['count'] ?? 0);
+                    }
+                }
             }
 
             return $this->render('index', [
@@ -132,6 +161,8 @@ class SiteController extends Controller
                 'approvalRejectCount' => $approvalRejectCount,
                 'finalizedMaleCount' => $finalizedMaleCount,
                 'finalizedFemaleCount' => $finalizedFemaleCount,
+                'dailyApplicantLabels' => $dailyApplicantLabels,
+                'dailyApplicantData' => $dailyApplicantData,
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();
