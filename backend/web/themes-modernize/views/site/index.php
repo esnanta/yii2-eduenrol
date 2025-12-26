@@ -27,7 +27,7 @@ $this->title = 'Dashboard';
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="me-3">
                             <p class="text-muted mb-0" title="<?= $activeEvent ? Html::encode($activeEvent->title) : 'Event tidak aktif' ?>">
-                                Pendaftar Aktif
+                                Pendaftar
                             </p>
                             <h4 class="mb-0 fw-semibold"><?= number_format($applicantCount) ?></h4>
                         </div>
@@ -45,7 +45,7 @@ $this->title = 'Dashboard';
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="me-3">
-                            <p class="text-muted mb-0">Pendaftar Finalisasi</p>
+                            <p class="text-muted mb-0">Sudah Finalisasi</p>
                             <h4 class="mb-0 fw-semibold"><?= number_format($finalizedCount) ?></h4>
                         </div>
                         <div class="flex-shrink-0">
@@ -178,7 +178,7 @@ $this->title = 'Dashboard';
                                     [
                                         'label' => 'Finalisasi Pendaftar',
                                         'data' => [$finalizedMaleCount, $finalizedFemaleCount],
-                                        'backgroundColor' => ['#5D87FF', '#13DEB9'], // primary, success
+                                        'backgroundColor' => ['#FFAE1F', '#FA896B'], // warning, danger
                                         'borderColor' =>  ['#fff', '#fff'],
                                         'borderWidth' => 1,
                                         'hoverBorderWidth' => 2,
@@ -197,10 +197,10 @@ $this->title = 'Dashboard';
 
                     <div class="mt-4 text-center small">
                         <span class="me-3">
-                            <i class="ti ti-circle-filled text-primary"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_MALE]) ?>
+                            <i class="ti ti-circle-filled text-warning"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_MALE]) ?>
                         </span>
                         <span class="me-3">
-                            <i class="ti ti-circle-filled text-success"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_FEMALE]) ?>
+                            <i class="ti ti-circle-filled text-danger"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_FEMALE]) ?>
                         </span>
                     </div>
                 </div>
