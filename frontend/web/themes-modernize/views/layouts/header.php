@@ -40,43 +40,45 @@ if (!Yii::$app->user->isGuest) {
 
                 <?php endif; ?>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        <?php if (Yii::$app->user->isGuest) { ?>
-                                <?php $defaultImage = "/frontend/web/themes-modernize/assets/images/profile/user-1.jpg"?>
-                            <img src="<?= Url::base().$defaultImage ?>"
-                                 alt="" width="35" height="35" class="rounded-circle">
-                        <?php } else { ?>
+                <?php if (Yii::$app->user->isGuest): ?>
+                    <li class="nav-item">
+                        <?php
+                        $defaultImage = "/frontend/web/themes-modernize/assets/images/profile/user-1.jpg";
+                        // Anda meminta tautan ke 'admin/user/login'. Jika halaman login Anda berbeda, silakan sesuaikan rutenya.
+                        // Contohnya, untuk halaman login default dektrium/user, Anda akan menggunakan ['/user/security/login'].
+                        echo Html::a(
+                            Html::img(Url::base() . $defaultImage, [
+                                'alt' => 'Login',
+                                'width' => 35,
+                                'height' => 35,
+                                'class' => 'rounded-circle'
+                            ]),
+                            ['/admin/user/login'],
+                            ['class' => 'nav-link nav-icon-hover']
+                        );
+                        ?>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                           aria-expanded="false">
                             <img src="<?= $model->getImageUrl(); ?>"
-                                width="35" height="35" class="rounded-circle"
+                                 width="35" height="35" class="rounded-circle"
                                  alt="<?= $model->title; ?>">
-                        <?php } ?>
-                    </a>
+                        </a>
 
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                        <div class="message-body">
-                            <?php if (!Yii::$app->user->isGuest) : ?>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                            <div class="message-body">
                                 <a href="<?= Url::to(['applicant/view', 'id' => $model->id]) ?>"
                                    class="d-flex align-items-center gap-2 dropdown-item">
                                     <i class="ti ti-user fs-6"></i>
                                     <p class="mb-0 fs-3">My Profile</p>
                                 </a>
-
-                                <?= Html::a(
-                                    'Logout',
-                                    ['/user/logout'],
-                                    [
-                                        'data-method' => 'POST',
-                                        'data-confirm' => "Logout?",
-                                        'class' => 'btn btn-outline-primary mx-3 mt-2 d-block'
-                                    ]
-                                ) ?>
-                            <?php endif ?>
+                                <?= Html::a('Logout', ['/user/logout'], ['data-method' => 'POST', 'data-confirm' => "Logout?", 'class' => 'btn btn-outline-primary mx-3 mt-2 d-block']) ?>
+                            </div>
                         </div>
-
-                    </div>
-                </li>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
