@@ -298,7 +298,7 @@ class Applicant extends BaseApplicant
             return;
     }
 
-    public static function getArrayCitizenshipStatus()
+    public static function getArrayCitizenshipStatus(): array
     {
         return [
             //MASTER
@@ -399,7 +399,7 @@ class Applicant extends BaseApplicant
         return true;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return Yii::$app->getUrlManager()->createUrl(['staff/view', 'id' => $this->id, 'title' => $this->title]);
     }
