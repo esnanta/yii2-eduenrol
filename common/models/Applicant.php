@@ -324,10 +324,10 @@ class Applicant extends BaseApplicant
                 default:
                     $returnValue = '<span class="label label-default">'.$arrayModule[$_module].'</span>';
             }
-
             return $returnValue;
-
         }
+        else
+            return;
     }
 
     /**
