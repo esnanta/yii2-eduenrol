@@ -96,20 +96,23 @@ class SiteController extends Controller
             $applicantCount = 0;
             $finalizedCount = 0;
             $notFinalizedCount = 0;
+            $approvalRejectCount= 0;
             if ($activeEvent) {
-                // Hitung jumlah pendaftar untuk event yang aktif
+
                 $applicantCount = Applicant::find()
                     ->where(['event_id' => $activeEvent->id])
                     ->count();
 
-                // Hitung pendaftar yang sudah finalisasi
                 $finalizedCount = Applicant::find()
                     ->where(['event_id' => $activeEvent->id, 'final_status' => Applicant::FINAL_STATUS_YES])
                     ->count();
 
-                // Hitung pendaftar yang belum finalisasi
                 $notFinalizedCount = Applicant::find()
                     ->where(['event_id' => $activeEvent->id, 'final_status' => Applicant::FINAL_STATUS_NO])
+                    ->count();
+
+                $approvalRejectCount = Applicant::find()
+                    ->where(['event_id' => $activeEvent->id, 'approval_status' => Applicant::APPROVAL_STATUS_REJECT])
                     ->count();
             }
 
@@ -121,6 +124,7 @@ class SiteController extends Controller
                 'activeEvent' => $activeEvent,
                 'finalizedCount' => $finalizedCount,
                 'notFinalizedCount' => $notFinalizedCount,
+                'approvalRejectCount' => $approvalRejectCount
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();
