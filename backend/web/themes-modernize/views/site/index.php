@@ -1,53 +1,84 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var int $applicantCount */
+/** @var common\models\Event|null $activeEvent */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Html;
+
+$this->title = 'Dashboard';
 ?>
 <div class="site-index">
-
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">yaaay ADMIN!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+    <div class="row">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-start border-primary border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="me-3">
+                            <p class="text-muted mb-0" title="<?= $activeEvent ? Html::encode($activeEvent->title) : 'Event tidak aktif' ?>">
+                                Pendaftar Aktif
+                            </p>
+                            <h4 class="mb-0 fw-semibold"><?= number_format($applicantCount) ?></h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary-subtle text-primary d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
+                                <i class="ti ti-users fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
+        <div class="col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-start border-success border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="me-3">
+                            <p class="text-muted mb-0">Pendaftar Finalisasi</p>
+                            <h4 class="mb-0 fw-semibold">1,250</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="bg-success-subtle text-success d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
+                                <i class="ti ti-user-check fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-start border-danger border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="me-3">
+                            <p class="text-muted mb-0">Belum Finalisasi</p>
+                            <h4 class="mb-0 fw-semibold">350</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="bg-danger-subtle text-danger d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
+                                <i class="ti ti-user-x fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-start border-warning border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="me-3">
+                            <p class="text-muted mb-0">Menunggu Konfirmasi</p>
+                            <h4 class="mb-0 fw-semibold">900</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning-subtle text-warning d-flex align-items-center justify-content-center rounded-circle" style="width: 45px; height: 45px;">
+                                <i class="ti ti-user-exclamation fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

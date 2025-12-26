@@ -3,14 +3,11 @@
 namespace backend\controllers;
 
 use common\helper\MessageHelper;
-use common\models\AuthAssignment;
+use common\models\Applicant;
 use common\models\Employment;
-use common\models\Item;
-use common\models\ItemBrand;
-use common\models\ItemUnit;
+use common\models\Event;
 use common\models\Office;
 use common\models\Staff;
-use common\models\Theme;
 use common\service\CacheService;
 use common\models\login\User;
 use Yii;
@@ -91,10 +88,25 @@ class SiteController extends Controller
             $office         = Office::find()->where(['id' => $officeId])->one();
             $staff          = Staff::find()->where(['id' => $staffId])->one();
 
+            // Cari event yang aktif
+            $activeEvent = Event::find()
+                ->where(['is_active' => 1])
+                ->one();
+
+            $applicantCount = 0;
+            if ($activeEvent) {
+                // Hitung jumlah pendaftar untuk event yang aktif
+                $applicantCount = Applicant::find()
+                    ->where(['event_id' => $activeEvent->id])
+                    ->count();
+            }
+
             return $this->render('index', [
                 'office'=>$office,
                 'staff'=>$staff,
                 'authItemName'=>$authItemName,
+                'applicantCount' => $applicantCount,
+                'activeEvent' => $activeEvent,
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();
