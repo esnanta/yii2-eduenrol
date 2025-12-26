@@ -26,9 +26,7 @@ class B5AdminModernizeAsset extends AssetBundle
         'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js',
         'assets/js/sidebarmenu.js',
         'assets/js/app.min.js',
-        'assets/libs/apexcharts/dist/apexcharts.min.js',
-        'assets/libs/simplebar/dist/simplebar.js',
-        'assets/js/dashboard.js'
+        'assets/libs/simplebar/dist/simplebar.js'
     ];
 
     public $depends = [
