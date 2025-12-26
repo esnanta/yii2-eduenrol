@@ -96,35 +96,42 @@ class SiteController extends Controller
             $applicantCount = 0;
             $finalizedCount = 0;
             $notFinalizedCount = 0;
-            $approvalRejectCount= 0;
+            $approvalRejectCount = 0;
+            $finalizedMaleCount = 0;
+            $finalizedFemaleCount = 0;
             if ($activeEvent) {
-
-                $applicantCount = Applicant::find()
+                $stats = (new \yii\db\Query())
+                    ->select([
+                        'applicantCount' => 'COUNT(*)',
+                        'finalizedCount' => 'SUM(CASE WHEN final_status = ' . Applicant::FINAL_STATUS_YES . ' THEN 1 ELSE 0 END)',
+                        'notFinalizedCount' => 'SUM(CASE WHEN final_status = ' . Applicant::FINAL_STATUS_NO . ' THEN 1 ELSE 0 END)',
+                        'approvalRejectCount' => 'SUM(CASE WHEN approval_status = ' . Applicant::APPROVAL_STATUS_REJECT . ' THEN 1 ELSE 0 END)',
+                        'finalizedMaleCount' => 'SUM(CASE WHEN final_status = ' . Applicant::FINAL_STATUS_YES . ' AND gender_status = ' . Applicant::GENDER_STATUS_MALE . ' THEN 1 ELSE 0 END)',
+                        'finalizedFemaleCount' => 'SUM(CASE WHEN final_status = ' . Applicant::FINAL_STATUS_YES . ' AND gender_status = ' . Applicant::GENDER_STATUS_FEMALE . ' THEN 1 ELSE 0 END)',
+                    ])
+                    ->from(Applicant::tableName())
                     ->where(['event_id' => $activeEvent->id])
-                    ->count();
+                    ->one();
 
-                $finalizedCount = Applicant::find()
-                    ->where(['event_id' => $activeEvent->id, 'final_status' => Applicant::FINAL_STATUS_YES])
-                    ->count();
-
-                $notFinalizedCount = Applicant::find()
-                    ->where(['event_id' => $activeEvent->id, 'final_status' => Applicant::FINAL_STATUS_NO])
-                    ->count();
-
-                $approvalRejectCount = Applicant::find()
-                    ->where(['event_id' => $activeEvent->id, 'approval_status' => Applicant::APPROVAL_STATUS_REJECT])
-                    ->count();
+                $applicantCount = (int)($stats['applicantCount'] ?? 0);
+                $finalizedCount = (int)($stats['finalizedCount'] ?? 0);
+                $notFinalizedCount = (int)($stats['notFinalizedCount'] ?? 0);
+                $approvalRejectCount = (int)($stats['approvalRejectCount'] ?? 0);
+                $finalizedMaleCount = (int)($stats['finalizedMaleCount'] ?? 0);
+                $finalizedFemaleCount = (int)($stats['finalizedFemaleCount'] ?? 0);
             }
 
             return $this->render('index', [
-                'office'=>$office,
-                'staff'=>$staff,
-                'authItemName'=>$authItemName,
+                'office' => $office,
+                'staff' => $staff,
+                'authItemName' => $authItemName,
                 'applicantCount' => $applicantCount,
                 'activeEvent' => $activeEvent,
                 'finalizedCount' => $finalizedCount,
                 'notFinalizedCount' => $notFinalizedCount,
-                'approvalRejectCount' => $approvalRejectCount
+                'approvalRejectCount' => $approvalRejectCount,
+                'finalizedMaleCount' => $finalizedMaleCount,
+                'finalizedFemaleCount' => $finalizedFemaleCount,
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();

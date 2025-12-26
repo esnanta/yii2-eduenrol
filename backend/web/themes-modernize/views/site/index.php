@@ -3,11 +3,16 @@
 /** @var yii\web\View $this */
 /** @var int $applicantCount */
 /** @var int $finalizedCount */
-/** @var int $notFinalizedCount */
+/** @var int $notFinalizedCount */ 
 /** @var int $approvalRejectCount */
+/** @var int $finalizedMaleCount */
+/** @var int $finalizedFemaleCount */
 /** @var common\models\Event|null $activeEvent */
 
+use common\models\Applicant;
+use dosamigos\chartjs\ChartJs;
 use yii\helpers\Html;
+
 
 $this->title = 'Dashboard';
 ?>
@@ -109,7 +114,7 @@ $this->title = 'Dashboard';
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h6 class="fw-semibold text-primary mb-0">Revenue Sources</h6>
+                    <h6 class="fw-semibold text-primary mb-0">Finalisasi Pendaftar</h6>
                     <div class="dropdown">
                         <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="ti ti-dots-vertical"></i>
@@ -117,18 +122,41 @@ $this->title = 'Dashboard';
                     </div>
                 </div>
                 <div class="card-body">
-                    <canvas id="revenueChart" height="250"></canvas>
+                    <div style="height: 250px; position: relative;">
+                        <?php
+                        $genderLabels = Applicant::getArrayGenderStatus();
+                        echo ChartJs::widget([
+                            'type' => 'doughnut',
+                            'data' => [
+                                'labels' => array_values($genderLabels),
+                                'datasets' => [
+                                    [
+                                        'label' => 'Finalisasi Pendaftar',
+                                        'data' => [$finalizedMaleCount, $finalizedFemaleCount],
+                                        'backgroundColor' => ['#5D87FF', '#13DEB9'], // primary, success
+                                        'borderColor' =>  ['#fff', '#fff'],
+                                        'borderWidth' => 1,
+                                        'hoverBorderWidth' => 2,
+                                    ],
+                                ],
+                            ],
+                            'clientOptions' => [
+                                'plugins' => [
+                                    'legend' => ['display' => false],
+                                ],
+                                'maintainAspectRatio' => false,
+                            ],
+                        ]);
+                        ?>
+                    </div>
 
                     <div class="mt-4 text-center small">
-                    <span class="me-3">
-                        <i class="ti ti-circle-filled text-primary"></i> Direct
-                    </span>
                         <span class="me-3">
-                        <i class="ti ti-circle-filled text-success"></i> Social
-                    </span>
-                        <span>
-                        <i class="ti ti-circle-filled text-info"></i> Referral
-                    </span>
+                            <i class="ti ti-circle-filled text-primary"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_MALE]) ?>
+                        </span>
+                        <span class="me-3">
+                            <i class="ti ti-circle-filled text-success"></i> <?= Html::encode($genderLabels[Applicant::GENDER_STATUS_FEMALE]) ?>
+                        </span>
                     </div>
                 </div>
             </div>
