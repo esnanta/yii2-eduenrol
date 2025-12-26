@@ -102,6 +102,7 @@ class SiteController extends Controller
             $finalizedFemaleCount = 0;
             $dailyApplicantLabels = [];
             $dailyApplicantData = [];
+            $dailyFinalizedData = [];
             if ($activeEvent) {
                 $stats = (new Query())
                     ->select([
@@ -142,10 +143,22 @@ class SiteController extends Controller
                         ->indexBy('date')
                         ->all();
 
+                    $dailyFinalizedCounts = (new Query())
+                        ->select(['date' => 'DATE(date_final)', 'count' => 'COUNT(*)'])
+                        ->from(Applicant::tableName())
+                        ->where(['event_id' => $activeEvent->id])
+                        ->andWhere(['final_status' => Applicant::FINAL_STATUS_YES])
+                        ->andWhere(['not', ['date_final' => null]])
+                        ->andWhere(['between', 'DATE(date_final)', $eventStartDateStr, $eventEndDateStr])
+                        ->groupBy(['date'])
+                        ->indexBy('date')
+                        ->all();
+
                     foreach ($dateRange as $date) {
                         $formattedDate = $date->format('Y-m-d');
                         $dailyApplicantLabels[] = $date->format('d M');
                         $dailyApplicantData[] = (int)($dailyCounts[$formattedDate]['count'] ?? 0);
+                        $dailyFinalizedData[] = (int)($dailyFinalizedCounts[$formattedDate]['count'] ?? 0);
                     }
                 }
             }
@@ -163,6 +176,7 @@ class SiteController extends Controller
                 'finalizedFemaleCount' => $finalizedFemaleCount,
                 'dailyApplicantLabels' => $dailyApplicantLabels,
                 'dailyApplicantData' => $dailyApplicantData,
+                'dailyFinalizedData' => $dailyFinalizedData,
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();

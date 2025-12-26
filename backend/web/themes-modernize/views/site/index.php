@@ -9,6 +9,7 @@
 /** @var int $finalizedFemaleCount */
 /** @var array $dailyApplicantLabels */
 /** @var array $dailyApplicantData */
+/** @var array $dailyFinalizedData */
 /** @var common\models\Event|null $activeEvent */
 
 use common\models\Applicant;
@@ -129,13 +130,23 @@ $this->title = 'Dashboard';
                                     'fill' => true,
                                     'tension' => 0.4,
                                 ],
+                                [
+                                    'label' => 'Jumlah Finalisasi',
+                                    'data' => $dailyFinalizedData,
+                                    'backgroundColor' => 'rgba(19, 222, 185, 0.2)',
+                                    'borderColor' => '#13DEB9',
+                                    'borderWidth' => 2,
+                                    'pointBackgroundColor' => '#13DEB9',
+                                    'fill' => true,
+                                    'tension' => 0.4,
+                                ],
                             ],
                         ],
                         'clientOptions' => [
                             'responsive' => true,
                             'maintainAspectRatio' => false,
                             'plugins' => [
-                                'legend' => ['display' => false],
+                                'legend' => ['display' => true, 'position' => 'top', 'align' => 'end'],
                             ],
                             'scales' => ['y' => ['beginAtZero' => true, 'ticks' => ['precision' => 0]]],
                         ],
