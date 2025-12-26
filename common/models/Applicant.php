@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\base\Exception;
 use yii\helpers\FileHelper;
 use common\service\CacheService;
 use common\models\base\Applicant as BaseApplicant;
@@ -121,7 +122,7 @@ class Applicant extends BaseApplicant
     }
 
 
-    public static function getArrayGenderStatus()
+    public static function getArrayGenderStatus(): array
     {
         return [
             //MASTER
@@ -193,7 +194,7 @@ class Applicant extends BaseApplicant
             return;
     }
 
-    public static function getArrayChildStatus()
+    public static function getArrayChildStatus(): array
     {
         return [
             self::CHILD_STATUS_BIOLOGICAL   => 'Anak Kandung',
@@ -260,7 +261,7 @@ class Applicant extends BaseApplicant
             return;
     }
 
-    public static function getArrayApprovalStatus()
+    public static function getArrayApprovalStatus(): array
     {
         return [
             //MASTER
@@ -327,15 +328,15 @@ class Applicant extends BaseApplicant
             return $returnValue;
 
         }
-        else
-            return;
     }
 
     /**
-     * fetch stored image file name with complete path
+     * fetch a stored image file name with a complete path
+     * @param bool $isTemporary
      * @return string
+     * @throws Exception
      */
-    public function getAssetFile($isTemporary=false): string
+    public function getAssetFile(bool $isTemporary=false): string
     {
         $directory = str_replace('frontend', 'backend', Yii::getAlias('@webroot')) . $this->getPath();
         if ($isTemporary) :
