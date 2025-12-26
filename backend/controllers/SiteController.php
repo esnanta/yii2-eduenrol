@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\helper\MessageHelper;
 use common\models\Applicant;
+use common\models\ApplicantSearch;
 use common\models\Employment;
 use common\models\Event;
 use common\models\Office;
@@ -199,93 +200,106 @@ class SiteController extends Controller
         }
     }
 
-    public function actionReport(){
-        
-        // 1. Find the active event
-        $activeEvent = Event::find()
-            ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
-            ->one();
+    public function actionReport()
+    {
+        $searchModel = new ApplicantSearch();
+        $queryParams = Yii::$app->request->queryParams;
 
-        if (!$activeEvent) {
-            Yii::$app->session->setFlash('error', 'Tidak ada event pendaftaran yang sedang aktif.');
-            return $this->redirect(['index']);
+        if (Yii::$app->request->get('export')) {
+            $dataProvider = $searchModel->search($queryParams);
+            $dataProvider->pagination = false; // To get all records for export
+
+            // 1. Find the active event
+            $activeEvent = Event::find()
+                ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
+                ->one();
+
+            if (!$activeEvent) {
+                Yii::$app->session->setFlash('error', 'Tidak ada event pendaftaran yang sedang aktif.');
+                return $this->redirect(['report']);
+            }
+
+            // 2. Fetch applicants for the active event using the search criteria
+            $query = $dataProvider->query;
+            $query->andWhere(['event_id' => $activeEvent->id]);
+            $applicants = $query->with('religion')->orderBy(['id' => SORT_ASC])->all();
+
+
+            // 3. Create a new Spreadsheet object
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setTitle('Data Pendaftar');
+
+            // 4. Set headers
+            $headers = [
+                'A1' => 'No.',
+                'B1' => 'Nomor Pendaftaran',
+                'C1' => 'Nama Lengkap',
+                'D1' => 'Jenis Kelamin',
+                'E1' => 'Tempat Lahir',
+                'F1' => 'Tanggal Lahir',
+                'G1' => 'Agama',
+                'H1' => 'Alamat',
+                'I1' => 'No. Telepon',
+                'J1' => 'Email',
+                'K1' => 'Status Finalisasi',
+                'L1' => 'Status Persetujuan',
+                'M1' => 'Tanggal Daftar',
+            ];
+
+            foreach ($headers as $cell => $header) {
+                $sheet->setCellValue($cell, $header);
+                $sheet->getStyle($cell)->getFont()->setBold(true);
+            }
+
+            // 5. Populate data rows
+            $genderStatusArray = Applicant::getArrayGenderStatus();
+            $finalStatusArray = Applicant::getArrayFinalStatus();
+            $approvalStatusArray = Applicant::getArrayApprovalStatus();
+            $row = 2;
+            foreach ($applicants as $index => $applicant) {
+                $sheet->setCellValue('A' . $row, $index + 1);
+                $sheet->setCellValue('B' . $row, $applicant->record_number);
+                $sheet->setCellValue('C' . $row, $applicant->title);
+                $sheet->setCellValue('D' . $row, $genderStatusArray[$applicant->gender_status] ?? 'N/A');
+                $sheet->setCellValue('E' . $row, $applicant->birth_place);
+                $sheet->setCellValue('F' . $row, Yii::$app->formatter->asDate($applicant->date_birth));
+                $sheet->setCellValue('G' . $row, $applicant->religion ? $applicant->religion->title : 'N/A');
+                $sheet->setCellValue('H' . $row, $applicant->address_street);
+                $sheet->setCellValue('I' . $row, $applicant->phone_number);
+                $sheet->setCellValue('J' . $row, $applicant->email);
+                $sheet->setCellValue('K' . $row, $finalStatusArray[$applicant->final_status] ?? 'N/A');
+                $sheet->setCellValue('L' . $row, $approvalStatusArray[$applicant->approval_status] ?? 'N/A');
+                $sheet->setCellValue('M' . $row, Yii::$app->formatter->asDatetime($applicant->created_at));
+                $row++;
+            }
+
+            // Auto-size columns for better readability
+            foreach (range('A', 'M') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
+            // 6. Set response headers and output the file to the browser
+            $filename = 'Laporan Pendaftar - ' . preg_replace('/[^A-Za-z0-9\-\s]/', '', $activeEvent->title) . ' - ' . date('Y-m-d') . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"');
+            header('Cache-Control: max-age=0');
+
+            $writer = new Xlsx($spreadsheet);
+            try {
+                $writer->save('php://output');
+                exit();
+            } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e) {
+                Yii::$app->session->setFlash('error', 'Gagal membuat file excel: ' . $e->getMessage());
+                return $this->redirect(['report']);
+            }
         }
 
-        // 2. Fetch applicants for the active event
-        $applicants = Applicant::find()
-            ->where(['event_id' => $activeEvent->id])
-            ->with('religion') // Eager load religion to prevent N+1 query problem
-            ->orderBy(['id' => SORT_ASC])
-            ->all();
+        $searchModel->load($queryParams);
 
-        // 3. Create a new Spreadsheet object
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Data Pendaftar');
-
-        // 4. Set headers
-        $headers = [
-            'A1' => 'No.',
-            'B1' => 'Nomor Pendaftaran',
-            'C1' => 'Nama Lengkap',
-            'D1' => 'Jenis Kelamin',
-            'E1' => 'Tempat Lahir',
-            'F1' => 'Tanggal Lahir',
-            'G1' => 'Agama',
-            'H1' => 'Alamat',
-            'I1' => 'No. Telepon',
-            'J1' => 'Email',
-            'K1' => 'Status Finalisasi',
-            'L1' => 'Status Persetujuan',
-            'M1' => 'Tanggal Daftar',
-        ];
-
-        foreach ($headers as $cell => $header) {
-            $sheet->setCellValue($cell, $header);
-            $sheet->getStyle($cell)->getFont()->setBold(true);
-        }
-
-        // 5. Populate data rows
-        $genderStatusArray = Applicant::getArrayGenderStatus();
-        $finalStatusArray = Applicant::getArrayFinalStatus();
-        $approvalStatusArray = Applicant::getArrayApprovalStatus();
-        $row = 2;
-        foreach ($applicants as $index => $applicant) {
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $applicant->record_number);
-            $sheet->setCellValue('C' . $row, $applicant->title);
-            $sheet->setCellValue('D' . $row, $genderStatusArray[$applicant->gender_status] ?? 'N/A');
-            $sheet->setCellValue('E' . $row, $applicant->birth_place);
-            $sheet->setCellValue('F' . $row, Yii::$app->formatter->asDate($applicant->date_birth));
-            $sheet->setCellValue('G' . $row, $applicant->religion ? $applicant->religion->title : 'N/A');
-            $sheet->setCellValue('H' . $row, $applicant->address_street);
-            $sheet->setCellValue('I' . $row, $applicant->phone_number);
-            $sheet->setCellValue('J' . $row, $applicant->email);
-            $sheet->setCellValue('K' . $row, $finalStatusArray[$applicant->final_status] ?? 'N/A');
-            $sheet->setCellValue('L' . $row, $approvalStatusArray[$applicant->approval_status] ?? 'N/A');
-            $sheet->setCellValue('M' . $row, Yii::$app->formatter->asDatetime($applicant->created_at));
-            $row++;
-        }
-
-        // Auto-size columns for better readability
-        foreach (range('A', 'M') as $columnID) {
-            $sheet->getColumnDimension($columnID)->setAutoSize(true);
-        }
-
-        // 6. Set response headers and output the file to the browser
-        $filename = 'Laporan Pendaftar - ' . preg_replace('/[^A-Za-z0-9\-\s]/', '', $activeEvent->title) . ' - ' . date('Y-m-d') . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
-        header('Cache-Control: max-age=0');
-
-        $writer = new Xlsx($spreadsheet);
-        try {
-            $writer->save('php://output');
-            exit();
-        } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e) {
-            Yii::$app->session->setFlash('error', 'Gagal membuat file excel: ' . $e->getMessage());
-            return $this->redirect(['index']);
-        }
+        return $this->render('report', [
+            'searchModel' => $searchModel,
+        ]);
     }
 
     public function actionCreateOwner()

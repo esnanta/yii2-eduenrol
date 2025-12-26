@@ -162,6 +162,10 @@ $logo = $assetBundle->baseUrl . '/assets/images/logos/dark-logo.svg';
                             </li>
                         </ul>
                     </li>
+
+                    <li class="sidebar-item">
+                        <?= Html::a(getMenu('Report', 'fa fa-dashboard'), ['/site/report'], ['class' => 'sidebar-link']) ?>
+                    </li>
                 <?php endif; ?>
 
                 <li class="nav-small-cap">

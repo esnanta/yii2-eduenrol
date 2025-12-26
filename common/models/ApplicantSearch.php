@@ -13,11 +13,14 @@ use common\models\Applicant;
  */
 class ApplicantSearch extends Applicant
 {
+    public $date_start;
+    public $date_end;
+
     public function rules()
     {
         return [
             [['id', 'event_id', 'user_id', 'gender_status', 'religion_id', 'citizenship_status', 'blood_type', 'height', 'weight', 'head_circle', 'number_of_sibling', 'number_of_dependent', 'number_of_step_sibling', 'birth_order', 'child_status', 'final_status', 'approval_status', 'date_approval', 'approved_by', 'created_by', 'updated_by', 'deleted_by', 'verlock'], 'integer'],
-            [['email', 'record_number', 'family_card_number', 'identity_number', 'birth_certificate_number', 'title', 'nick_name', 'birth_place', 'date_birth', 'address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province', 'phone_number', 'hobby', 'native_language', 'illness', 'disability', 'file_name', 'date_final', 'description', 'created_at', 'updated_at', 'deleted_at', 'uuid'], 'safe'],
+            [['email', 'record_number', 'family_card_number', 'identity_number', 'birth_certificate_number', 'title', 'nick_name', 'birth_place', 'date_birth', 'address_street', 'address_village', 'address_sub_district', 'address_city', 'address_province', 'phone_number', 'hobby', 'native_language', 'illness', 'disability', 'file_name', 'date_final', 'description', 'created_at', 'updated_at', 'deleted_at', 'uuid', 'date_start', 'date_end'], 'safe'],
         ];
     }
 
@@ -37,6 +40,10 @@ class ApplicantSearch extends Applicant
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
+        }
+
+        if ($this->date_start && $this->date_end) {
+            $query->andFilterWhere(['between', 'DATE(created_at)', $this->date_start, $this->date_end]);
         }
 
         $query->andFilterWhere([
