@@ -53,7 +53,24 @@ class ApplicantDocumentController extends Controller
     public function actionView($id)
     {
         if(Yii::$app->user->can('view-applicantdocument')){
-            return $this->render('view', ['model' => $this->findModel($id)]);
+
+            $applicantList = ArrayHelper::map(Applicant::find()
+                ->where(['user_id' => Yii::$app->user->identity->id])
+                ->asArray()->all(), 'id', 'title');
+
+            $eventList = ArrayHelper::map(Event::find()
+                ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
+                ->asArray()->all(), 'id', 'title');
+
+            $documentList = ArrayHelper::map(Document::find()
+                ->asArray()->all(), 'id', 'title');
+
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'applicantList' => $applicantList,
+                'eventList' => $eventList,
+                'documentList' => $documentList,
+            ]);
         } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
