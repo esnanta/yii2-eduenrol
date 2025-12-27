@@ -61,23 +61,29 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                         'value' => call_user_func(function($model){
                             $status = ApplicantDocument::getOneDocumentStatus($model->document_status);
                             $buttons = '';
+                            $statusLabels = ApplicantDocument::getArrayDocumentStatus();
+
+                            $approveButton = Html::a('<i class="fas fa-check"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_APPROVE], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_APPROVE], [
+                                'class' => 'btn btn-sm btn-success',
+                                'data' => [
+                                    'confirm' => 'Apakah Anda yakin ingin menyetujui dokumen ini?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                            $rejectButton = Html::a('<i class="fas fa-times"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_REJECT], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_REJECT], [
+                                'class' => 'btn btn-sm btn-danger',
+                                'data' => [
+                                    'confirm' => 'Apakah Anda yakin ingin menolak dokumen ini?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+
                             if ($model->document_status == ApplicantDocument::DOCUMENT_STATUS_UNCONFIRM) {
-                                $statusLabels = ApplicantDocument::getArrayDocumentStatus();
-                                $approveButton = Html::a('<i class="fas fa-check"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_APPROVE], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_APPROVE], [
-                                    'class' => 'btn btn-sm btn-success',
-                                    'data' => [
-                                        'confirm' => 'Apakah Anda yakin ingin menyetujui dokumen ini?',
-                                        'method' => 'post',
-                                    ],
-                                ]);
-                                $rejectButton = Html::a('<i class="fas fa-times"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_REJECT], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_REJECT], [
-                                    'class' => 'btn btn-sm btn-danger',
-                                    'data' => [
-                                        'confirm' => 'Apakah Anda yakin ingin menolak dokumen ini?',
-                                        'method' => 'post',
-                                    ],
-                                ]);
                                 $buttons = '<div class="float-end">' . $approveButton . ' ' . $rejectButton . '</div>';
+                            } elseif ($model->document_status == ApplicantDocument::DOCUMENT_STATUS_APPROVE) {
+                                $buttons = '<div class="float-end">' . $rejectButton . '</div>';
+                            } elseif ($model->document_status == ApplicantDocument::DOCUMENT_STATUS_REJECT) {
+                                $buttons = '<div class="float-end">' . $approveButton . '</div>';
                             }
                             return $status . $buttons;
                         }, $model),
