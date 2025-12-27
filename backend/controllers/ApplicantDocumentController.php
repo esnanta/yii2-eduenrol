@@ -104,6 +104,33 @@ class ApplicantDocumentController extends Controller
         }
     }
 
+    public function actionViewFile($id)
+    {
+        if (!Yii::$app->user->can('view-applicantdocument')) {
+            throw new ForbiddenHttpException;
+        }
+
+        $model = $this->findModel($id);
+
+        if (!$model->file_name) {
+            throw new NotFoundHttpException('File tidak tersedia.');
+        }
+
+        $filePath = $model->getUploadPath() . '/' . $model->file_name;
+
+        if (!is_file($filePath)) {
+            throw new NotFoundHttpException('File tidak ditemukan di server.');
+        }
+
+        return Yii::$app->response->sendFile(
+            $filePath,
+            $model->file_name,
+            [
+                'inline' => true, // penting untuk iframe / preview PDF
+            ]
+        );
+    }
+
     /**
      * Creates a new ApplicantDocument model.
      * If creation is successful, the browser will be redirected to the 'view' page.
