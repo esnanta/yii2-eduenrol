@@ -52,7 +52,7 @@ use yii\helpers\Html;
                     <span class="float-end"><small><i class="fas fa-print"></i> <?= Yii::$app->formatter->format(time(), 'date'); ?></small></span>
                 </h4>
                 <div class="row">
-                    <div class="col-12"> <!-- Changed from col-md-12 to col-12 -->
+                    <div class="col-8">
                         <table class="table table-sm table-borderless">
                             <tbody>
                             <tr>
@@ -70,7 +70,9 @@ use yii\helpers\Html;
                             </tbody>
                         </table>
                     </div>
-                </div>
+                    <div class="col-4">
+                        <!--  HERE FOR DOCUMENT -->
+                    </div>
             </div>
         </div>
     </div>
