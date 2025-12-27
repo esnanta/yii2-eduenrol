@@ -22,7 +22,7 @@ $logo = $assetBundle->baseUrl . '/assets/images/logos/dark-logo.svg';
 <aside class="left-sidebar">
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="<?= Yii::$app->urlManagerFrontend->createAbsoluteUrl(['/site/index']) ?>" class="text-nowrap logo-img">
+            <a href="<?= Url::to(['/site/index']) ?>" class="text-nowrap logo-img">
                 <img src="<?=$logo;?>"
                      width="180" alt="" />
             </a>
