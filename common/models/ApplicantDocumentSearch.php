@@ -29,11 +29,11 @@ class ApplicantDocumentSearch extends ApplicantDocument
 
     public function search($params)
     {
+        $applicant = Applicant::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
         $query = ApplicantDocument::find()
-            ->where(['tx_applicant_document.applicant_id'=>'tx_applicant.id'])
+            ->where(['applicant_id'=>$applicant->id])
             ->joinWith('applicant')
             ->orderBy(['id'=>SORT_DESC]);
-
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

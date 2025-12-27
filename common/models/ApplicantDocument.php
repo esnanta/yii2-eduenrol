@@ -30,5 +30,12 @@ class ApplicantDocument extends BaseApplicantDocument
             [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2, 'on' => 'update'], // Max 2MB, optional on update
         ]);
     }
-	
+
+    public function getFileUrl()
+    {
+        if ($this->file_name) {
+            return Yii::getAlias('@web/uploads/applicant-documents/' . $this->file_name);
+        }
+        return null;
+    }
 }

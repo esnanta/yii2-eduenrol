@@ -42,7 +42,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'document_id',
+                [
+                        'attribute'=>'document_id',
+                        'vAlign'=>'middle',
+                        'width'=>'180px',
+                        'value'=>function ($model, $key, $index, $widget) {
+                            return ($model->document_id!=null) ? $model->document->title:'';
+                        },
+                        'filterType'=>GridView::FILTER_SELECT2,
+                        'filter'=>$documentList,
+                        'filterWidgetOptions'=>[
+                                'pluginOptions'=>['allowClear'=>true],
+                        ],
+                        'filterInputOptions'=>['placeholder'=>''],
+                        'format'=>'raw'
+                ],
             'title',
             'description:ntext',
             [

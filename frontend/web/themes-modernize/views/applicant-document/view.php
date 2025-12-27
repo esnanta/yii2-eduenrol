@@ -53,21 +53,21 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                             ],
                         //'valueColOptions'=>['style'=>'width:30%']
                     ],
-                    [
-                            'attribute' => 'document_id',
-                            'label' => 'Dokumen',
-                            'value' => ($model->document_id != null) ? $model->document->title : '',
-                            'type' => DetailView::INPUT_SELECT2,
-                            'options' => ['id' => 'document_id', 'prompt' => '', 'disabled' => false],
-                            'items' => $documentList,
-                            'widgetOptions' => [
-                                    'class' => Select2::class,
-                                    'data' => $documentList,
-                            ],
-                        //'valueColOptions'=>['style'=>'width:30%']
-                    ],
                     'title',
                     'file_name',
+                    [
+                            'label' => 'Dokumen',
+                            'format' => 'raw',
+                            'value' => $model->file_name ?
+                                    Html::a(
+                                            '<i class="fas fa-download"></i> Download',
+                                            $model->fileUrl,
+                                            ['target' => '_blank', 'class' => 'btn btn-sm btn-primary']
+                                    )
+                                    . '<br><br>'
+                                    . '<iframe src="' . $model->fileUrl . '" width="100%" height="500px"></iframe>'
+                                    : '-',
+                    ],
             ],
             'deleteOptions' => [
                     'url' => ['delete', 'id' => $model->id],

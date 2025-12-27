@@ -40,9 +40,13 @@ class ApplicantDocumentController extends Controller
             $searchModel = new ApplicantDocumentSearch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+            $documentList = ArrayHelper::map(Document::find()
+                ->asArray()->all(), 'id', 'title');
+
             return $this->render('index', [
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel,
+                'documentList' => $documentList
             ]);
         } else {
             MessageHelper::getFlashAccessDenied();
@@ -87,6 +91,7 @@ class ApplicantDocumentController extends Controller
             $documentList = ArrayHelper::map(Document::find()->asArray()->all(), 'id', 'title');
 
             $model->applicant_id = $applicant->id;
+            $model->office_id = $applicant->office_id;
             $model->event_id = $event->id;
 
             if ($model->load(Yii::$app->request->post())) {
