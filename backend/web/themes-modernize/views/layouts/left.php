@@ -91,6 +91,9 @@ $logo = $assetBundle->baseUrl . '/assets/images/logos/dark-logo.svg';
                             <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
                                 <?= Html::a(getMenu(Yii::t('app', 'Grade'), 'fa fa-angle-right'), ['/applicant-grade/index'], ['class' => 'sidebar-link']) ?>
                             </li>
+                            <li class="sidebar-item" style="padding-left: <?=$paddingLeftChildMenu;?>">
+                                <?= Html::a(getMenu(Yii::t('app', 'Document'), 'fa fa-angle-right'), ['/applicant-document/index'], ['class' => 'sidebar-link']) ?>
+                            </li>
                         </ul>
                     </li>
 

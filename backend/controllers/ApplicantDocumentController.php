@@ -2,9 +2,13 @@
 
 namespace backend\controllers;
 
+use common\models\Applicant;
+use common\models\Document;
+use common\models\Event;
 use Yii;
 use common\models\ApplicantDocument;
 use common\models\ApplicantDocumentSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
@@ -12,6 +16,7 @@ use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 
 use common\helper\MessageHelper;
+
 /**
  * ApplicantDocumentController implements the CRUD actions for ApplicantDocument model.
  */
@@ -35,16 +40,26 @@ class ApplicantDocumentController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->can('index-applicantdocument')){
-                            $searchModel = new ApplicantDocumentSearch;
-                    $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('index-applicantdocument')) {
+            $searchModel = new ApplicantDocumentSearch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-                    return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ]);
-                    }
-        else{
+            $event = Event::find()->where(['is_active' => Event::IS_ACTIVE_ENABLED])->one();
+
+            $applicantList = ArrayHelper::map(Applicant::find()
+                ->where(['event_id'=>$event->id])
+                ->asArray()->all(), 'id', 'title');
+
+            $documentList = ArrayHelper::map(Document::find()
+                ->asArray()->all(), 'id', 'title');
+
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'applicantList' => $applicantList,
+                'documentList' => $documentList
+            ]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -57,7 +72,7 @@ class ApplicantDocumentController extends Controller
      */
     public function actionView($id)
     {
-        if(Yii::$app->user->can('view-applicantdocument')){
+        if (Yii::$app->user->can('view-applicantdocument')) {
             $model = $this->findModel($id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -66,8 +81,7 @@ class ApplicantDocumentController extends Controller
             } else {
                 return $this->render('view', ['model' => $model]);
             }
-        }
-        else{
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -80,25 +94,22 @@ class ApplicantDocumentController extends Controller
      */
     public function actionCreate()
     {
-        if(Yii::$app->user->can('create-applicantdocument')){
+        if (Yii::$app->user->can('create-applicantdocument')) {
             $model = new ApplicantDocument;
 
             try {
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
                     MessageHelper::getFlashSaveSuccess();
                     return $this->redirect(['view', 'id' => $model->id]);
-                } 
-                else {
+                } else {
                     return $this->render('create', [
                         'model' => $model,
                     ]);
                 }
-            }
-            catch (StaleObjectException $e) {
+            } catch (StaleObjectException $e) {
                 throw new StaleObjectException('The object being updated is outdated.');
             }
-        }
-        else{
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -112,7 +123,7 @@ class ApplicantDocumentController extends Controller
      */
     public function actionUpdate($id)
     {
-        if(Yii::$app->user->can('update-applicantdocument')){
+        if (Yii::$app->user->can('update-applicantdocument')) {
             try {
                 $model = $this->findModel($id);
 
@@ -124,12 +135,10 @@ class ApplicantDocumentController extends Controller
                         'model' => $model,
                     ]);
                 }
-            }
-            catch (StaleObjectException $e) {
+            } catch (StaleObjectException $e) {
                 throw new StaleObjectException('The object being updated is outdated.');
             }
-        }
-        else{
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
@@ -144,12 +153,11 @@ class ApplicantDocumentController extends Controller
      */
     public function actionDelete($id)
     {
-        if(Yii::$app->user->can('delete-applicantdocument')){
+        if (Yii::$app->user->can('delete-applicantdocument')) {
             $this->findModel($id)->delete();
             MessageHelper::getFlashDeleteSuccess();
             return $this->redirect(['index']);
-        }
-        else{
+        } else {
             MessageHelper::getFlashLoginInfo();
             throw new ForbiddenHttpException;
         }
