@@ -131,6 +131,13 @@ use yii\helpers\Url;
                     </li>
                     <li class="sidebar-item">
                         <?= Html::a(
+                                getMenu(Yii::t('app', 'Dokumen'), 'fa fa-angle-right'),
+                                ['/applicant-document/index','title'=>$username],
+                                ['class' => 'sidebar-link']
+                        ) ?>
+                    </li>
+                    <li class="sidebar-item">
+                        <?= Html::a(
                             getMenu(Yii::t('app', 'Summary'), 'fa fa-angle-right'),
                             ['/applicant/summary','title'=>$username],
                             ['class' => 'sidebar-link']

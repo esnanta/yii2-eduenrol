@@ -7,11 +7,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 if (!Yii::$app->user->isGuest) {
-    $model = Staff::find()->where(['user_id' => Yii::$app->user->id])->one();
-    if (empty($model)) :
-        $model = Applicant::find()->where(['user_id' => Yii::$app->user->id])->one();
-    endif;
-
+    if (Yii::$app->user->identity->isAdmin) {
+        return Yii::$app->response->redirect(['/admin/site/index']);
+    }
+    $model = Applicant::find()->where(['user_id' => Yii::$app->user->id])->one();
     if ($model->office->unique_id=='') :
         $office = Office::find()->where(['id' => $model->office_id])->one();
         $office->save();

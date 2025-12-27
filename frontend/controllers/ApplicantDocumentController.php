@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Applicant;
+use common\models\Event;
 use Yii;
 use common\models\ApplicantDocument;
 use common\models\ApplicantDocumentSearch;
@@ -82,6 +84,12 @@ class ApplicantDocumentController extends Controller
     {
         if(Yii::$app->user->can('create-applicantdocument')){
             $model = new ApplicantDocument;
+            $applicant  = Applicant::find()->where(['user_id'=>Yii::$app->user->identity->id])->one();
+            $event = Event::find()->where(['is_active'=>Event::IS_ACTIVE_ENABLED])->one();
+
+            $model->applicant_id = $applicant->id;
+            $model->event_id = $event->id;
+
 
             try {
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
