@@ -40,6 +40,14 @@ class ApplicantDocumentController extends Controller
             $searchModel = new ApplicantDocumentSearch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+            $applicant = Applicant::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+
+            if ($applicant) {
+                $dataProvider->query->andWhere(['applicant_id' => $applicant->id]);
+            } else {
+                $dataProvider->query->andWhere('0=1');
+            }
+
             $documentList = ArrayHelper::map(Document::find()
                 ->asArray()->all(), 'id', 'title');
 

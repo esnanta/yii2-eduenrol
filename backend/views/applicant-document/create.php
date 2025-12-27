@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body text-default">
         <div class="applicant-document-create">
             <?= $this->render('_form', [
-                'model' => $model,
+                'model' => $model, 'documentList'=>$documentList
             ]) 
             ?>
         </div>

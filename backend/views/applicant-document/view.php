@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
@@ -12,79 +13,69 @@ use kartik\datecontrol\DateControl;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applicant Documents'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right','style'=>'color:#333333;padding:0 5px']);
+$create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button pull-right', 'style' => 'color:#333333;padding:0 5px']);
 
 ?>
 <div class="applicant-document-view">
 
     <?= DetailView::widget([
-        'model' => $model,
-        'condensed' => false,
-        'hover' => true,
-        'mode' => Yii::$app->request->get('edit') == 't' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
-        'panel' => [
-            'heading' => $this->title.$create,
-            'type' => DetailView::TYPE_DEFAULT,
-        ],
-        'attributes' => [
-            'id',
-            'applicant_id',
-            'event_id',
-            'document_id',
-            'title',
-            'quantity',
-            'file_name',
-            'document_status',
-            'description:ntext',
-            [
-                'attribute' => 'created_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
+            'model' => $model,
+            'condensed' => false,
+            'hover' => true,
+            'mode' => Yii::$app->request->get('edit') == 't' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
+            'panel' => [
+                    'heading' => $this->title . $create,
+                    'type' => DetailView::TYPE_DEFAULT,
             ],
-            [
-                'attribute' => 'updated_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
+            'attributes' => [
+                    [
+                            'attribute' => 'event_id',
+                            'label' => 'Kegiatan',
+                            'value' => ($model->event_id != null) ? $model->event->title : '',
+                            'type' => DetailView::INPUT_SELECT2,
+                            'options' => ['id' => 'event_id', 'prompt' => '', 'disabled' => true],
+                            'items' => $eventList,
+                            'widgetOptions' => [
+                                    'class' => Select2::class,
+                                    'data' => $eventList,
+                            ],
+                        //'valueColOptions'=>['style'=>'width:30%']
+                    ],
+                    [
+                            'attribute' => 'applicant_id',
+                            'value' => ($model->applicant_id != null) ? $model->applicant->title : '',
+                            'type' => DetailView::INPUT_SELECT2,
+                            'options' => ['id' => 'applicant_id', 'prompt' => '', 'disabled' => true],
+                            'items' => $applicantList,
+                            'widgetOptions' => [
+                                    'class' => Select2::class,
+                                    'data' => $applicantList,
+                            ],
+                        //'valueColOptions'=>['style'=>'width:30%']
+                    ],
+                    'title',
+                    [
+                            'attribute' => 'file_name',
+                            'displayOnly' => true,
+                    ],
+                    [
+                            'label' => 'Dokumen',
+                            'format' => 'raw',
+                            'value' => $model->file_name ?
+                                    Html::a(
+                                            '<i class="fas fa-download"></i> Download',
+                                            $model->fileUrl,
+                                            ['target' => '_blank', 'class' => 'btn btn-sm btn-primary']
+                                    )
+                                    . '<br><br>'
+                                    . '<iframe src="' . $model->fileUrl . '" width="100%" height="500px"></iframe>'
+                                    : '-',
+                    ],
             ],
-            'created_by',
-            'updated_by',
-            [
-                'attribute' => 'deleted_at',
-                'format' => [
-                    'datetime', (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime']))
-                        ? Yii::$app->modules['datecontrol']['displaySettings']['datetime']
-                        : 'd-m-Y H:i:s A'
-                ],
-                'type' => DetailView::INPUT_WIDGET,
-                'widgetOptions' => [
-                    'class' => DateControl::classname(),
-                    'type' => DateControl::FORMAT_DATETIME
-                ]
+            'deleteOptions' => [
+                    'url' => ['delete', 'id' => $model->id],
             ],
-            'deleted_by',
-            'verlock',
-            'uuid',
-        ],
-        'deleteOptions' => [
-            'url' => ['delete', 'id' => $model->id],
-        ],
-        'enableEditMode' => true,
+            'enableEditMode' => true,
     ]) ?>
 
 </div>

@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
+use kartik\select2\Select2;
+use kartik\file\FileInput;
 
 /**
  * @var yii\web\View $this
@@ -14,47 +15,45 @@ use kartik\datecontrol\DateControl;
 
 <div class="applicant-document-form">
 
-    <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL]); echo Form::widget([
+    <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL, 'options' => ['enctype' => 'multipart/form-data']]); echo Form::widget([
 
         'model' => $model,
         'form' => $form,
         'columns' => 1,
         'attributes' => [
-
-            'applicant_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Applicant ID...']],
-
-            'event_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Event ID...']],
-
-            'document_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Document ID...']],
-
-            'quantity' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Jml...']],
-
-            'document_status' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Document Status...']],
-
-            'created_by' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter created_by...']],
-
-            'updated_by' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter updated_by...']],
-
-            'deleted_by' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter deleted_by...']],
-
-            'verlock' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Verlock...']],
-
-            'description' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Description...','rows' => 6]],
-
-            'created_at' => ['type' => Form::INPUT_WIDGET, 'widgetClass' => DateControl::classname(),'options' => ['type' => DateControl::FORMAT_DATE]],
-
-            'updated_at' => ['type' => Form::INPUT_WIDGET, 'widgetClass' => DateControl::classname(),'options' => ['type' => DateControl::FORMAT_DATE]],
-
-            'deleted_at' => ['type' => Form::INPUT_WIDGET, 'widgetClass' => DateControl::classname(),'options' => ['type' => DateControl::FORMAT_DATE]],
+            'document_id' => [
+                'type' => Form::INPUT_WIDGET,
+                'widgetClass' => Select2::class,
+                'options' => [
+                    'data' => $documentList,
+                    'options' => ['placeholder' => 'Choose Document Type'],
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ],
 
             'title' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Title...', 'maxlength' => 100]],
 
-            'file_name' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter File Name...', 'maxlength' => 200]],
-
-            'uuid' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Uuid...', 'maxlength' => 36]],
-
+            'file' => [
+                'type' => Form::INPUT_WIDGET,
+                'widgetClass' => FileInput::class,
+                'options' => [
+                    'pluginOptions' => [
+                        'showPreview' => true,
+                        'showCaption' => true,
+                        'showRemove' => true,
+                        'showUpload' => false,
+                        'allowedFileExtensions' => ['pdf'],
+                        'initialPreview' => [
+                            !$model->isNewRecord && !empty($model->file_name) ? Html::a($model->file_name, ['/uploads/applicant-documents/' . $model->file_name], ['target' => '_blank']) : null,
+                        ],
+                        'initialPreviewAsData' => false,
+                        'initialCaption' => $model->file_name,
+                    ]
+                ]
+            ],
         ]
-
     ]);
 
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),

@@ -29,10 +29,9 @@ class ApplicantDocumentSearch extends ApplicantDocument
 
     public function search($params)
     {
-        $applicant = Applicant::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+        $event = Event::find()->where(['is_active' => Event::IS_ACTIVE_ENABLED])->one();
         $query = ApplicantDocument::find()
-            ->where(['applicant_id'=>$applicant->id])
-            ->joinWith('applicant')
+            ->where(['event_id'=>$event->id])
             ->orderBy(['id'=>SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
@@ -44,25 +43,25 @@ class ApplicantDocumentSearch extends ApplicantDocument
         }
 
         $query->andFilterWhere([
-            'tx_applicant_document.id' => $this->id,
-            'tx_applicant_document.applicant_id' => $this->applicant_id,
-            'tx_applicant_document.event_id' => $this->event_id,
-            'tx_applicant_document.document_id' => $this->document_id,
-            'tx_applicant_document.quantity' => $this->quantity,
-            'tx_applicant_document.document_status' => $this->document_status,
-            'tx_applicant_document.created_at' => $this->created_at,
-            'tx_applicant_document.updated_at' => $this->updated_at,
-            'tx_applicant_document.created_by' => $this->created_by,
-            'tx_applicant_document.updated_by' => $this->updated_by,
-            'tx_applicant_document.deleted_at' => $this->deleted_at,
-            'tx_applicant_document.deleted_by' => $this->deleted_by,
-            'tx_applicant_document.verlock' => $this->verlock,
+            'id' => $this->id,
+            'applicant_id' => $this->applicant_id,
+            'event_id' => $this->event_id,
+            'document_id' => $this->document_id,
+            'quantity' => $this->quantity,
+            'document_status' => $this->document_status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
+            'deleted_at' => $this->deleted_at,
+            'deleted_by' => $this->deleted_by,
+            'verlock' => $this->verlock,
         ]);
 
-        $query->andFilterWhere(['like', 'tx_applicant_document.title', $this->title])
-            ->andFilterWhere(['like', 'tx_applicant_document.file_name', $this->file_name])
-            ->andFilterWhere(['like', 'tx_applicant_document.description', $this->description])
-            ->andFilterWhere(['like', 'tx_applicant_document.uuid', $this->uuid]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'file_name', $this->file_name])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'uuid', $this->uuid]);
 
         return $dataProvider;
     }
