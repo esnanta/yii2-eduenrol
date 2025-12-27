@@ -88,14 +88,14 @@ class ApplicantDocumentController extends Controller
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 MessageHelper::getFlashUpdateSuccess();
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
                 return $this->render('view', [
                     'model' => $this->findModel($id),
                     'applicantList' => $applicantList,
                     'eventList' => $eventList,
                     'documentList' => $documentList,
                 ]);
-            } else {
-                return $this->render('view', ['model' => $model]);
             }
         } else {
             MessageHelper::getFlashAccessDenied();
