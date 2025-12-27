@@ -64,29 +64,90 @@ class ApplicantDocumentController extends Controller
 
     public function actionView($id)
     {
-        if(Yii::$app->user->can('view-applicantdocument')){
-
-            $applicantList = ArrayHelper::map(Applicant::find()
-                ->where(['user_id' => Yii::$app->user->identity->id])
-                ->asArray()->all(), 'id', 'title');
-
-            $eventList = ArrayHelper::map(Event::find()
-                ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
-                ->asArray()->all(), 'id', 'title');
-
-            $documentList = ArrayHelper::map(Document::find()
-                ->asArray()->all(), 'id', 'title');
-
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-                'applicantList' => $applicantList,
-                'eventList' => $eventList,
-                'documentList' => $documentList,
-            ]);
-        } else {
+        if (!Yii::$app->user->can('view-applicantdocument')) {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
+
+        $model = $this->findModel($id);
+
+        // Optional: pastikan user hanya melihat dokumennya sendiri
+        $applicant = Applicant::find()
+            ->where(['user_id' => Yii::$app->user->identity->id])
+            ->one();
+
+        if (!$applicant || $model->applicant_id !== $applicant->id) {
+            throw new ForbiddenHttpException('Anda tidak berhak mengakses dokumen ini.');
+        }
+
+        $applicantList = ArrayHelper::map(
+            Applicant::find()
+                ->where(['user_id' => Yii::$app->user->identity->id])
+                ->asArray()
+                ->all(),
+            'id',
+            'title'
+        );
+
+        $eventList = ArrayHelper::map(
+            Event::find()
+                ->where(['is_active' => Event::IS_ACTIVE_ENABLED])
+                ->asArray()
+                ->all(),
+            'id',
+            'title'
+        );
+
+        $documentList = ArrayHelper::map(
+            Document::find()->asArray()->all(),
+            'id',
+            'title'
+        );
+
+        return $this->render('view', [
+            'model' => $model,
+            'applicantList' => $applicantList,
+            'eventList' => $eventList,
+            'documentList' => $documentList,
+        ]);
+    }
+
+
+    public function actionViewFile($id)
+    {
+        if (!Yii::$app->user->can('view-applicantdocument')) {
+            throw new ForbiddenHttpException;
+        }
+
+        $model = $this->findModel($id);
+
+        // Validasi ownership (sama seperti actionView)
+        $applicant = Applicant::find()
+            ->where(['user_id' => Yii::$app->user->identity->id])
+            ->one();
+
+        if (!$applicant || $model->applicant_id !== $applicant->id) {
+            throw new ForbiddenHttpException('Anda tidak berhak mengakses file ini.');
+        }
+
+        if (!$model->file_name) {
+            throw new NotFoundHttpException('File tidak tersedia.');
+        }
+
+        $filePath = Yii::getAlias('@backendWeb/uploads/applicant-documents/')
+            . $model->file_name;
+
+        if (!is_file($filePath)) {
+            throw new NotFoundHttpException('File tidak ditemukan di server.');
+        }
+
+        return Yii::$app->response->sendFile(
+            $filePath,
+            $model->file_name,
+            [
+                'inline' => true, // penting untuk iframe PDF
+            ]
+        );
     }
 
     public function actionCreate()

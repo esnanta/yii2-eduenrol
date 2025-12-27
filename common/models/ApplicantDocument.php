@@ -44,17 +44,19 @@ class ApplicantDocument extends BaseApplicantDocument
         return parent::beforeSave($insert);
     }
 
-    public function getUploadPath()
+    public function getUploadPath(): bool|string
     {
         return Yii::getAlias('@backend/web/uploads/applicant-documents');
     }
 
-    public function getFileUrl()
+    public function getFileUrl(): ?string
     {
-        if ($this->file_name) {
-            return Yii::getAlias('@web/uploads/applicant-documents/' . $this->file_name);
-        }
-        return null;
+        return $this->file_name
+            ? Yii::$app->urlManager->createUrl([
+                '/applicant-document/view-file',
+                'id' => $this->id,
+            ])
+            : null;
     }
 
     public function afterDelete()
