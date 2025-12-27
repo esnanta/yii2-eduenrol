@@ -1,4 +1,6 @@
 <?php
+
+use common\models\ApplicantDocument;
 use yii\helpers\Html;
 ?>
 <style type=”text/css”>
@@ -52,7 +54,7 @@ use yii\helpers\Html;
                     <span class="float-end"><small><i class="fas fa-print"></i> <?= Yii::$app->formatter->format(time(), 'date'); ?></small></span>
                 </h4>
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-6">
                         <table class="table table-sm table-borderless">
                             <tbody>
                             <tr>
@@ -70,8 +72,21 @@ use yii\helpers\Html;
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4">
-                        <!--  HERE FOR DOCUMENT -->
+                    <div class="col-6">
+                        <table class="table table-sm table-borderless">
+                            <tbody>
+                            <?php if (!empty($applicantDocuments)) { ?>
+                                <?php foreach ($applicantDocuments as $doc) { ?>
+                                    <tr>
+                                        <td><?= $doc->title ?></td>
+                                        <td>: <?= ApplicantDocument::getOneDocumentStatus($doc->document_status) ?></td>
+                                    </tr>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <tr><td>Tidak ada dokumen.</td></tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
             </div>
         </div>

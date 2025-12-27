@@ -69,16 +69,16 @@ class ApplicantDocument extends BaseApplicantDocument
 
             switch ($_module) {
                 case ($_module == self::DOCUMENT_STATUS_UNCONFIRM)://1
-                    $returnValue = '<span class="label label-warning">'.$arrayModule[$_module].'</span>';
+                    $returnValue = '<i class="fas fa-exclamation-triangle text-warning"></i> ' . $arrayModule[$_module];
                     break;
                 case ($_module == self::DOCUMENT_STATUS_APPROVE)://2
-                    $returnValue = '<span class="label label-success">'.$arrayModule[$_module].'</span>';
+                    $returnValue = '<i class="fas fa-check-circle text-success"></i> ' . $arrayModule[$_module];
                     break;
                 case ($_module == self::DOCUMENT_STATUS_REJECT): //3
-                    $returnValue = '<span class="label label-danger">'.$arrayModule[$_module].'</span>';
+                    $returnValue = '<i class="fas fa-times-circle text-danger"></i> ' . $arrayModule[$_module];
                     break;
                 default:
-                    $returnValue = '<span class="label label-default">NA</span>';
+                    $returnValue = '<i class="fas fa-question-circle text-muted"></i> NA';
             }
 
             return $returnValue;
