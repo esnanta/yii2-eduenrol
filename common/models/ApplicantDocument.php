@@ -36,7 +36,8 @@ class ApplicantDocument extends BaseApplicantDocument
         ]);
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert): bool
+    {
 
         if ($this->isNewRecord) {
             $this->document_status = self::DOCUMENT_STATUS_UNCONFIRM;
