@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
+use kartik\select2\Select2;
 
 /**
  * @var yii\web\View $this
@@ -20,7 +20,18 @@ use kartik\datecontrol\DateControl;
         'form' => $form,
         'columns' => 1,
         'attributes' => [
-            'document_id' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Document ID...']],
+                'document_id' => [
+                        'type' => Form::INPUT_WIDGET,
+                        'widgetClass' => Select2::class,
+                        'options' => [
+                                'data' => $documentList,
+                                'options' => ['placeholder' => '', 'disabled' => false],
+                        ],
+                        'pluginOptions' => [
+                                'allowClear' => true
+                        ],
+                ],
+
             'title' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Title...', 'maxlength' => 100]],
         ]
 

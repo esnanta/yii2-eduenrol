@@ -3,10 +3,12 @@
 namespace frontend\controllers;
 
 use common\models\Applicant;
+use common\models\Document;
 use common\models\Event;
 use Yii;
 use common\models\ApplicantDocument;
 use common\models\ApplicantDocumentSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
@@ -87,6 +89,10 @@ class ApplicantDocumentController extends Controller
             $applicant  = Applicant::find()->where(['user_id'=>Yii::$app->user->identity->id])->one();
             $event = Event::find()->where(['is_active'=>Event::IS_ACTIVE_ENABLED])->one();
 
+            $documentList = ArrayHelper::map(Document::find()
+                ->asArray()->all(), 'id', 'title');
+
+
             $model->applicant_id = $applicant->id;
             $model->event_id = $event->id;
 
@@ -99,6 +105,7 @@ class ApplicantDocumentController extends Controller
                 else {
                     return $this->render('create', [
                         'model' => $model,
+                        'documentList'=>$documentList
                     ]);
                 }
             }
