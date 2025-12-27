@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use \common\models\base\ApplicantDocument as BaseApplicantDocument;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "tx_applicant_document".
@@ -42,12 +43,29 @@ class ApplicantDocument extends BaseApplicantDocument
         }
         return parent::beforeSave($insert);
     }
+
+    public function getUploadPath()
+    {
+        return Yii::getAlias('@backend/web/uploads/applicant-documents');
+    }
+
     public function getFileUrl()
     {
         if ($this->file_name) {
             return Yii::getAlias('@web/uploads/applicant-documents/' . $this->file_name);
         }
         return null;
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        if ($this->file_name) {
+            $filePath = $this->getUploadPath() . '/' . $this->file_name;
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
+        }
     }
 
     public static function getArrayDocumentStatus(): array

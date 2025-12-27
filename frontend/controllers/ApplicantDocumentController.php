@@ -135,7 +135,11 @@ class ApplicantDocumentController extends Controller
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if ($model->validate()) {
                     if ($model->file) {
-                        $this->deleteFile($oldFileName);
+                        // Delete old file
+                        $oldFilePath = $model->getUploadPath() . '/' . $oldFileName;
+                        if (is_file($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
                         $this->uploadFile($model);
                     } else {
                         $model->file_name = $oldFileName;
@@ -161,9 +165,7 @@ class ApplicantDocumentController extends Controller
     public function actionDelete($id)
     {
         if(Yii::$app->user->can('delete-applicantdocument')){
-            $model = $this->findModel($id);
-            $this->deleteFile($model->file_name);
-            $model->delete();
+            $this->findModel($id)->delete();
             MessageHelper::getFlashDeleteSuccess();
             return $this->redirect(['index']);
         } else {
@@ -181,15 +183,10 @@ class ApplicantDocumentController extends Controller
         }
     }
 
-    private function getUploadPath()
-    {
-        return Yii::getAlias('@frontend/web/uploads/applicant-documents');
-    }
-
     private function uploadFile(ApplicantDocument &$model)
     {
         if ($model->file) {
-            $path = $this->getUploadPath();
+            $path = $model->getUploadPath();
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
@@ -197,16 +194,6 @@ class ApplicantDocumentController extends Controller
             $filePath = $path . '/' . $fileName;
             if ($model->file->saveAs($filePath)) {
                 $model->file_name = $fileName;
-            }
-        }
-    }
-
-    private function deleteFile($fileName)
-    {
-        if ($fileName) {
-            $filePath = $this->getUploadPath() . '/' . $fileName;
-            if (is_file($filePath)) {
-                unlink($filePath);
             }
         }
     }
