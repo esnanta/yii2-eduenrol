@@ -14,8 +14,9 @@ use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\UploadedFile;
 use common\helper\MessageHelper;
+
 /**
  * ApplicantDocumentController implements the CRUD actions for ApplicantDocument model.
  */
@@ -33,156 +34,150 @@ class ApplicantDocumentController extends Controller
         ];
     }
 
-    /**
-     * Lists all ApplicantDocument models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         if(Yii::$app->user->can('index-applicantdocument')){
-                            $searchModel = new ApplicantDocumentSearch;
-                    $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            $searchModel = new ApplicantDocumentSearch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-                    return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ]);
-                    }
-        else{
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+            ]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
     }
 
-    /**
-     * Displays a single ApplicantDocument model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id)
     {
         if(Yii::$app->user->can('view-applicantdocument')){
-            $model = $this->findModel($id);
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                MessageHelper::getFlashUpdateSuccess();
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('view', ['model' => $model]);
-            }
-        }
-        else{
+            return $this->render('view', ['model' => $this->findModel($id)]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
     }
 
-    /**
-     * Creates a new ApplicantDocument model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         if(Yii::$app->user->can('create-applicantdocument')){
-            $model = new ApplicantDocument;
-            $applicant  = Applicant::find()->where(['user_id'=>Yii::$app->user->identity->id])->one();
-            $event = Event::find()->where(['is_active'=>Event::IS_ACTIVE_ENABLED])->one();
+            $model = new ApplicantDocument(['scenario' => 'create']);
+            $applicant  = Applicant::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+            $event = Event::find()->where(['is_active' => Event::IS_ACTIVE_ENABLED])->one();
 
-            $documentList = ArrayHelper::map(Document::find()
-                ->asArray()->all(), 'id', 'title');
-
+            $documentList = ArrayHelper::map(Document::find()->asArray()->all(), 'id', 'title');
 
             $model->applicant_id = $applicant->id;
             $model->event_id = $event->id;
 
-
-            try {
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    MessageHelper::getFlashSaveSuccess();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } 
-                else {
-                    return $this->render('create', [
-                        'model' => $model,
-                        'documentList'=>$documentList
-                    ]);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if ($model->validate()) {
+                    $this->uploadFile($model);
+                    if ($model->save(false)) {
+                        MessageHelper::getFlashSaveSuccess();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
-            catch (StaleObjectException $e) {
-                throw new StaleObjectException('The object being updated is outdated.');
-            }
-        }
-        else{
+
+            return $this->render('create', [
+                'model' => $model,
+                'documentList' => $documentList
+            ]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
     }
 
-    /**
-     * Updates an existing ApplicantDocument model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id)
     {
         if(Yii::$app->user->can('update-applicantdocument')){
-            try {
-                $model = $this->findModel($id);
+            $model = $this->findModel($id);
+            $model->scenario = 'update';
+            $documentList = ArrayHelper::map(Document::find()->asArray()->all(), 'id', 'title');
+            $oldFileName = $model->file_name;
 
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    MessageHelper::getFlashUpdateSuccess();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    return $this->render('update', [
-                        'model' => $model,
-                    ]);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if ($model->validate()) {
+                    if ($model->file) {
+                        $this->deleteFile($oldFileName);
+                        $this->uploadFile($model);
+                    } else {
+                        $model->file_name = $oldFileName;
+                    }
+
+                    if ($model->save(false)) {
+                        MessageHelper::getFlashUpdateSuccess();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
-            catch (StaleObjectException $e) {
-                throw new StaleObjectException('The object being updated is outdated.');
-            }
-        }
-        else{
+
+            return $this->render('update', [
+                'model' => $model,
+                'documentList' => $documentList,
+            ]);
+        } else {
             MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
     }
 
-    /**
-     * Deletes an existing ApplicantDocument model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws ForbiddenHttpException
-     */
     public function actionDelete($id)
     {
         if(Yii::$app->user->can('delete-applicantdocument')){
-            $this->findModel($id)->delete();
+            $model = $this->findModel($id);
+            $this->deleteFile($model->file_name);
+            $model->delete();
             MessageHelper::getFlashDeleteSuccess();
             return $this->redirect(['index']);
-        }
-        else{
+        } else {
             MessageHelper::getFlashLoginInfo();
             throw new ForbiddenHttpException;
         }
     }
 
-    /**
-     * Finds the ApplicantDocument model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return ApplicantDocument the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = ApplicantDocument::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    private function getUploadPath()
+    {
+        return Yii::getAlias('@frontend/web/uploads/applicant-documents');
+    }
+
+    private function uploadFile(ApplicantDocument &$model)
+    {
+        if ($model->file) {
+            $path = $this->getUploadPath();
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+            $fileName = $model->applicant_id . '_' . time() . '.' . $model->file->extension;
+            $filePath = $path . '/' . $fileName;
+            if ($model->file->saveAs($filePath)) {
+                $model->file_name = $fileName;
+            }
+        }
+    }
+
+    private function deleteFile($fileName)
+    {
+        if ($fileName) {
+            $filePath = $this->getUploadPath() . '/' . $fileName;
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ use \common\models\base\ApplicantDocument as BaseApplicantDocument;
  */
 class ApplicantDocument extends BaseApplicantDocument
 {
+    public $file;
     /**
      * @inheritdoc
      */
@@ -24,7 +25,9 @@ class ApplicantDocument extends BaseApplicantDocument
             [['file_name'], 'string', 'max' => 200],
             [['uuid'], 'string', 'max' => 36],
             [['verlock'], 'default', 'value' => '0'],
-            [['verlock'], 'mootensai\components\OptimisticLockValidator']
+            [['verlock'], 'mootensai\components\OptimisticLockValidator'],
+            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2, 'on' => 'create'], // Max 2MB, required on create
+            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2, 'on' => 'update'], // Max 2MB, optional on update
         ]);
     }
 	
