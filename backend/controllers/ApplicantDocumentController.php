@@ -29,6 +29,7 @@ class ApplicantDocumentController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'document-status' => ['post'],
                 ],
             ],
         ];
@@ -175,6 +176,23 @@ class ApplicantDocumentController extends Controller
             return $this->redirect(['index']);
         } else {
             MessageHelper::getFlashLoginInfo();
+            throw new ForbiddenHttpException;
+        }
+    }
+
+    public function actionDocumentStatus($id, $status)
+    {
+        if (Yii::$app->user->can('update-applicantdocument')) {
+            $model = $this->findModel($id);
+            $model->document_status = $status;
+            if ($model->save()) {
+                MessageHelper::getFlashUpdateSuccess();
+            } else {
+                MessageHelper::getFlashUpdateFailed();
+            }
+            return $this->redirect(['view', 'id' => $id]);
+        } else {
+            MessageHelper::getFlashAccessDenied();
             throw new ForbiddenHttpException;
         }
     }

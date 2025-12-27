@@ -1,5 +1,6 @@
 <?php
 
+use common\models\ApplicantDocument;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
@@ -54,6 +55,34 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                         //'valueColOptions'=>['style'=>'width:30%']
                     ],
                     'title',
+                    [
+                        'attribute' => 'document_status',
+                        'format' => 'raw',
+                        'value' => call_user_func(function($model){
+                            $status = ApplicantDocument::getOneDocumentStatus($model->document_status);
+                            $buttons = '';
+                            if ($model->document_status == ApplicantDocument::DOCUMENT_STATUS_UNCONFIRM) {
+                                $statusLabels = ApplicantDocument::getArrayDocumentStatus();
+                                $approveButton = Html::a('<i class="fas fa-check"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_APPROVE], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_APPROVE], [
+                                    'class' => 'btn btn-sm btn-success',
+                                    'data' => [
+                                        'confirm' => 'Apakah Anda yakin ingin menyetujui dokumen ini?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                                $rejectButton = Html::a('<i class="fas fa-times"></i> ' . $statusLabels[ApplicantDocument::DOCUMENT_STATUS_REJECT], ['document-status', 'id' => $model->id, 'status' => ApplicantDocument::DOCUMENT_STATUS_REJECT], [
+                                    'class' => 'btn btn-sm btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Apakah Anda yakin ingin menolak dokumen ini?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                                $buttons = '<div class="float-end">' . $approveButton . ' ' . $rejectButton . '</div>';
+                            }
+                            return $status . $buttons;
+                        }, $model),
+                        'displayOnly' => true
+                    ],
                     [
                             'attribute' => 'file_name',
                             'displayOnly' => true,
