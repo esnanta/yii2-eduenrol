@@ -1,5 +1,6 @@
 <?php
 
+use common\models\ApplicantDocument;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
@@ -74,6 +75,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             'title',
             'description:ntext',
+            [
+                'attribute' => 'document_status',
+                'vAlign' => 'middle',
+                'width' => '180px',
+                'value' => function ($model) {
+                    return ApplicantDocument::getOneDocumentStatus($model->document_status);
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => ApplicantDocument::getArrayDocumentStatus(),
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => ''],
+                'format' => 'raw'
+            ],
             [
                 'class' => 'common\widgets\ActionColumn',
                 'contentOptions' => ['style' => 'white-space:nowrap;'],
