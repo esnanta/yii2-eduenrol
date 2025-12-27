@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\ApplicantAlmamater;
+use common\models\ApplicantDocument;
 use common\models\ApplicantFamily;
 use common\models\Course;
 use common\models\Document;
@@ -231,7 +232,7 @@ class ApplicantController extends Controller
             $applicantFather        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_FATHER])->one();
             $applicantMother        = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_MOTHER])->one();
             $applicantGuardian      = ApplicantFamily::find()->where(['applicant_id'=>$applicant->id,'family_type'=>ApplicantFamily::FAMILY_TYPE_GUARDIAN])->one();
-            //$applicantDocuments     = ApplicantDocument::find()->where(['applicant_id'=>$applicant->id])->all();
+            $applicantDocuments     = ApplicantDocument::find()->where(['applicant_id'=>$applicant->id])->all();
 
             $courses                = Course::find()->orderBy(['id'=>SORT_ASC])->all();
             $semesters              = Semester::find()->orderBy(['id'=>SORT_ASC])->all();
@@ -265,6 +266,7 @@ class ApplicantController extends Controller
                 'applicantFather'       => $applicantFather,
                 'applicantMother'       => $applicantMother,
                 'applicantGuardian'     => $applicantGuardian,
+                'applicantDocuments'    => $applicantDocuments,
 
                 'courses'               => $courses,
                 'semesters'             => $semesters,

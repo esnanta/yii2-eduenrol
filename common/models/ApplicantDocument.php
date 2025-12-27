@@ -11,6 +11,10 @@ use \common\models\base\ApplicantDocument as BaseApplicantDocument;
 class ApplicantDocument extends BaseApplicantDocument
 {
     public $file;
+
+    const DOCUMENT_STATUS_UNCONFIRM     = 1;
+    const DOCUMENT_STATUS_APPROVE       = 2;
+    const DOCUMENT_STATUS_REJECT        = 3;
     /**
      * @inheritdoc
      */
@@ -31,11 +35,55 @@ class ApplicantDocument extends BaseApplicantDocument
         ]);
     }
 
+    public function beforeSave($insert) {
+
+        if ($this->isNewRecord) {
+            $this->document_status = self::DOCUMENT_STATUS_UNCONFIRM;
+        }
+        return parent::beforeSave($insert);
+    }
     public function getFileUrl()
     {
         if ($this->file_name) {
             return Yii::getAlias('@web/uploads/applicant-documents/' . $this->file_name);
         }
         return null;
+    }
+
+    public static function getArrayDocumentStatus(): array
+    {
+        return [
+            //MASTER
+            self::DOCUMENT_STATUS_UNCONFIRM     => 'Antrian',
+            self::DOCUMENT_STATUS_REJECT        => 'Ditolak',
+            self::DOCUMENT_STATUS_APPROVE       => 'Disetujui',
+        ];
+    }
+
+    public static function getOneDocumentStatus($_module = null)
+    {
+        if($_module)
+        {
+            $arrayModule = self::getArrayDocumentStatus();
+            $returnValue = 'NULL';
+
+            switch ($_module) {
+                case ($_module == self::DOCUMENT_STATUS_UNCONFIRM)://1
+                    $returnValue = '<span class="label label-warning">'.$arrayModule[$_module].'</span>';
+                    break;
+                case ($_module == self::DOCUMENT_STATUS_APPROVE)://2
+                    $returnValue = '<span class="label label-success">'.$arrayModule[$_module].'</span>';
+                    break;
+                case ($_module == self::DOCUMENT_STATUS_REJECT): //3
+                    $returnValue = '<span class="label label-danger">'.$arrayModule[$_module].'</span>';
+                    break;
+                default:
+                    $returnValue = '<span class="label label-default">NA</span>';
+            }
+
+            return $returnValue;
+        }
+        else
+            return;
     }
 }

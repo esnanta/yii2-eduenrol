@@ -54,7 +54,10 @@ $create = Html::a('<i class="fas fa-plus"></i>', ['create'], ['class' => 'button
                         //'valueColOptions'=>['style'=>'width:30%']
                     ],
                     'title',
-                    'file_name',
+                    [
+                            'attribute' => 'file_name',
+                            'displayOnly' => true,
+                    ],
                     [
                             'label' => 'Dokumen',
                             'format' => 'raw',
