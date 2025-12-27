@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                             'displayOnly' => true,
                             'value' => '<span class="text-muted" style="font-size:12px;">
-                                            Gunakan titik (.) sebagai pemisah ribuan. Contoh: 89.54
+                                            Gunakan titik sebagai pemisah ribuan. Contoh: 89.54
                                         </span>',
                     ],
                     [
