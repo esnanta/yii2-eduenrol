@@ -27,7 +27,7 @@ use yii\widgets\Pjax;
                 <h3>
                     Kartu Peserta Ujian PPDB<br/>
                     SMAN Modal Bangsa Arun<br/>
-                    Tahun Ajaran 2025/2026
+                    Tahun Ajaran 2026/2027
                 </h3>
             </div>
             <div class="col-3 text-center">
@@ -78,7 +78,7 @@ use yii\widgets\Pjax;
         <div class="row">
             <div class="col-7">
                 <div class="border p-3 mb-3">
-                    <p><strong>Jadwal Kegiatan PPDB TP 2025/2026 Gel 2</strong></p>
+                    <p><strong>Jadwal Kegiatan PPDB TP 2026/2027 Gel 2</strong></p>
                     <ul class="list-unstyled">
                         <li>Pendaftaran Calon Siswa : Senin, 03 Feb - Minggu 09 Februari 2025</li>
                         <li>Tes Akademik, Kesehatan & Wawancara : Selasa, 11 Februari 2025, pukul 08.00 - Selesai</li>
@@ -103,7 +103,7 @@ use yii\widgets\Pjax;
 
                     <p><strong>Perlengkapan Peserta Tes</strong></p>
                     <ul class="list-unstyled">
-                        <li>Kartu Peserta PPDB 2024/2025</li>
+                        <li>Kartu Peserta PPDB 2026/2027</li>
                         <li>Laptop atau smartphone</li>
                         <li>Pakaian Seragam Sekolah Asal dan Memakai Sepatu</li>
                         <li>Alat Tulis : Pensil, Karet Penghapus, Rautan, Pulpen</li>

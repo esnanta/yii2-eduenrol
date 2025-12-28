@@ -33,7 +33,7 @@ use yii\helpers\Html;
         <div class="col-6 text-center">
             <h4>Pendaftaran Peserta Didik Baru<br>
                 SMA Negeri Modal Bangsa Arun<br>
-                Tahun Ajaran 2025/2026</h4>
+                Tahun Ajaran 2026/2027</h4>
         </div>
         <div class="col-3 text-center">
             <?= $logoRight; ?>
