@@ -12,8 +12,22 @@ use yii\widgets\Pjax;
             margin: 0;
         }
         .container-fluid {
-            padding: 0;
+            padding: 0 !important;
+            margin: 0 !important;
         }
+        .row.my-4 {
+            margin-top: 0 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .row.align-items-center {
+            margin-top: 0 !important;
+        }
+        html, body {
+            padding: 0 !important;
+        }
+    }
+    .logo-print {
+        display: none;
     }
 </style>
 
@@ -78,7 +92,7 @@ use yii\widgets\Pjax;
         <div class="row">
             <div class="col-7">
                 <div class="border p-3 mb-3">
-                    <p class="mb-2"><strong>Kegiatan SPMB 2026 Jalur Prestasi Minggu, 8 Februari 2026</strong></p>
+                    <p class="mb-2"><strong>SPMB 2026 Jalur Prestasi Minggu, 8 Februari 2026</strong></p>
                     <ul class="list-unstyled mb-2">
                         <li class="mt-2">
                             <span class="fw-semibold">Materi Wawancara:</span>
@@ -123,15 +137,15 @@ use yii\widgets\Pjax;
                             <tbody>
                             <tr>
                                 <td>Kemampuan Bahasa</td>
-                                <td>:</td>
+
                             </tr>
                             <tr>
                                 <td>Bakat Minat<br/></td>
-                                <td>:</td>
+
                             </tr>
                             <tr>
                                 <td>Baca Quran</td>
-                                <td>:</td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -140,7 +154,7 @@ use yii\widgets\Pjax;
                 <div class="border p-3 text-center">
                     <address class="mb-0">
                         <span class="float-start">Lhokseumawe,</span><br>
-                        Panitia SPMB
+                        Panitia
                         <br/>
                         <br/>
                         <br/>
