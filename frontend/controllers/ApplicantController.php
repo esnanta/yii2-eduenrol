@@ -332,6 +332,38 @@ class ApplicantController extends Controller
 
     }
 
+    public function actionPrintCardAchievement($title=null){
+
+        //CACHE CONTENT
+        $logoLeft           = PageService::getLogo1('80px','90px');
+        $logoRight          = PageService::getLogo2('80px','90px');
+        $keteranganKartu    = '-';
+
+
+
+        $applicant              = $this->findModelByUser(Yii::$app->user->identity->id);
+        $applicantAlmamaterElementary   = ApplicantAlmamater::find()->where([
+            'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::ELEMENTARY_SCHOOL])->one();
+        $applicantAlmamaterJunior   = ApplicantAlmamater::find()->where([
+            'applicant_id'=>$applicant->id,'educational_stage_id'=> EducationalStage::JUNIOR_HIGH_SCHOOL])->one();
+
+        $courses                = DataListService::getCourse();
+        $semesters              = DataListService::getSemester();
+
+        return $this->render('print_card_achievement', [
+
+            'logoLeft'              => $logoLeft,
+            'logoRight'             => $logoRight,
+            'keteranganKartu'       => $keteranganKartu,
+            'applicant'             => $applicant,
+            'applicantAlmamaterJunior' => $applicantAlmamaterJunior,
+            'courses'               => $courses,
+            'semesters'             => $semesters
+
+        ]);
+
+    }
+
     public function actionFinal($title=null){
         if(Yii::$app->user->can('update-applicant')){
             $model                  = $this->findModelByUser(Yii::$app->user->identity->id);

@@ -28,19 +28,24 @@ $buttonIcon         = ($finalStatus == Applicant::FINAL_STATUS_YES) ? '<i class=
 $buttonLabel        = ($finalStatus == Applicant::FINAL_STATUS_YES) ? 'primary' :'danger';
 
 $finalDisplayStatus         = ($finalStatus == Applicant::FINAL_STATUS_YES) ? 
-                                '<button type="button" class="btn btn-md btn-'.$buttonLabel.'" disabled>'.$buttonIcon.' '.$buttonText.'</button>'
+                                '<button type="button" class="btn btn-sm btn-'.$buttonLabel.'" disabled>'.$buttonIcon.' '.$buttonText.'</button>'
                                 : 
                                 Html::a($buttonIcon.' '.$buttonText, ['final','title'=>$applicant->title], ['data-method' => 'POST', 'data-confirm'=>'Data setelah finalisasi tidak bisa diedit. Lanjutkan?','class' => 'btn btn-'.$buttonLabel]) ;
 
 $printBerkasDisplay   = ($finalStatus == Applicant::FINAL_STATUS_YES) ? 
-                                Html::a('<i class="fa fa-print"></i> Print Berkas', ['print-document','title'=>$applicant->title], ['class' => 'btn btn-success']) 
-                                :
-                                '<button type="button" class="btn btn-md btn-success" disabled><i class="fa fa-print"></i> Print Berkas</button>';
+    Html::a('<i class="fa fa-print"></i> Print Berkas', ['print-document','title'=>$applicant->title], ['class' => 'btn btn-sm btn-success'])
+    :
+    '<button type="button" class="btn btn-sm btn-success" disabled><i class="fa fa-print"></i> Print Berkas</button>';
 
 $printKartuDisplay   = ($finalStatus == Applicant::FINAL_STATUS_YES) ? 
-                                Html::a('<i class="fa fa-print"></i> Print Kartu', ['print-card','title'=>$applicant->title], ['class' => 'btn btn-success']) 
-                                :
-                                '<button type="button" class="btn btn-md btn-success" disabled><i class="fa fa-print"></i> Print Kartu</button>';
+    Html::a('<i class="fa fa-print"></i> Print Kartu', ['print-card','title'=>$applicant->title], ['class' => 'btn btn-sm btn-success'])
+    :
+    '<button type="button" class="btn btn-sm btn-success" disabled><i class="fa fa-print"></i> Print Kartu</button>';
+
+$printKartuDisplayAchievement   = ($finalStatus == Applicant::FINAL_STATUS_YES) ?
+    Html::a('<i class="fa fa-print"></i> Print Kartu (Jalur Prestasi)', ['print-card-achievement','title'=>$applicant->title], ['class' => 'btn btn-sm btn-success'])
+    :
+    '<button type="button" class="btn btn-sm btn-success" disabled><i class="fa fa-print"></i> Print Kartu (Jalur Prestasi)</button>';
 
 
 $columnsApplicant = [
@@ -123,7 +128,7 @@ $overallFilledGradePercentage = ceil(($totalFields > 0) ? ($fieldFilled / $total
         <h3 class="card-title"><i class="fas fa-tasks"></i> Summary</h3>
     </div>
     <div class="card-body">
-        <h4>Progress Pengisian Data <span class="float-end"><?= $finalDisplayStatus.' '.$printBerkasDisplay.' '.$printKartuDisplay; ?></span></h4>
+        <h4>Progress Pengisian Data <span class="float-end"><?= $finalDisplayStatus.' '.$printBerkasDisplay.' '.$printKartuDisplay.' '.$printKartuDisplayAchievement; ?></span></h4>
         <br>
         <div class="bg-light p-3 mb-3" style="border: 1px solid #ddd;">
             <ol class="mb-0">
