@@ -107,6 +107,7 @@ use yii\widgets\Pjax;
                             <ul class="mb-1">
                                 <li>Kartu Pendaftaran</li>
                                 <li>Fotokopi Kartu NISN <span class="text-muted">(2 lembar)</span></li>
+                                <li>Pasfoto warna 3×4 (2 lembar)</li>
                                 <li>Fotokopi Kartu Keluarga</li>
                                 <li>Fotokopi Akte Kelahiran</li>
                                 <li>Fotokopi Rapor Semester 2, 3, 4, dan 5 <span class="text-muted">(legalisir)</span></li>
