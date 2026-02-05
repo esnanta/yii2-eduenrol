@@ -137,15 +137,15 @@ use yii\widgets\Pjax;
                         <table class="table table-borderless">
                             <tbody>
                             <tr>
-                                <td>Kemampuan Bahasa</td>
-
-                            </tr>
-                            <tr>
-                                <td>Bakat Minat<br/></td>
+                                <td>Bakat Minat</td>
 
                             </tr>
                             <tr>
                                 <td>Baca Quran</td>
+
+                            </tr>
+                            <tr>
+                                <td>Bahasa Inggris</td>
 
                             </tr>
                             </tbody>
