@@ -78,34 +78,39 @@ use yii\widgets\Pjax;
         <div class="row">
             <div class="col-7">
                 <div class="border p-3 mb-3">
-                    <p><strong>Kegiatan SPMB 2026 Jalur Prestasi</strong></p>
-                    <ul class="list-unstyled">
-                        <li><strong>Minggu, 8 Februari 2026</strong></li>
-                        <li>
-                            <span>Materi wawancara:</span>
-                            <ul>
-                                <li>- Bakat minat</li>
-                                <li>- Kemampuan baca Quran</li>
-                                <li>- Kemampuan dasar Bahasa Inggris</li>
+                    <p class="mb-2"><strong>Kegiatan SPMB 2026 Jalur Prestasi Minggu, 8 Februari 2026</strong></p>
+                    <ul class="list-unstyled mb-2">
+                        <li class="mt-2">
+                            <span class="fw-semibold">Materi Wawancara:</span>
+                            <ul class="mb-1">
+                                <li>Bakat minat</li>
+                                <li>Kemampuan baca Quran</li>
+                                <li>Kemampuan dasar Bahasa Inggris</li>
                             </ul>
                         </li>
-
-                        <li>
-                            <span>Berkas yang harus dibawa:</span>
-                            <ul>
-                                <li>- Kartu Pendaftaran</li>
-                                <li>- Fotokopi Kartu NISN (2 lembar)</li>
-                                <li>- Fotokopi Kartu Keluarga</li>
-                                <li>- Fotokopi Akte Kelahiran</li>
-                                <li>- Fotokopi Rapor Semester 2,3,4 dan 5 (legalisir)</li>
-                                <li>- Surat Keterangan Aktif (asli)</li>
-                                <li>- Sertifikat Prestasi yang di upload (asli &amp; photocopy)</li>
+                        <li class="mt-2">
+                            <span class="fw-semibold">Berkas yang harus dibawa:</span>
+                            <ul class="mb-1">
+                                <li>Kartu Pendaftaran</li>
+                                <li>Fotokopi Kartu NISN <span class="text-muted">(2 lembar)</span></li>
+                                <li>Fotokopi Kartu Keluarga</li>
+                                <li>Fotokopi Akte Kelahiran</li>
+                                <li>Fotokopi Rapor Semester 2, 3, 4, dan 5 <span class="text-muted">(legalisir)</span></li>
+                                <li>Surat Keterangan Aktif <span class="text-muted">(asli)</span></li>
+                                <li>Sertifikat Prestasi yang di-upload <span class="text-muted">(asli &amp; fotokopi)</span></li>
+                            </ul>
+                        </li>
+                        <li class="mt-2">
+                            <span class="fw-semibold">Catatan:</span>
+                            <ul class="mb-1">
+                                <li>Semua berkas dimasukkan dalam 1 folder:</li>
+                                <li><strong><em>Merah</em></strong> untuk perempuan dan <strong><em>Biru</em></strong> untuk laki-laki</li>
+                                <li>Memakai pakaian seragam sekolah asal</li>
+                                <li>Membawa alat tulis yang diperlukan</li>
                             </ul>
                         </li>
                     </ul>
-                    Semua berkas dimasukkan dalam 1 folder. Merah : perempuan dan biru: laki-laki.
-                    Calon siswa memakai pakaian seragam sekolah asal, alat tulis yang diperlukan.
-                    <p><strong>Informasi Pemeriksaan Kesehatan dan Daftar Ulang akan disampaikan kemudian</strong></p>
+                    <p class="mb-0"><strong>Informasi Pemeriksaan Kesehatan dan Daftar Ulang akan disampaikan kemudian</strong></p>
                 </div>
             </div>
             <div class="col-5">
