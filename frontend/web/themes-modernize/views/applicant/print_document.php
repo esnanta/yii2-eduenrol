@@ -316,4 +316,5 @@ use yii\helpers\Html;
     $this->title = 'Print ' . $applicant->title;
     ?>
 
-</div></div>
+</div>
+</div>
