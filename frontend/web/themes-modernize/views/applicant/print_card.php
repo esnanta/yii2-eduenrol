@@ -12,25 +12,45 @@ use yii\widgets\Pjax;
             margin: 0;
         }
         .container-fluid {
-            padding: 0;
+            padding: 0 !important;
+            margin: 0 !important;
         }
+        .row.my-4 {
+            margin-top: 0 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .row.align-items-center {
+            margin-top: 0 !important;
+        }
+        html, body {
+            padding: 0 !important;
+        }
+        .logo-print {
+            display: block !important;
+        }
+        .d-print-none {
+            display: none !important;
+        }
+    }
+    .logo-print {
+        display: none;
     }
 </style>
 
     <div class="container-fluid">
         <!-- Invoice Header -->
         <div class="row my-4 align-items-center">
-            <div class="col-3 text-center">
+            <div class="col-3 text-center logo-print">
                 <?= $logoLeft; ?>
             </div>
             <div class="col-6 text-center">
                 <h3>
-                    Kartu Peserta Ujian PPDB<br/>
+                    Kartu Peserta Ujian SPMB<br/>
                     SMAN Modal Bangsa Arun<br/>
                     Tahun Ajaran 2026/2027
                 </h3>
             </div>
-            <div class="col-3 text-center">
+            <div class="col-3 text-center logo-print">
                 <?= $logoRight; ?>
             </div>
         </div>
@@ -78,31 +98,23 @@ use yii\widgets\Pjax;
         <div class="row">
             <div class="col-7">
                 <div class="border p-3 mb-3">
-                    <p><strong>Jadwal Kegiatan PPDB TP 2026/2027 Gel 2</strong></p>
-                    <ul class="list-unstyled">
-                        <li>Pendaftaran Calon Siswa : Senin, 03 Feb - Minggu 09 Februari 2025</li>
-                        <li>Tes Akademik, Kesehatan & Wawancara : Selasa, 11 Februari 2025, pukul 08.00 - Selesai</li>
-                        <li>Pengumuman Kelulusan : Rabu, 12 Februari 2025</li>
-                        <li>
-                            Rapat Dengan Komite : Sabtu, 15 Februari 2025, Pukul 09.00-Selesai
-                        </li>
-                        <li>
-                            Pendaftaran Ulang : 15-21 Februari 2025, Pukul 08.30-15.00 (Sabtu,
-                            Pukul 08.30-14.00)
-                        </li>
+                    <p class="mb-2"><strong>Jadwal Kegiatan PPDB TP 2026/2027 Gel 2</strong></p>
+                    <ul class="list-unstyled mb-2">
+                        <li>Pendaftaran Calon Siswa : 12 Feb - 20 Februari 2026</li>
+                        <li>Tes Akademik, Kesehatan & Wawancara : 31 Maret 2026, pukul 08.00 - Selesai</li>
+                        <li>Pengumuman Kelulusan : 02 April 2026</li>
+                        <li>Rapat Dengan Komite : (Tanggal Menyusul)</li>
+                        <li>Pendaftaran Ulang : 04-10 April 2026, Pukul 08.30-15.00 (Sabtu, Pukul 08.30-14.00)</li>
                     </ul>
-
-                    <p><strong>Informasi Tes</strong></p>
-
-                    <ul class="list-unstyled">
-                        <li>Hari/Tanggal : Selasa, 11 Februari 2025</li>
+                    <p class="mb-2"><strong>Informasi Tes</strong></p>
+                    <ul class="list-unstyled mb-2">
+                        <li>Hari/Tanggal : 31 Maret 2026</li>
                         <li>Mapel : Matematika, Bahasa Indonesia, IPA, Bahasa Inggris</li>
                         <li>Waktu : Tes Akademik 08.00-10.30 / Wawancara & Kesehatan (11.00 - selesai)</li>
                         <li>Lokasi : SMAN Modal Bangsa Arun</li>
                     </ul>
-
-                    <p><strong>Perlengkapan Peserta Tes</strong></p>
-                    <ul class="list-unstyled">
+                    <p class="mb-2"><strong>Perlengkapan Peserta Tes</strong></p>
+                    <ul class="list-unstyled mb-2">
                         <li>Kartu Peserta PPDB 2026/2027</li>
                         <li>Laptop atau smartphone</li>
                         <li>Pakaian Seragam Sekolah Asal dan Memakai Sepatu</li>
@@ -141,7 +153,7 @@ use yii\widgets\Pjax;
                 <div class="border p-3 text-center">
                     <address class="mb-0">
                         <span class="float-start">Lhokseumawe,</span><br>
-                        Panitia PPDB
+                        Panitia
                         <br/>
                         <br/>
                         <br/>
