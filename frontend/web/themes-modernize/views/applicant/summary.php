@@ -138,7 +138,7 @@ $overallFilledGradePercentage = ceil(($totalFields > 0) ? ($fieldFilled / $total
                 <li class="mb-2">Admin : <strong>Syahrul Hamdi, S.Pd., M. Pd. (085 358 836836)</strong> - <strong>Nanta Es, S. Kom (081 804 292926)</strong></li>
                 <li class="mb-2">
                     <?php $whatsappGroupLink = 'https://chat.whatsapp.com/BXfMNCAi3KUKkiLYsQBbzV?mode=gi_t'; ?>
-                    Ikut grup WA : <?= Html::a('PPDB SMAN MBA Gel. 2', $whatsappGroupLink, ['target' => '_blank', 'rel' => 'noopener noreferrer']);;?>
+                    Ikut grup WA : <?= Html::a('SPMB SMAN MBA Gel. 2', $whatsappGroupLink, ['target' => '_blank', 'rel' => 'noopener noreferrer']);;?>
                 </li>
             </ol>
         </div>
